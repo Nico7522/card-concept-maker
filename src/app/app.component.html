@@ -1,7 +1,29 @@
 <h1 class="text-center mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create your passive</h1>
 
 <form (ngSubmit)="onSubmit()" class="flex flex-col my-5" [formGroup]="form">
-
+  <div class="flex items-center justify-center gap-1 px-10">
+    <div class="flex flex-col flex-1 relative">
+      <label for="attack">Attack</label>
+      <input placeholder="7777" class="pl-2" id="attack" formControlName="attack" type="text">
+      @if ( form.get('attack')?.dirty && form.get('attack')?.getError('required')) {
+      <app-error errorMessage="Attack field required" />
+      }
+    </div>
+    <div class="flex flex-col flex-1">
+      <label for="defense">Defense</label>
+      <input placeholder="7777" class="pl-2" id="defense" formControlName="defense" type="text">
+      @if ( form.get('defense')?.dirty && form.get('defense')?.getError('required')) {
+      <app-error errorMessage="Defense field required" />
+      }
+    </div>
+    <div class="flex flex-col flex-1">
+      <label for="hp">HP</label>
+      <input placeholder="7777" class="pl-2" id="hp" formControlName="hp" type="text">
+      @if ( form.get('hp')?.dirty && form.get('hp')?.getError('required')) {
+      <app-error errorMessage="HP field required" />
+      }
+    </div>
+  </div>
   <div class="flex flex-col p-10 w-full " formArrayName="passivePart">
     @for (control of this.getPassiveParts().controls; track control; let index = $index)
     {
@@ -21,7 +43,14 @@
         <div [formGroupName]="index2">
           <label class="scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>Effect</label>
           <div class="flex flex-1 gap-1 items-center">
-            <input class="my-2 flex-1 pl-2" formControlName="effectDescription" placeholder="ATK & DEF + 200% ..." />
+            <div class="flex-1 ">
+              <input class="mt-2 w-full pl-2" formControlName="effectDescription" placeholder="ATK & DEF + 200% ..." />
+              @if ( this.getPassiveEffects(index).controls[index2].get('effectDescription')?.dirty &&
+              this.getPassiveEffects(index).controls[index2].get('effectDescription')?.getError('required')) {
+              <app-error errorMessage="Effect field required" />
+              }
+
+            </div>
             <select class="bg-yellow-400 text-xl text-black text-center" formControlName="effectDuration" id="">
               @for (duration of effectDuration; track $index) {
               <option class="bg-yellow-400" [value]="duration.value">
@@ -30,7 +59,7 @@
               }
 
             </select>
-            <button [disabled]="index2 === 0" (click)="removePassiveEffect(index, index2)" ubButton
+            <button class="h-12 w-10" [disabled]="index2 === 0" (click)="removePassiveEffect(index, index2)" ubButton
               variant="destructive" size="icon">
               <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />
             </button>
@@ -43,7 +72,7 @@
         <div class="flex">
           <button type="button" ubButton class="w-28 m-auto my-5" (click)="addPassiveEffect(index)">Add New
             effect</button>
-          <button type="button" ubButton variant="destructive" class="w-24 m-auto mt-5"
+          <button [disabled]="index === 0" type="button" ubButton variant="destructive" class="w-24 m-auto mt-5"
             (click)="removePassivePart(index)">Remove
             Part</button>
 
@@ -59,19 +88,29 @@
       Part</button>
 
   </div>
-  <button type="submit" class="w-96 m-auto bg-white text-black hover:text-white" ubButton>Create</button>
+  <button [disabled]="!form.valid" type="submit" class="w-96 m-auto bg-white text-black hover:text-white"
+    ubButton>Create</button>
 </form>
 
 <router-outlet />
-
+@if (form.valid && passiveDetails()) {
+<!-- Background -->
 <div class=" border-4 rounded-lg m-auto mb-10 relative card-details">
+  <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50"></div>
+  <!-- Title -->
   <h2 class="text-center mt-5 scroll-m-20 text-4xl font-extrabold  tracking-tight lg:text-3xl  mx-5 rounded-lg">
     Passive
     Skill
     details</h2>
-  <!-- Background -->
-  <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50"></div>
 
+  <!-- ATK, DEF & HP -->
+  <div class="flex items-center justify-center gap-1 p-2 z-10 text-center px-6">
+    <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo()?.attack}} ATK</span>
+    <span class="bg-blue-500 flex-1 rounded-sm">{{characterInfo()?.defense}} DEF</span>
+    <span class="bg-green-500 flex-1 rounded-sm">{{characterInfo()?.hp}} HP</span>
+
+
+  </div>
   <!-- Content -->
   <div class="relative z-10 flex flex-col p-7">
     @for (part of passiveDetails(); track $index) {
@@ -81,7 +120,9 @@
         @for (effect of part.effect; track $index) {
         <li class="flex items-center">
           {{'- ' + effect.description}}
-          <img class="" [src]="effect.imageSrc" alt="">
+          @if (effect.imageSrc) {
+          <img [src]="effect.imageSrc" alt="effect duration logo">
+          }
         </li>
 
         }
@@ -91,3 +132,5 @@
     }
   </div>
 </div>
+
+}

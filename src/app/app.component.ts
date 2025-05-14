@@ -11,6 +11,7 @@ import {
 import { UbButtonDirective } from '~/components/ui/button';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroArchiveBoxXMark } from '@ng-icons/heroicons/outline';
+import { ErrorComponent } from './shared/error/error.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { heroArchiveBoxXMark } from '@ng-icons/heroicons/outline';
     ReactiveFormsModule,
     UbButtonDirective,
     NgIconComponent,
+    ErrorComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -37,25 +39,69 @@ export class AppComponent {
     },
     {
       value: 3,
-      effect: 'After evading a attack',
+      effect: 'After evading an attack',
     },
     {
       value: 4,
-      effect: 'After receiving a attack',
+      effect: 'After receiving an attack',
+    },
+    {
+      value: 5,
+      effect: 'When receiving an attack for the 1st time within the turn',
+    },
+    {
+      value: 6,
+      effect: 'Before receiving an attack within the turn',
+    },
+    {
+      value: 7,
+      effect: '23 Ki Spheres obtained',
+    },
+    {
+      value: 8,
+      effect: 'Starting from the 4th turn from the start of battle',
+    },
+    {
+      value: 9,
+      effect: 'Starting from the 5th turn from the start of battle',
+    },
+    {
+      value: 10,
+      effect: 'Starting from the 6th turn from the start of battle',
     },
   ];
 
   effectDuration = [
     {
       value: 1,
-      duration: '! 1',
+      duration: 'None',
     },
     {
       value: 2,
+      duration: '! 1',
+    },
+    {
+      value: 3,
       duration: '∞',
+    },
+    {
+      value: 4,
+      duration: '↑',
     },
   ];
   form = this.formBuilder.group({
+    attack: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    defense: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    hp: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
     passivePart: this.formBuilder.array([
       this.formBuilder.group({
         passiveConditionActivation: new FormControl(1, {
@@ -136,6 +182,11 @@ export class AppComponent {
   removePassivePart(index: number) {
     this.getPassiveParts().removeAt(index);
   }
+  characterInfo = signal<{
+    attack: number;
+    defense: number;
+    hp: number;
+  } | null>(null);
   passiveDetails = signal<
     | {
         passiveConditionActivation: string;
@@ -144,7 +195,14 @@ export class AppComponent {
     | null
   >(null);
   onSubmit() {
+    console.log(this.getPassiveEffects(0).controls[0].get('effectDescription'));
+
     const data = this.form.getRawValue();
+    this.characterInfo.set({
+      attack: +data.attack,
+      defense: +data.defense,
+      hp: +data.hp,
+    });
     console.log(data);
 
     let array: {
@@ -161,24 +219,29 @@ export class AppComponent {
         effect: v.effect.map((e) => {
           return {
             description: e.effectDescription,
-            imageSrc: this.getDurationLogo(e.effectDuration),
+            imageSrc:
+              e.effectDuration > 1
+                ? this.getDurationLogo(e.effectDuration)
+                : '',
           };
         }),
       });
     });
 
     this.passiveDetails.set(array);
-    console.log(this.passiveDetails());
   }
 
   private getDurationLogo(value: number): string {
     let src: string = '';
-    switch (value) {
-      case 1:
+    switch (+value) {
+      case 2:
         src = 'one.webp';
         break;
-      case 2:
-        src = '∞';
+      case 3:
+        src = 'infinite.webp';
+        break;
+      case 4:
+        src = 'up.webp';
         break;
       default:
         break;

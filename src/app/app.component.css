@@ -11,6 +11,7 @@ select, input {
 .select option {
     display: flex;
     width: 100px;
+      background: #141414;
    
 }
 

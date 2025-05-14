@@ -1,8 +1,10 @@
 <h1 class="text-center mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create your passive</h1>
 
 <form (ngSubmit)="onSubmit()" class="flex flex-col m-5 py-5" [formGroup]="form">
-  <div class="flex items-center justify-center gap-1 px-10">
-    <div class="flex flex-col flex-1 relative">
+
+  <!-- Stats -->
+  <div class="flex items-center justify-center gap-1 px-20">
+    <div class="flex flex-col flex-1 relative px-10">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="attack">Attack</label>
       <input placeholder="7777" class="pl-2" id="attack" formControlName="attack" type="number">
       @if ( form.get('attack')?.dirty && form.get('attack')?.getError('required')) {
@@ -16,7 +18,7 @@
       <app-error errorMessage="Defense field required" />
       }
     </div>
-    <div class="flex flex-col flex-1">
+    <div class="flex flex-col flex-1 px-10">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="hp">HP</label>
       <input placeholder="7777" class="pl-2" id="hp" formControlName="hp" type="number">
       @if ( form.get('hp')?.dirty && form.get('hp')?.getError('required')) {
@@ -24,14 +26,61 @@
       }
     </div>
   </div>
+
+  <!-- Legendary character ? -->
+  <div class="flex flex-col items-start px-30">
+    <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="lr">LR ?</label>
+    <select class="text-xl ml-0 text-center m-auto text-white mt-2 select" formControlName="isLr" id="lr">
+      <option class="" value="true">
+        LR
+      </option>
+      <option value="false">
+        TUR
+      </option>
+    </select>
+
+  </div>
+
+  <!-- Leader skill -->
+  <div class="flex items-center justify-center gap-1 px-20 mt-5">
+    <div class="flex flex-col flex-1 relative px-10">
+      <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Leader
+        Skill</label>
+      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2" id="leaderSkill"
+        formControlName="leaderSkill" type="text">
+      @if ( form.get('leaderSkill')?.dirty && form.get('leaderSkill')?.getError('required')) {
+      <app-error errorMessage="Leader skill field required" />
+      }
+    </div>
+
+  </div>
+
+  <!-- Super attack -->
+
+  <div class="flex items-center justify-center gap-1 px-20 mt-5">
+    <div class="flex flex-col flex-1 relative px-10">
+      <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="superAttack">Super
+        Attack</label>
+      <input
+        placeholder="Raises ATK & DEF for 1 turn, causes colossal damage to enemy and raises chance of evading enemy's attack (including Super Attack) & chance of performing a critical hit by 6% for 1 turn"
+        class="pl-2" id="superAttack" formControlName="superAttack" type="text">
+      @if ( form.get('superAttack')?.dirty && form.get('superAttack')?.getError('required')) {
+      <app-error errorMessage="super attack field required" />
+      }
+    </div>
+
+  </div>
+
+
+  <!-- Passive -->
   <div class="flex flex-col p-10 w-full" formArrayName="passivePart">
     @for (control of this.getPassiveParts().controls; track control; let index = $index)
     {
-    <div class="flex flex-col m-auto w-full px-20 py-10 mt-5 passive-part" [formGroupName]="index">
+    <div class="flex flex-col m-auto w-full px-20 py-10 mt-5" [formGroupName]="index">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>Passive
         Condition
         Activation</label>
-      <select class="my-2" formControlName="passiveConditionActivation">
+      <select class="my-2 select" formControlName="passiveConditionActivation">
         @for (effect of passiveConditionActivation; track $index) {
         <option class="bg-black" [value]="effect.value">{{effect.effect}}</option>
         }
@@ -51,7 +100,7 @@
               }
 
             </div>
-            <select class="bg-yellow-400 text-xl text-black text-center mt-2" formControlName="effectDuration" id="">
+            <select class="bg-yellow-400 text-xl text-black text-center mt-2 " formControlName="effectDuration" id="">
               @for (duration of effectDuration; track $index) {
               <option class="bg-yellow-400" [value]="duration.value">
                 {{duration.duration}}
@@ -120,9 +169,9 @@
   <section>
     <!-- ATK, DEF & HP -->
     <div class="flex items-center justify-center gap-1 p-2 z-10 relative text-center px-6">
-      <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo()?.attack}} ATK</span>
-      <span class="bg-blue-500 flex-1 rounded-sm">{{characterInfo()?.defense}} DEF</span>
-      <span class="bg-green-500 flex-1 rounded-sm">{{characterInfo()?.hp}} HP</span>
+      <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo()?.stats?.attack}} ATK</span>
+      <span class="bg-blue-500 flex-1 rounded-sm">{{characterInfo()?.stats?.defense}} DEF</span>
+      <span class="bg-green-500 flex-1 rounded-sm">{{characterInfo()?.stats?.hp}} HP</span>
 
     </div>
 
@@ -144,8 +193,13 @@
         Leader<span class="block  -mt-2 ">skill</span>
       </span>
       <div class="w-full p-2 mx-10 bg-black flex items-center justify-center" style="transform: skewX(-10deg);">
+        @if (characterInfo()?.leaderSkill) {
+        {{characterInfo()?.leaderSkill}}
+        }@else {
         "Tournament Participants" or "Worldwide Chaos" Category Ki +3, HP +200% and ATK & DEF +170%, plus an additional
         HP, ATK & DEF +50% for characters who also belong to the "Androids" or "Accelerated Battle" Category
+
+        }
       </div>
     </div>
 
@@ -161,7 +215,12 @@
 
       </div>
       <div class="w-full p-2 mr-10 bg-black flex items-center justify-center" style=" transform: skewX(-10deg);">
+        @if (characterInfo()?.superAttack) {
+        {{characterInfo()?.superAttack}}
+        }@else {
         Greatly raises ATK & DEF for 1 turn and causes immense damage to enemy
+
+        }
       </div>
     </div>
 

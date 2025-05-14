@@ -38,9 +38,13 @@ export class AppComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   passiveConditionActivation = passiveConditionActivation;
   characterInfo = signal<{
-    attack: number;
-    defense: number;
-    hp: number;
+    stats: {
+      attack: number;
+      defense: number;
+      hp: number;
+    };
+    leaderSkill: string;
+    superAttack: string;
   } | null>(null);
   passiveDetails = signal<
     | {
@@ -63,6 +67,18 @@ export class AppComponent {
       validators: [Validators.required],
     }),
     hp: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    isLr: new FormControl(true, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    leaderSkill: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    superAttack: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required],
     }),
@@ -151,9 +167,13 @@ export class AppComponent {
   onSubmit() {
     const data = this.form.getRawValue();
     this.characterInfo.set({
-      attack: +data.attack,
-      defense: +data.defense,
-      hp: +data.hp,
+      stats: {
+        attack: +data.attack,
+        defense: +data.defense,
+        hp: +data.hp,
+      },
+      leaderSkill: data.leaderSkill,
+      superAttack: data.superAttack,
     });
 
     let array: {

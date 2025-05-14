@@ -10,8 +10,14 @@ import {
 } from '@angular/forms';
 import { UbButtonDirective } from '~/components/ui/button';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroArchiveBoxXMark } from '@ng-icons/heroicons/outline';
+import {
+  heroArchiveBoxXMark,
+  heroArrowLeft,
+  heroArrowLongRight,
+} from '@ng-icons/heroicons/outline';
 import { ErrorComponent } from './shared/error/error.component';
+import { passiveConditionActivation } from './select-options/passive-condition-activation';
+import { effectDuration } from './select-options/effect-duration';
 
 @Component({
   selector: 'app-root',
@@ -24,71 +30,29 @@ import { ErrorComponent } from './shared/error/error.component';
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  viewProviders: [provideIcons({ heroArchiveBoxXMark })],
+  viewProviders: [
+    provideIcons({ heroArchiveBoxXMark, heroArrowLeft, heroArrowLongRight }),
+  ],
 })
 export class AppComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
-  passiveConditionActivation = [
-    {
-      value: 1,
-      effect: 'Basic Effect(s)',
-    },
-    {
-      value: 2,
-      effect: 'For every ki spehere obtained',
-    },
-    {
-      value: 3,
-      effect: 'After evading an attack',
-    },
-    {
-      value: 4,
-      effect: 'After receiving an attack',
-    },
-    {
-      value: 5,
-      effect: 'When receiving an attack for the 1st time within the turn',
-    },
-    {
-      value: 6,
-      effect: 'Before receiving an attack within the turn',
-    },
-    {
-      value: 7,
-      effect: '23 Ki Spheres obtained',
-    },
-    {
-      value: 8,
-      effect: 'Starting from the 4th turn from the start of battle',
-    },
-    {
-      value: 9,
-      effect: 'Starting from the 5th turn from the start of battle',
-    },
-    {
-      value: 10,
-      effect: 'Starting from the 6th turn from the start of battle',
-    },
-  ];
+  passiveConditionActivation = passiveConditionActivation;
+  characterInfo = signal<{
+    attack: number;
+    defense: number;
+    hp: number;
+  } | null>(null);
+  passiveDetails = signal<
+    | {
+        passiveConditionActivation: string;
+        effect: { description: string; imageSrc: string }[];
+      }[]
+    | null
+  >(null);
 
-  effectDuration = [
-    {
-      value: 1,
-      duration: 'None',
-    },
-    {
-      value: 2,
-      duration: '! 1',
-    },
-    {
-      value: 3,
-      duration: '∞',
-    },
-    {
-      value: 4,
-      duration: '↑',
-    },
-  ];
+  isFirstPartShow = signal(true);
+  title = signal('Card Details');
+  effectDuration = effectDuration;
   form = this.formBuilder.group({
     attack: new FormControl('', {
       nonNullable: true,
@@ -133,10 +97,8 @@ export class AppComponent {
   getPassiveEffects(index: number): FormArray {
     return this.getPassiveParts().controls[index].get('effect') as FormArray;
   }
-  ngOnInit() {
-    console.log(this.getPassiveParts().controls[0].get('effect'));
-  }
 
+  // Add a passive Part to the form
   AddPassivePart() {
     this.getPassiveParts().push(
       this.formBuilder.group({
@@ -160,6 +122,7 @@ export class AppComponent {
     );
   }
 
+  // Add a effect to a specific passive part
   addPassiveEffect(index: number) {
     this.getPassiveEffects(index).push(
       this.formBuilder.group({
@@ -175,43 +138,29 @@ export class AppComponent {
     );
   }
 
+  // Remove a effect from a specific passive part
   removePassiveEffect(index: number, index2: number) {
     this.getPassiveEffects(index).removeAt(index2);
   }
 
+  // Remave a passive part
   removePassivePart(index: number) {
     this.getPassiveParts().removeAt(index);
   }
-  characterInfo = signal<{
-    attack: number;
-    defense: number;
-    hp: number;
-  } | null>(null);
-  passiveDetails = signal<
-    | {
-        passiveConditionActivation: string;
-        effect: { description: string; imageSrc: string }[];
-      }[]
-    | null
-  >(null);
-  onSubmit() {
-    console.log(this.getPassiveEffects(0).controls[0].get('effectDescription'));
 
+  onSubmit() {
     const data = this.form.getRawValue();
     this.characterInfo.set({
       attack: +data.attack,
       defense: +data.defense,
       hp: +data.hp,
     });
-    console.log(data);
 
     let array: {
       passiveConditionActivation: string;
       effect: { description: string; imageSrc: string }[];
     }[] = [];
     data.passivePart.map((v) => {
-      console.log(v.passiveConditionActivation);
-
       array.push({
         passiveConditionActivation:
           this.passiveConditionActivation[v.passiveConditionActivation - 1]
@@ -247,5 +196,10 @@ export class AppComponent {
         break;
     }
     return src;
+  }
+
+  showFirstPart(value: boolean) {
+    this.isFirstPartShow.set(value);
+    this.title.set(value ? 'Card Details' : 'Passive Card Details');
   }
 }

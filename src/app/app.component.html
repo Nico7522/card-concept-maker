@@ -1,33 +1,33 @@
 <h1 class="text-center mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create your passive</h1>
 
-<form (ngSubmit)="onSubmit()" class="flex flex-col my-5" [formGroup]="form">
+<form (ngSubmit)="onSubmit()" class="flex flex-col m-5 py-5" [formGroup]="form">
   <div class="flex items-center justify-center gap-1 px-10">
     <div class="flex flex-col flex-1 relative">
-      <label for="attack">Attack</label>
-      <input placeholder="7777" class="pl-2" id="attack" formControlName="attack" type="text">
+      <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="attack">Attack</label>
+      <input placeholder="7777" class="pl-2" id="attack" formControlName="attack" type="number">
       @if ( form.get('attack')?.dirty && form.get('attack')?.getError('required')) {
       <app-error errorMessage="Attack field required" />
       }
     </div>
     <div class="flex flex-col flex-1">
-      <label for="defense">Defense</label>
-      <input placeholder="7777" class="pl-2" id="defense" formControlName="defense" type="text">
+      <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="defense">Defense</label>
+      <input placeholder="7777" class="pl-2" id="defense" formControlName="defense" type="number">
       @if ( form.get('defense')?.dirty && form.get('defense')?.getError('required')) {
       <app-error errorMessage="Defense field required" />
       }
     </div>
     <div class="flex flex-col flex-1">
-      <label for="hp">HP</label>
-      <input placeholder="7777" class="pl-2" id="hp" formControlName="hp" type="text">
+      <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="hp">HP</label>
+      <input placeholder="7777" class="pl-2" id="hp" formControlName="hp" type="number">
       @if ( form.get('hp')?.dirty && form.get('hp')?.getError('required')) {
       <app-error errorMessage="HP field required" />
       }
     </div>
   </div>
-  <div class="flex flex-col p-10 w-full " formArrayName="passivePart">
+  <div class="flex flex-col p-10 w-full" formArrayName="passivePart">
     @for (control of this.getPassiveParts().controls; track control; let index = $index)
     {
-    <div class="flex flex-col m-auto w-full px-20 py-10 mt-5 border rounded-lg border-white" [formGroupName]="index">
+    <div class="flex flex-col m-auto w-full px-20 py-10 mt-5 passive-part" [formGroupName]="index">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>Passive
         Condition
         Activation</label>
@@ -42,8 +42,8 @@
         {
         <div [formGroupName]="index2">
           <label class="scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>Effect</label>
-          <div class="flex flex-1 gap-1 items-center">
-            <div class="flex-1 ">
+          <div class="flex flex-1 gap-1 items-center justify-center">
+            <div class="flex-1">
               <input class="mt-2 w-full pl-2" formControlName="effectDescription" placeholder="ATK & DEF + 200% ..." />
               @if ( this.getPassiveEffects(index).controls[index2].get('effectDescription')?.dirty &&
               this.getPassiveEffects(index).controls[index2].get('effectDescription')?.getError('required')) {
@@ -51,7 +51,7 @@
               }
 
             </div>
-            <select class="bg-yellow-400 text-xl text-black text-center" formControlName="effectDuration" id="">
+            <select class="bg-yellow-400 text-xl text-black text-center mt-2" formControlName="effectDuration" id="">
               @for (duration of effectDuration; track $index) {
               <option class="bg-yellow-400" [value]="duration.value">
                 {{duration.duration}}
@@ -59,8 +59,8 @@
               }
 
             </select>
-            <button class="h-12 w-10" [disabled]="index2 === 0" (click)="removePassiveEffect(index, index2)" ubButton
-              variant="destructive" size="icon">
+            <button type="button" class="h-12 w-10 mt-2" [disabled]="index2 === 0"
+              (click)="removePassiveEffect(index, index2)" ubButton variant="destructive" size="icon">
               <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />
             </button>
 
@@ -70,7 +70,8 @@
 
         }
         <div class="flex">
-          <button type="button" ubButton class="w-28 m-auto my-5" (click)="addPassiveEffect(index)">Add New
+          <button type="button" ubButton class="w-28 m-auto my-5 bg-white text-black hover:text-white"
+            (click)="addPassiveEffect(index)">Add New
             effect</button>
           <button [disabled]="index === 0" type="button" ubButton variant="destructive" class="w-24 m-auto mt-5"
             (click)="removePassivePart(index)">Remove
@@ -93,26 +94,99 @@
 </form>
 
 <router-outlet />
-@if (form.valid && passiveDetails()) {
-<!-- Background -->
 <div class=" border-4 rounded-lg m-auto mb-10 relative card-details">
-  <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50"></div>
-  <!-- Title -->
-  <h2 class="text-center mt-5 scroll-m-20 text-4xl font-extrabold  tracking-tight lg:text-3xl  mx-5 rounded-lg">
-    Passive
-    Skill
-    details</h2>
-
-  <!-- ATK, DEF & HP -->
-  <div class="flex items-center justify-center gap-1 p-2 z-10 text-center px-6">
-    <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo()?.attack}} ATK</span>
-    <span class="bg-blue-500 flex-1 rounded-sm">{{characterInfo()?.defense}} DEF</span>
-    <span class="bg-green-500 flex-1 rounded-sm">{{characterInfo()?.hp}} HP</span>
-
-
+  <!-- Background -->
+  <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50">
   </div>
-  <!-- Content -->
-  <div class="relative z-10 flex flex-col p-7">
+
+
+  <!-- Arrow for switch between first and second part  -->
+  <button (click)="showFirstPart(true)" type="button"
+    class="h-12 w-10 absolute bg-orange-500 hover:bg-orange-700 top-1/2 -left-12 transform -translate-y-1/2" ubButton
+    size="icon">
+    <ng-icon name="heroArrowLeft" class="h-4 w-4" />
+  </button>
+  <button (click)="showFirstPart(false)" type="button"
+    class="h-12 w-10 absolute bg-orange-500 hover:bg-orange-700 top-1/2 -right-12 transform -translate-y-1/2" ubButton
+    size="icon">
+    <ng-icon name="heroArrowLongRight" class="h-4 w-4" />
+  </button>
+  <!-- Title -->
+  <h2 class="text-center relative mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl  mx-5 rounded-lg">
+    {{title()}}</h2>
+
+  @if (isFirstPartShow()) {
+  <!-- First part -->
+  <section>
+    <!-- ATK, DEF & HP -->
+    <div class="flex items-center justify-center gap-1 p-2 z-10 relative text-center px-6">
+      <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo()?.attack}} ATK</span>
+      <span class="bg-blue-500 flex-1 rounded-sm">{{characterInfo()?.defense}} DEF</span>
+      <span class="bg-green-500 flex-1 rounded-sm">{{characterInfo()?.hp}} HP</span>
+
+    </div>
+
+    <!-- Lvl - XP - Cost -->
+    <div class="flex items-center relative z-10 ">
+      <span class="px-6 text-3xl text-orange-500">Lv</span>
+      <span class="text-3xl">150/150</span>
+      <div class="w-72 h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);"></div>
+      <div class="flex flex-col items-center">
+        <span class="italic text-yellow-300 font-extrabold">COST</span>
+        <span class="font-extrabold">77</span>
+      </div>
+    </div>
+
+    <!-- Leader -->
+
+    <div class="z-10 relative flex items-center justify-center">
+      <span class="pl-6 italic text-orange-500">
+        Leader<span class="block  -mt-2 ">skill</span>
+      </span>
+      <div class="w-full p-2 mx-10 bg-black flex items-center justify-center" style="transform: skewX(-10deg);">
+        "Tournament Participants" or "Worldwide Chaos" Category Ki +3, HP +200% and ATK & DEF +170%, plus an additional
+        HP, ATK & DEF +50% for characters who also belong to the "Androids" or "Accelerated Battle" Category
+      </div>
+    </div>
+
+    <!-- Super ATK -->
+    <div class="z-10 relative flex items-center justify-center">
+      <div class="pl-6">
+        <span class="italic text-orange-500">
+          Super ATK Lv
+        </span>
+        <div class="bg-black w-11" style="transform: skewX(-10deg);">
+          <span class="text-yellow-300">20</span>/20
+        </div>
+
+      </div>
+      <div class="w-full p-2 mr-10 bg-black flex items-center justify-center" style=" transform: skewX(-10deg);">
+        Greatly raises ATK & DEF for 1 turn and causes immense damage to enemy
+      </div>
+    </div>
+
+    <!-- Linkset -->
+    <div class="z-10 relative mt-5">
+      <span class="pl-6 italic text-orange-500">Link skill</span>
+      <div class="h-full mx-6 flex flex-wrap gap-1">
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
+
+
+      </div>
+    </div>
+
+  </section>
+  }@else {
+  <!-- Second part -->
+  <!-- Passive details -->
+  <div class=" relative z-10 flex flex-col p-7">
     @for (part of passiveDetails(); track $index) {
     <div class="flex flex-col">
       <h3 class="text-orange-500 text-xl mt-2">{{part.passiveConditionActivation}}</h3>
@@ -131,6 +205,8 @@
     </div>
     }
   </div>
-</div>
+  }
 
-}
+
+
+</div>

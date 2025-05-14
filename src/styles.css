@@ -118,7 +118,8 @@
 }
 
 body {
-    background: #000000;
+  background: #141414;
+background: radial-gradient(circle, rgba(20, 20, 20, 1) 75%, rgba(5, 4, 4, 1) 98%);
     color: white;
 }
 

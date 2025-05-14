@@ -1,3 +1,8 @@
+.passive-part {
+     background: #141414;
+background: radial-gradient(circle, rgba(20, 20, 20, 1) 75%, rgba(5, 4, 4, 1) 98%);
+}
+
 select, input {
     height: 50px;
     border-radius: 10px;
@@ -34,4 +39,13 @@ input::placeholder {
 .card-details > h2 {
     background: #85ff7a;
     background: linear-gradient(180deg, rgba(133, 255, 122, 1) 1%, rgba(10, 18, 12, 1) 53%, rgba(54, 199, 10, 1) 100%);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  appearance: textfield;
 }

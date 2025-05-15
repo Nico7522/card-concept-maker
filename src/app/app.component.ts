@@ -1,6 +1,8 @@
 import {
   Component,
+  ComponentRef,
   inject,
+  inputBinding,
   signal,
   viewChild,
   ViewContainerRef,
@@ -211,7 +213,6 @@ export class AppComponent {
   }
 
   onSubmit() {
-    this.createCard();
     const data = this.form.getRawValue();
     data.links.map((l) => console.log(l.link));
 
@@ -249,10 +250,23 @@ export class AppComponent {
     });
 
     this.passiveDetails.set(array);
+    if (this.componentRefs) {
+      this.componentRefs.destroy();
+    }
+    this.createCard();
   }
   card = viewChild.required('card', { read: ViewContainerRef });
+  componentRefs: ComponentRef<CardComponent> | null = null;
+
   createCard() {
-    const componentRef = this.card().createComponent(CardComponent);
+    const componentRef = this.card().createComponent(CardComponent, {
+      bindings: [
+        inputBinding('characterInfo', this.characterInfo),
+        inputBinding('passiveDetails', this.passiveDetails),
+      ],
+    });
+
+    this.componentRefs = componentRef;
   }
   private getDurationLogo(value: number): string {
     let src: string = '';
@@ -272,8 +286,7 @@ export class AppComponent {
     return src;
   }
 
-  showFirstPart(value: boolean) {
-    this.isFirstPartShow.set(value);
-    this.title.set(value ? 'Card Details' : 'Passive Card Details');
+  ngOnDestroy() {
+    this.componentRefs?.destroy();
   }
 }

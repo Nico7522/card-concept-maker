@@ -29,13 +29,15 @@
 
   <!-- Legendary character ? -->
   <div class="flex flex-col items-start px-30">
-    <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="lr">LR ?</label>
-    <select class="text-xl ml-0 text-center m-auto text-white mt-2 select" formControlName="isLr" id="lr">
-      <option class="" value="true">
-        LR
+    <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="isLegendaryCharacter">LR
+      ?</label>
+    <select class="text-xl ml-0 text-center m-auto text-white mt-2 select" formControlName="isLegendaryCharacter"
+      id="isLegendaryCharacter">
+      <option [ngValue]="true">
+        Yes
       </option>
-      <option value="false">
-        TUR
+      <option [ngValue]="false">
+        No
       </option>
     </select>
 
@@ -71,6 +73,30 @@
 
   </div>
 
+  <!-- Links -->
+  <div>
+    <div class="flex flex-col px-10 mt-5 w-full" formArrayName="links">
+      <label class="pl-20 my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>
+        Links</label>
+      @for (control of this.getLinkSkillSet().controls; track control; let index = $index) {
+      <div class="flex gap-1 m-auto w-full px-20  " [formGroupName]="index">
+        <select class="my-2 select flex-1" formControlName="link">
+          @for (link of links; track $index) {
+          <option class="bg-black" [value]="link.value">{{link.linkName}}</option>
+          }
+        </select>
+        <button type="button" class="h-12 w-10 mt-2" [disabled]="index === 0" (click)="removeLinkSkill(index)" ubButton
+          variant="destructive" size="icon">
+          <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />
+        </button>
+      </div>
+      }
+      <button type="button" class="h-12 w-10 mt-2 m-auto rounded-lg bg-green-900 hover:bg-green-800"
+        (click)="addLinkSkill()" ubButton size="icon">
+        <ng-icon name="heroPlus" class="h-4 w-4" />
+      </button>
+    </div>
+  </div>
 
   <!-- Passive -->
   <div class="flex flex-col p-10 w-full" formArrayName="passivePart">
@@ -143,7 +169,7 @@
 </form>
 
 <router-outlet />
-<div class=" border-4 rounded-lg m-auto mb-10 relative card-details">
+<div class=" border-4 rounded-lg m-auto mb-10 relative card-details overflow-x-hidden overflow-y-auto">
   <!-- Background -->
   <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50">
   </div>
@@ -166,7 +192,7 @@
 
   @if (isFirstPartShow()) {
   <!-- First part -->
-  <section>
+  <section class="">
     <!-- ATK, DEF & HP -->
     <div class="flex items-center justify-center gap-1 p-2 z-10 relative text-center px-6">
       <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo()?.stats?.attack}} ATK</span>
@@ -178,7 +204,7 @@
     <!-- Lvl - XP - Cost -->
     <div class="flex items-center relative z-10 ">
       <span class="px-6 text-3xl text-orange-500">Lv</span>
-      <span class="text-3xl">150/150</span>
+      <span class="text-3xl">{{characterInfo()?.isLegendaryCharacter ? '150/150' : '120/120'}}</span>
       <div class="w-72 h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);"></div>
       <div class="flex flex-col items-center">
         <span class="italic text-yellow-300 font-extrabold">COST</span>
@@ -210,7 +236,13 @@
           Super ATK Lv
         </span>
         <div class="bg-black w-11" style="transform: skewX(-10deg);">
+          @if (characterInfo()?.isLegendaryCharacter) {
           <span class="text-yellow-300">20</span>/20
+
+          }@else {
+          <span class="text-yellow-300">10</span>/10
+
+          }
         </div>
 
       </div>
@@ -227,15 +259,18 @@
     <!-- Linkset -->
     <div class="z-10 relative mt-5">
       <span class="pl-6 italic text-orange-500">Link skill</span>
-      <div class="h-full mx-6 flex flex-wrap gap-1">
-        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
-        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
-        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
-        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
-        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
-        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
-        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
-        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-40 bg-black">Super Saiyan</div>
+      <div class="h-full mx-6 flex items-center justify-center flex-wrap gap-1">
+        @for (link of characterInfo()?.links; track $index) {
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-46 bg-black">{{link}}</div>
+
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-46 bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-46  bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-46  bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-46  bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-46  bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-46  bg-black">Super Saiyan</div>
+        <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-46  bg-black">Super Saiyan</div>
+        }
 
 
       </div>
@@ -269,3 +304,6 @@
 
 
 </div>
+
+
+<ng-container #card />

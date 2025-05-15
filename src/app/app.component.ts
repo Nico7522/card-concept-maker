@@ -1,8 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  viewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
   FormArray,
-  FormBuilder,
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -14,10 +19,13 @@ import {
   heroArchiveBoxXMark,
   heroArrowLeft,
   heroArrowLongRight,
+  heroPlus,
 } from '@ng-icons/heroicons/outline';
 import { ErrorComponent } from './shared/error/error.component';
 import { passiveConditionActivation } from './select-options/passive-condition-activation';
 import { effectDuration } from './select-options/effect-duration';
+import { CardComponent } from './shared/card/card.component';
+import { Links } from './select-options/links';
 
 @Component({
   selector: 'app-root',
@@ -31,12 +39,19 @@ import { effectDuration } from './select-options/effect-duration';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   viewProviders: [
-    provideIcons({ heroArchiveBoxXMark, heroArrowLeft, heroArrowLongRight }),
+    provideIcons({
+      heroArchiveBoxXMark,
+      heroArrowLeft,
+      heroArrowLongRight,
+      heroPlus,
+    }),
   ],
 })
 export class AppComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   passiveConditionActivation = passiveConditionActivation;
+  effectDuration = effectDuration;
+  links = Links;
   characterInfo = signal<{
     stats: {
       attack: number;
@@ -45,6 +60,8 @@ export class AppComponent {
     };
     leaderSkill: string;
     superAttack: string;
+    isLegendaryCharacter: boolean;
+    links: string[];
   } | null>(null);
   passiveDetails = signal<
     | {
@@ -56,7 +73,6 @@ export class AppComponent {
 
   isFirstPartShow = signal(true);
   title = signal('Card Details');
-  effectDuration = effectDuration;
   form = this.formBuilder.group({
     attack: new FormControl('', {
       nonNullable: true,
@@ -70,10 +86,7 @@ export class AppComponent {
       nonNullable: true,
       validators: [Validators.required],
     }),
-    isLr: new FormControl(true, {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
+
     leaderSkill: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required],
@@ -82,6 +95,18 @@ export class AppComponent {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    isLegendaryCharacter: new FormControl(true, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    links: this.formBuilder.array([
+      this.formBuilder.group({
+        link: new FormControl(1, {
+          nonNullable: true,
+          validators: [Validators.required],
+        }),
+      }),
+    ]),
     passivePart: this.formBuilder.array([
       this.formBuilder.group({
         passiveConditionActivation: new FormControl(1, {
@@ -112,6 +137,11 @@ export class AppComponent {
   // Get all effects for a passive part
   getPassiveEffects(index: number): FormArray {
     return this.getPassiveParts().controls[index].get('effect') as FormArray;
+  }
+
+  // Get link skill set
+  getLinkSkillSet(): FormArray {
+    return this.form.get('links') as FormArray;
   }
 
   // Add a passive Part to the form
@@ -154,6 +184,18 @@ export class AppComponent {
     );
   }
 
+  // Add a link
+  addLinkSkill() {
+    this.getLinkSkillSet().push(
+      this.formBuilder.group({
+        link: new FormControl(1, {
+          nonNullable: true,
+          validators: [Validators.required],
+        }),
+      })
+    );
+  }
+
   // Remove a effect from a specific passive part
   removePassiveEffect(index: number, index2: number) {
     this.getPassiveEffects(index).removeAt(index2);
@@ -164,8 +206,15 @@ export class AppComponent {
     this.getPassiveParts().removeAt(index);
   }
 
+  removeLinkSkill(index: number) {
+    this.getLinkSkillSet().removeAt(index);
+  }
+
   onSubmit() {
+    this.createCard();
     const data = this.form.getRawValue();
+    data.links.map((l) => console.log(l.link));
+
     this.characterInfo.set({
       stats: {
         attack: +data.attack,
@@ -174,6 +223,8 @@ export class AppComponent {
       },
       leaderSkill: data.leaderSkill,
       superAttack: data.superAttack,
+      isLegendaryCharacter: data.isLegendaryCharacter,
+      links: data.links.map((value) => this.links[value.link - 1].linkName),
     });
 
     let array: {
@@ -199,7 +250,10 @@ export class AppComponent {
 
     this.passiveDetails.set(array);
   }
-
+  card = viewChild.required('card', { read: ViewContainerRef });
+  createCard() {
+    const componentRef = this.card().createComponent(CardComponent);
+  }
   private getDurationLogo(value: number): string {
     let src: string = '';
     switch (+value) {

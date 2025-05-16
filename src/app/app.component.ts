@@ -28,6 +28,7 @@ import { passiveConditionActivation } from './select-options/passive-condition-a
 import { effectDuration } from './select-options/effect-duration';
 import { CardComponent } from './shared/card/card.component';
 import { Links } from './select-options/links';
+import { categories } from './select-options/categories';
 
 @Component({
   selector: 'app-root',
@@ -53,6 +54,7 @@ export class AppComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   passiveConditionActivation = passiveConditionActivation;
   effectDuration = effectDuration;
+  categories = categories;
   links = Links;
   characterInfo = signal<{
     stats: {
@@ -63,6 +65,7 @@ export class AppComponent {
     leaderSkill: string;
     superAttack: string;
     isLegendaryCharacter: boolean;
+    categories: string[];
     links: string[];
   } | null>(null);
   passiveDetails = signal<
@@ -101,6 +104,14 @@ export class AppComponent {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    categories: this.formBuilder.array([
+      this.formBuilder.group({
+        category: new FormControl(1, {
+          nonNullable: true,
+          validators: [Validators.required],
+        }),
+      }),
+    ]),
     links: this.formBuilder.array([
       this.formBuilder.group({
         link: new FormControl(1, {
@@ -141,9 +152,14 @@ export class AppComponent {
     return this.getPassiveParts().controls[index].get('effect') as FormArray;
   }
 
-  // Get link skill set
-  getLinkSkillSet(): FormArray {
+  // Get links
+  getLinks(): FormArray {
     return this.form.get('links') as FormArray;
+  }
+
+  // Get categories
+  getCategories() {
+    return this.form.get('categories') as FormArray;
   }
 
   // Add a passive Part to the form
@@ -187,10 +203,22 @@ export class AppComponent {
   }
 
   // Add a link
-  addLinkSkill() {
-    this.getLinkSkillSet().push(
+  addLink() {
+    this.getLinks().push(
       this.formBuilder.group({
         link: new FormControl(1, {
+          nonNullable: true,
+          validators: [Validators.required],
+        }),
+      })
+    );
+  }
+
+  // Add a category
+  addCategory() {
+    this.getCategories().push(
+      this.formBuilder.group({
+        category: new FormControl(1, {
           nonNullable: true,
           validators: [Validators.required],
         }),
@@ -208,8 +236,12 @@ export class AppComponent {
     this.getPassiveParts().removeAt(index);
   }
 
-  removeLinkSkill(index: number) {
-    this.getLinkSkillSet().removeAt(index);
+  removeLink(index: number) {
+    this.getLinks().removeAt(index);
+  }
+
+  removeCategory(index: number) {
+    this.getCategories().removeAt(index);
   }
 
   onSubmit() {
@@ -225,6 +257,9 @@ export class AppComponent {
       leaderSkill: data.leaderSkill,
       superAttack: data.superAttack,
       isLegendaryCharacter: data.isLegendaryCharacter,
+      categories: data.categories.map(
+        (value) => this.categories[value.category - 1].categoryName
+      ),
       links: data.links.map((value) => this.links[value.link - 1].linkName),
     });
 

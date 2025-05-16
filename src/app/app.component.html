@@ -1,10 +1,11 @@
-<h1 class="text-center mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create your passive</h1>
+<h1 class="text-center mt-5 m-auto scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create your passive
+</h1>
 
 <form (ngSubmit)="onSubmit()" class="flex flex-col m-5 py-5" [formGroup]="form">
 
   <!-- Stats -->
-  <div class="flex items-center justify-center gap-1 px-20">
-    <div class="flex flex-col flex-1 relative px-10">
+  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-center gap-1 lg:px-20">
+    <div class="flex flex-col flex-1 relative lg:px-10 w-full">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="attack">Attack</label>
       <input placeholder="7777" class="pl-2" id="attack" formControlName="attack" type="number">
       @if ( form.get('attack')?.dirty && form.get('attack')?.getError('required')) {
@@ -18,7 +19,7 @@
       <app-error errorMessage="Defense field required" />
       }
     </div>
-    <div class="flex flex-col flex-1 px-10">
+    <div class="flex flex-col flex-1 lg:px-10">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="hp">HP</label>
       <input placeholder="7777" class="pl-2" id="hp" formControlName="hp" type="number">
       @if ( form.get('hp')?.dirty && form.get('hp')?.getError('required')) {
@@ -28,11 +29,11 @@
   </div>
 
   <!-- Legendary character ? -->
-  <div class="flex flex-col items-start px-30">
+  <div class="flex flex-col items-start lg:px-30">
     <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="isLegendaryCharacter">LR
       ?</label>
-    <select class="text-xl ml-0 text-center m-auto text-white mt-2 select" formControlName="isLegendaryCharacter"
-      id="isLegendaryCharacter">
+    <select class="text-xl ml-0 text-center m-auto text-white mt-2 select w-full lg:w-36"
+      formControlName="isLegendaryCharacter" id="isLegendaryCharacter">
       <option [ngValue]="true">
         Yes
       </option>
@@ -44,8 +45,8 @@
   </div>
 
   <!-- Leader skill -->
-  <div class="flex items-center justify-center gap-1 px-20 mt-5">
-    <div class="flex flex-col flex-1 relative px-10">
+  <div class="flex items-center justify-center gap-1 lg:px-20 mt-5">
+    <div class="flex flex-col flex-1 relative lg:px-10">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Leader
         Skill</label>
       <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2" id="leaderSkill"
@@ -59,8 +60,8 @@
 
   <!-- Super attack -->
 
-  <div class="flex items-center justify-center gap-1 px-20 mt-5">
-    <div class="flex flex-col flex-1 relative px-10">
+  <div class="flex items-center justify-center gap-1 lg:px-20 mt-5">
+    <div class="flex flex-col flex-1 relative lg:px-10">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="superAttack">Super
         Attack</label>
       <input
@@ -73,36 +74,61 @@
 
   </div>
 
-  <!-- Links -->
+  <!-- Categories -->
   <div>
-    <div class="flex flex-col px-10 mt-5 w-full" formArrayName="links">
+    <div class="flex flex-col lg:px-10 mt-5 w-full" formArrayName="categories">
       <label class="pl-20 my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>
-        Links</label>
-      @for (control of this.getLinkSkillSet().controls; track control; let index = $index) {
-      <div class="flex gap-1 m-auto w-full px-20  " [formGroupName]="index">
-        <select class="my-2 select flex-1" formControlName="link">
-          @for (link of links; track $index) {
-          <option class="bg-black" [value]="link.value">{{link.linkName}}</option>
+        Categories</label>
+      @for (control of this.getCategories().controls; track control; let index = $index) {
+      <div class="flex gap-1 m-auto w-full lg:px-20" [formGroupName]="index">
+        <select class="my-2 select flex-1" formControlName="category">
+          @for (category of categories; track $index) {
+          <option class="bg-black" [value]="category.value">{{category.categoryName}}</option>
           }
         </select>
-        <button type="button" class="h-12 w-10 mt-2" [disabled]="index === 0" (click)="removeLinkSkill(index)" ubButton
+        <button type="button" class="h-12 w-10 mt-2" [disabled]="index === 0" (click)="removeCategory(index)" ubButton
           variant="destructive" size="icon">
           <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />
         </button>
       </div>
       }
       <button type="button" class="h-12 w-10 mt-2 m-auto rounded-lg bg-green-900 hover:bg-green-800"
-        (click)="addLinkSkill()" ubButton size="icon">
+        (click)="addCategory()" ubButton size="icon">
+        <ng-icon name="heroPlus" class="h-4 w-4" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Links -->
+  <div>
+    <div class="flex flex-col lg:px-10 mt-5 w-full" formArrayName="links">
+      <label class="pl-20 my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>
+        Links</label>
+      @for (control of this.getLinks().controls; track control; let index = $index) {
+      <div class="flex gap-1 m-auto w-full lg:px-20" [formGroupName]="index">
+        <select class="my-2 select flex-1" formControlName="link">
+          @for (link of links; track $index) {
+          <option class="bg-black" [value]="link.value">{{link.linkName}}</option>
+          }
+        </select>
+        <button type="button" class="h-12 w-10 mt-2" [disabled]="index === 0" (click)="removeLink(index)" ubButton
+          variant="destructive" size="icon">
+          <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />
+        </button>
+      </div>
+      }
+      <button type="button" class="h-12 w-10 mt-2 m-auto rounded-lg bg-green-900 hover:bg-green-800" (click)="addLink()"
+        ubButton size="icon">
         <ng-icon name="heroPlus" class="h-4 w-4" />
       </button>
     </div>
   </div>
 
   <!-- Passive -->
-  <div class="flex flex-col p-10 w-full" formArrayName="passivePart">
+  <div class="flex flex-col lg:p-10 w-full" formArrayName="passivePart">
     @for (control of this.getPassiveParts().controls; track control; let index = $index)
     {
-    <div class="flex flex-col m-auto w-full px-20 py-10 mt-5" [formGroupName]="index">
+    <div class="flex flex-col m-auto w-full lg:px-20 py-10 mt-5" [formGroupName]="index">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>Passive
         Condition
         Activation</label>
@@ -159,12 +185,12 @@
 
 
     }
-    <button type="button" ubButton class="bg-green-900 hover:bg-green-800 w-46 m-auto my-5"
+    <button type="button" ubButton class="bg-green-900 hover:bg-green-800 lg:w-96 w-full m-auto my-5"
       (click)="AddPassivePart()">Add new Passive
       Part</button>
 
   </div>
-  <button [disabled]="!form.valid" type="submit" class="w-96 m-auto bg-white text-black hover:text-white"
+  <button [disabled]="!form.valid" type="submit" class="lg:w-96 w-full m-auto bg-white text-black hover:text-white"
     ubButton>Create</button>
 </form>
 

@@ -1,131 +1,163 @@
-<div class=" border-4 rounded-lg m-auto mb-10 relative card-details overflow-x-hidden overflow-y-auto">
-    <!-- Background -->
-    <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50">
+<div class="wrapper relative flex flex-col w-full lg:w-[30%] lg:m-auto">
+    <div class="flex justify-between">
+        <button (click)="showPreviousPart()" type="button" class="h-12 w-10  bg-orange-500 hover:bg-orange-700" ubButton
+            size="icon">
+            <ng-icon name="heroArrowLeft" class="h-4 w-4" />
+        </button>
+        <button (click)="showNextPart()" type="button" class="h-12 w-10  bg-orange-500 hover:bg-orange-700 " ubButton
+            size="icon">
+            <ng-icon name="heroArrowLongRight" class="h-4 w-4" />
+        </button>
+
     </div>
-
-
-    <!-- Arrow for switch between first and second part  -->
-    <button (click)="showFirstPart(true)" type="button"
-        class="h-12 w-10 absolute bg-orange-500 hover:bg-orange-700 top-1/2 -left-12 transform -translate-y-1/2"
-        ubButton size="icon">
-        <ng-icon name="heroArrowLeft" class="h-4 w-4" />
-    </button>
-    <button (click)="showFirstPart(false)" type="button"
-        class="h-12 w-10 absolute bg-orange-500 hover:bg-orange-700 top-1/2 -right-12 transform -translate-y-1/2"
-        ubButton size="icon">
-        <ng-icon name="heroArrowLongRight" class="h-4 w-4" />
-    </button>
-    <!-- Title -->
-    <h2
-        class="text-center relative mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl  mx-5 rounded-lg">
-        {{title()}}</h2>
-
-    @if (isFirstPartShow()) {
-    <!-- First part -->
-    <section class="">
-        <!-- ATK, DEF & HP -->
-        <div class="flex items-center justify-center gap-1 p-2 z-10 relative text-center px-6">
-            <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo().stats.attack}} ATK</span>
-            <span class="bg-blue-500 flex-1 rounded-sm">{{characterInfo().stats.defense}} DEF</span>
-            <span class="bg-green-500 flex-1 rounded-sm">{{characterInfo().stats.hp}} HP</span>
-
+    <div class="border-4 rounded-lg  mb-10 relative  card-details overflow-x-hidden overflow-y-auto">
+        <!-- Background -->
+        <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50">
         </div>
 
-        <!-- Lvl - XP - Cost -->
-        <div class="flex items-center relative z-10 ">
-            <span class="px-6 text-3xl text-orange-500">Lv</span>
-            <span class="text-3xl">{{characterInfo().isLegendaryCharacter ? '150/150' : '120/120'}}</span>
-            <div class="w-72 h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);"></div>
-            <div class="flex flex-col items-center">
-                <span class="italic text-yellow-300 font-extrabold">COST</span>
-                <span class="font-extrabold">77</span>
+
+        <!-- Arrow for switch between first and second part  -->
+
+
+        <!-- Title -->
+        <h2
+            class="text-center relative mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl  mx-5 rounded-lg">
+            {{title()}}</h2>
+
+        @switch (showedPart()) {
+        @case (1) {
+        <section>
+            <!-- ATK, DEF & HP -->
+            <div class="flex items-center justify-center gap-1 p-2 z-10 relative text-center px-6">
+                <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo().stats.attack}} ATK</span>
+                <span class="bg-blue-500 flex-1 rounded-sm">{{characterInfo().stats.defense}} DEF</span>
+                <span class="bg-green-500 flex-1 rounded-sm">{{characterInfo().stats.hp}} HP</span>
+
             </div>
-        </div>
 
-        <!-- Leader -->
-
-        <div class="z-10 relative flex items-center justify-center">
-            <span class="pl-6 italic text-orange-500">
-                Leader<span class="block  -mt-2 ">skill</span>
-            </span>
-            <div class="w-full p-2 mx-10 bg-black flex items-center justify-center" style="transform: skewX(-10deg);">
-                @if (characterInfo().leaderSkill) {
-                {{characterInfo().leaderSkill}}
-                }@else {
-                "Tournament Participants" or "Worldwide Chaos" Category Ki +3, HP +200% and ATK & DEF +170%, plus an
-                additional
-                HP, ATK & DEF +50% for characters who also belong to the "Androids" or "Accelerated Battle" Category
-
-                }
+            <!-- Lvl - XP - Cost -->
+            <div class="flex items-center relative z-10 ">
+                <span class="px-6 text-3xl text-orange-500">Lv</span>
+                <span class="text-3xl">{{characterInfo().isLegendaryCharacter ? '150/150' : '120/120'}}</span>
+                <div class="w-72 h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);"></div>
+                <div class="flex flex-col items-center">
+                    <span class="italic text-yellow-300 font-extrabold">COST</span>
+                    <span class="font-extrabold">77</span>
+                </div>
             </div>
-        </div>
 
-        <!-- Super ATK -->
-        <div class="z-10 relative flex items-center justify-center">
-            <div class="pl-6">
-                <span class="italic text-orange-500">
-                    Super ATK Lv
+            <!-- Leader -->
+
+            <div class="z-10 relative flex items-center justify-center">
+                <span class="pl-6 italic text-orange-500">
+                    Leader<span class="block  -mt-2 ">skill</span>
                 </span>
-                <div class="bg-black w-11" style="transform: skewX(-10deg);">
-                    @if (characterInfo().isLegendaryCharacter) {
-                    <span class="text-yellow-300">20</span>/20
-
+                <div class="w-full p-2 mx-10 bg-black flex items-center justify-center"
+                    style="transform: skewX(-10deg);">
+                    @if (characterInfo().leaderSkill) {
+                    {{characterInfo().leaderSkill}}
                     }@else {
-                    <span class="text-yellow-300">10</span>/10
+                    "Tournament Participants" or "Worldwide Chaos" Category Ki +3, HP +200% and ATK & DEF +170%, plus an
+                    additional
+                    HP, ATK & DEF +50% for characters who also belong to the "Androids" or "Accelerated Battle" Category
+
+                    }
+                </div>
+            </div>
+
+            <!-- Super ATK -->
+            <div class="z-10 relative flex items-center justify-center">
+                <div class="pl-6">
+                    <span class="italic text-orange-500">
+                        Super ATK Lv
+                    </span>
+                    <div class="bg-black w-11" style="transform: skewX(-10deg);">
+                        @if (characterInfo().isLegendaryCharacter) {
+                        <span class="text-yellow-300">20</span>/20
+
+                        }@else {
+                        <span class="text-yellow-300">10</span>/10
+
+                        }
+                    </div>
+
+                </div>
+                <div class="w-full p-2 mr-10 bg-black flex items-center justify-center"
+                    style=" transform: skewX(-10deg);">
+                    @if (characterInfo().superAttack) {
+                    {{characterInfo().superAttack}}
+                    }@else {
+                    Greatly raises ATK & DEF for 1 turn and causes immense damage to enemy
 
                     }
                 </div>
 
             </div>
-            <div class="w-full p-2 mr-10 bg-black flex items-center justify-center" style=" transform: skewX(-10deg);">
-                @if (characterInfo().superAttack) {
-                {{characterInfo().superAttack}}
-                }@else {
-                Greatly raises ATK & DEF for 1 turn and causes immense damage to enemy
+            <!-- Linkset -->
+            <div class="z-10 relative mt-5 ">
+                <span class="pl-6 italic text-orange-500">Link skill</span>
+                <div class="h-full mx-6 mt-2 grid grid-cols-2 gap-4 gap-1">
+                    @for (link of characterInfo().links; track $index) {
+                    <div
+                        class="rounded-md text-xs sm:text-md text-center border border-green-600 px-3 py-1 w-36 sm:w-auto bg-black">
+                        {{link}}
+                    </div>
 
-                }
-            </div>
-        </div>
-
-        <!-- Linkset -->
-        <div class="z-10 relative mt-5">
-            <span class="pl-6 italic text-orange-500">Link skill</span>
-            <div class="h-full mx-6 flex items-center justify-center flex-wrap gap-1">
-                @for (link of characterInfo().links; track $index) {
-                <div class="rounded-md text-md text-center border border-green-600 px-3 py-1 w-46 bg-black">{{link}}
-                </div>
-
-                }
-
-
-            </div>
-        </div>
-
-    </section>
-    }@else {
-    <!-- Second part -->
-    <!-- Passive details -->
-    <div class=" relative z-10 flex flex-col p-7">
-        @for (part of passiveDetails(); track $index) {
-        <div class="flex flex-col">
-            <h3 class="text-orange-500 text-xl mt-2">{{part.passiveConditionActivation}}</h3>
-            <ul class="ml-5 flex flex-col inline">
-                @for (effect of part.effect; track $index) {
-                <li class="flex items-center">
-                    {{'- ' + effect.description}}
-                    @if (effect.imageSrc) {
-                    <img [src]="effect.imageSrc" alt="effect duration logo">
                     }
-                </li>
 
-                }
-            </ul>
 
+                </div>
+            </div>
+
+
+        </section>
+        }
+        @case (2) {
+        <section>
+            <div class="z-10 relative mt-5">
+                <span class="pl-6 italic text-orange-500">Category</span>
+                <div class="h-full mx-6 mt-2 grid grid-cols-2 gap-4 gap-1">
+                    @for (category of characterInfo().categories; track $index) {
+                    <div
+                        class="rounded-md text-xs sm:text-md text-center border border-green-600 px-3 py-1 w-36 sm:w-auto bg-black  text-yellow-300">
+                        {{category}}
+                    </div>
+
+                    }
+
+
+                </div>
+            </div>
+
+            <!-- Categories -->
+        </section>
+        }
+        @case (3) {
+        <div class=" relative z-10 flex flex-col p-7">
+            @for (part of passiveDetails(); track $index) {
+            <div class="flex flex-col">
+                <h3 class="text-orange-500 text-xl mt-2">{{part.passiveConditionActivation}}</h3>
+                <ul class="ml-5 flex flex-col inline">
+                    @for (effect of part.effect; track $index) {
+                    <li class="flex items-center">
+                        {{'- ' + effect.description}}
+                        @if (effect.imageSrc) {
+                        <img [src]="effect.imageSrc" alt="effect duration logo">
+                        }
+                    </li>
+
+                    }
+                </ul>
+
+            </div>
+            }
         </div>
         }
+        }
+
+
+
+
     </div>
-    }
-
-
 
 </div>

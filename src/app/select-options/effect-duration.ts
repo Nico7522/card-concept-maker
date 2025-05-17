@@ -1,18 +1,18 @@
 export const effectDuration = [
   {
     value: 1,
-    duration: 'None',
+    icon: 'None',
   },
   {
     value: 2,
-    duration: '! 1',
+    icon: 'one.webp',
   },
   {
     value: 3,
-    duration: '∞',
+    icon: 'infinite.webp',
   },
   {
     value: 4,
-    duration: '↑',
+    icon: 'up.webp',
   },
 ];

@@ -1,6 +1,11 @@
 import { Component, input, signal } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroArrowLeft, heroArrowLongRight } from '@ng-icons/heroicons/outline';
+import {
+  heroArrowLeft,
+  heroArrowLongRight,
+  heroChevronDoubleLeft,
+  heroChevronDoubleRight,
+} from '@ng-icons/heroicons/outline';
 import { UbButtonDirective } from '~/components/ui/button';
 @Component({
   selector: 'app-card',
@@ -11,10 +16,12 @@ import { UbButtonDirective } from '~/components/ui/button';
     provideIcons({
       heroArrowLeft,
       heroArrowLongRight,
+      heroChevronDoubleRight,
+      heroChevronDoubleLeft,
     }),
   ],
   host: {
-    class: 'w-full m-auto',
+    class: 'w-full m-auto mb-10',
   },
 })
 export class CardComponent {
@@ -30,6 +37,7 @@ export class CardComponent {
     categories: string[];
     links: string[];
   }>();
+  titles = ['Card Details', 'Categories', 'Passive Skill Details'];
 
   passiveDetails = input.required<
     {
@@ -37,33 +45,16 @@ export class CardComponent {
       effect: { description: string; imageSrc: string }[];
     }[]
   >();
-  isFirstPartShow = signal(true);
-  array = [
-    {
-      value: 1,
-      title: 'Card Details',
-    },
-    {
-      value: 2,
-      title: 'Links and Categories',
-    },
-    {
-      value: 3,
-      title: 'Passive Skill Details',
-    },
-  ];
   showedPart = signal(1);
   title = signal('Card Details');
-  showFirstPart(value: boolean) {
-    this.isFirstPartShow.set(value);
-    this.title.set(value ? 'Card Details' : 'Passive Card Details');
-  }
 
   showNextPart() {
     this.showedPart.update((val) => val + 1);
+    this.title.set(this.titles[this.showedPart() - 1]);
   }
 
   showPreviousPart() {
     this.showedPart.update((val) => val - 1);
+    this.title.set(this.titles[this.showedPart() - 1]);
   }
 }

@@ -152,14 +152,20 @@
               }
 
             </div>
-            <select class="bg-yellow-400 text-xl text-black text-center mt-2 " formControlName="effectDuration" id="">
+            <ng-select [clearable]="false" [searchable]="false" class="mt-2 duration" formControlName="effectDuration"
+              id="">
               @for (duration of effectDuration; track $index) {
-              <option class="bg-yellow-400" [value]="duration.value">
-                {{duration.duration}}
-              </option>
+              <ng-option [value]="duration.value">
+                @if (duration.icon === "None") {
+                None
+                } @else {
+
+                <img [src]="duration.icon" alt="">
+                }
+              </ng-option>
               }
 
-            </select>
+            </ng-select>
             <button type="button" class="h-12 w-10 mt-2" [disabled]="index2 === 0"
               (click)="removePassiveEffect(index, index2)" ubButton variant="destructive" size="icon">
               <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />

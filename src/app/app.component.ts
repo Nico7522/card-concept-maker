@@ -29,7 +29,7 @@ import { effectDuration } from './select-options/effect-duration';
 import { CardComponent } from './shared/card/card.component';
 import { Links } from './select-options/links';
 import { categories } from './select-options/categories';
-
+import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 @Component({
   selector: 'app-root',
   imports: [
@@ -38,6 +38,8 @@ import { categories } from './select-options/categories';
     UbButtonDirective,
     NgIconComponent,
     ErrorComponent,
+    NgSelectComponent,
+    NgOptionComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

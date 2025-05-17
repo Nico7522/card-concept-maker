@@ -1,3 +1,4 @@
+
 .passive-part {
      background: #141414;
 background: radial-gradient(circle, rgba(20, 20, 20, 1) 75%, rgba(5, 4, 4, 1) 98%);
@@ -14,11 +15,27 @@ select, input {
       background: #141414;
    
 }
-
-
-.select img {
-    width: 30px;
+.ng-select.duration ::ng-deep .ng-select-container   {
+    background: #141414;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    width: 95px;
+   
 }
+.ng-select.duration ::ng-deep .ng-option{
+       background: #141414;
+        display: flex;
+    align-items: center;
+    justify-content: center;
+ 
+    }
+.ng-select.duration ::ng-deep .ng-option-selected {
+       background: #141414 !important;
+    }
 
 button {
     cursor: pointer;
@@ -38,3 +55,5 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   appearance: textfield;
 }
+
+

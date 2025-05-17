@@ -1,10 +1,8 @@
-<button type="button" (click)="openModal()"
-    class="flex items-center w-20 m-auto bg-gray-900 text-center z-40 top-1/2 left-1 transform -translate-y-1/2 bg-transparent  cursor-pointer"
-    ubButton size="icon">
-    <ng-icon size="2em" name="heroMagnifyingGlassPlus" class="h-20 w-20" />
-</button>
-<div
-    class="border-4 rounded-lg relative card-details overflow-x-hidden overflow-y-auto w-full mb-5 lg:mb-5 lg:w-[30%] lg:m-auto">
+<div class="border-4 top-0 z-40 bg-black rounded-lg fixed card-details overflow-x-hidden overflow-y-auto w-full h-full">
+    <button (click)="onCloseModal()" type="button"
+        class="h-5 w-5 absolute z-40 right-0 top-0 bg-transparent hover:bg-black cursor-pointer" ubButton size="icon">
+        X
+    </button>
     <!-- Background -->
     <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50">
     </div>
@@ -126,7 +124,7 @@
                 <div class="h-full mx-6 mt-2 grid grid-cols-2 gap-4 gap-1">
                     @for (link of characterInfo().links; track $index) {
                     <div
-                        class="rounded-md text-xs sm:text-md text-center border border-green-600 px-3 py-1 w-36 sm:w-auto bg-black">
+                        class="rounded-md text-xs sm:text-lg text-center border border-green-600 px-3 py-1 w-36 sm:w-auto bg-black">
                         {{link}}
                     </div>
 
@@ -140,13 +138,14 @@
         </section>
         }
         @case (2) {
+        <!-- Categories -->
         <section>
             <div class="z-10 relative mt-5">
                 <span class="pl-6 italic text-orange-500">Category</span>
                 <div class="h-full mx-6 mt-2 grid grid-cols-2 gap-4 gap-1">
                     @for (category of characterInfo().categories; track $index) {
                     <div
-                        class="rounded-md text-xs sm:text-md text-center border border-green-600 px-3 py-1 w-36 sm:w-auto bg-black  text-yellow-300">
+                        class="rounded-md text-xs sm:text-lg text-center border border-green-600 px-3 py-1 w-36 sm:w-auto bg-black  text-yellow-300">
                         {{category}}
                     </div>
 
@@ -156,7 +155,6 @@
                 </div>
             </div>
 
-            <!-- Categories -->
         </section>
         }
         @case (3) {

@@ -69,6 +69,7 @@ export class AppComponent {
     };
     leaderSkill: string;
     superAttack: string;
+    ultraSuperAttack?: string;
     isLegendaryCharacter: boolean;
     categories: string[];
     links: string[];
@@ -261,49 +262,50 @@ export class AppComponent {
 
   onSubmit() {
     const data = this.form.getRawValue();
-    data.links.map((l) => console.log(l.link));
-
-    this.characterInfo.set({
-      stats: {
-        attack: +data.attack,
-        defense: +data.defense,
-        hp: +data.hp,
-      },
-      leaderSkill: data.leaderSkill,
-      superAttack: data.superAttack,
-      isLegendaryCharacter: data.isLegendaryCharacter,
-      categories: data.categories.map(
-        (value) => this.categories[value.category - 1].categoryName
-      ),
-      links: data.links.map((value) => this.links[value.link - 1].linkName),
-    });
-
-    let array: {
-      passiveConditionActivation: string;
-      effect: { description: string; imageSrc: string }[];
-    }[] = [];
-    data.passivePart.map((v) => {
-      array.push({
-        passiveConditionActivation:
-          this.passiveConditionActivation[v.passiveConditionActivation - 1]
-            .effect,
-        effect: v.effect.map((e) => {
-          return {
-            description: e.effectDescription,
-            imageSrc:
-              e.effectDuration > 1
-                ? this.getDurationLogo(e.effectDuration)
-                : '',
-          };
-        }),
+    if (this.form.valid) {
+      this.characterInfo.set({
+        stats: {
+          attack: +data.attack,
+          defense: +data.defense,
+          hp: +data.hp,
+        },
+        leaderSkill: data.leaderSkill,
+        superAttack: data.superAttack,
+        ultraSuperAttack: data.ultraSuperAttack,
+        isLegendaryCharacter: data.isLegendaryCharacter,
+        categories: data.categories.map(
+          (value) => this.categories[value.category - 1].categoryName
+        ),
+        links: data.links.map((value) => this.links[value.link - 1].linkName),
       });
-    });
 
-    this.passiveDetails.set(array);
-    if (this.componentRefs) {
-      this.componentRefs.destroy();
+      let passive: {
+        passiveConditionActivation: string;
+        effect: { description: string; imageSrc: string }[];
+      }[] = [];
+      data.passivePart.map((v) => {
+        passive.push({
+          passiveConditionActivation:
+            this.passiveConditionActivation[v.passiveConditionActivation - 1]
+              .effect,
+          effect: v.effect.map((e) => {
+            return {
+              description: e.effectDescription,
+              imageSrc:
+                e.effectDuration > 1
+                  ? this.getDurationLogo(e.effectDuration)
+                  : '',
+            };
+          }),
+        });
+      });
+
+      this.passiveDetails.set(passive);
+      if (this.componentRefs) {
+        this.componentRefs.destroy();
+      }
+      this.createCard();
     }
-    this.createCard();
   }
   card = viewChild.required('card', { read: ViewContainerRef });
   componentRefs: ComponentRef<CardComponent> | null = null;

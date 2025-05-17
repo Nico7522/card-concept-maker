@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroArrowLeft,
@@ -37,7 +37,11 @@ export class CardComponent {
     categories: string[];
     links: string[];
   }>();
-  titles = ['Card Details', 'Categories', 'Passive Skill Details'];
+  private readonly titles = [
+    'Card Details',
+    'Categories',
+    'Passive Skill Details',
+  ];
 
   passiveDetails = input.required<
     {
@@ -46,15 +50,13 @@ export class CardComponent {
     }[]
   >();
   showedPart = signal(1);
-  title = signal('Card Details');
+  title = computed(() => this.titles[this.showedPart() - 1]);
 
   showNextPart() {
     this.showedPart.update((val) => val + 1);
-    this.title.set(this.titles[this.showedPart() - 1]);
   }
 
   showPreviousPart() {
     this.showedPart.update((val) => val - 1);
-    this.title.set(this.titles[this.showedPart() - 1]);
   }
 }

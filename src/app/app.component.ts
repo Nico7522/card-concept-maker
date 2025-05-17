@@ -30,6 +30,9 @@ import { CardComponent } from './shared/card/card.component';
 import { Links } from './select-options/links';
 import { categories } from './select-options/categories';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { of } from 'rxjs';
+import { ultraSuperAttackRequired } from './helpers/validators';
 @Component({
   selector: 'app-root',
   imports: [
@@ -80,70 +83,80 @@ export class AppComponent {
 
   isFirstPartShow = signal(true);
   title = signal('Card Details');
-  form = this.formBuilder.group({
-    attack: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    defense: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    hp: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
+  form = this.formBuilder.group(
+    {
+      attack: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      defense: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      hp: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
 
-    leaderSkill: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    superAttack: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    isLegendaryCharacter: new FormControl(true, {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    categories: this.formBuilder.array([
-      this.formBuilder.group({
-        category: new FormControl(1, {
-          nonNullable: true,
-          validators: [Validators.required],
-        }),
+      leaderSkill: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
       }),
-    ]),
-    links: this.formBuilder.array([
-      this.formBuilder.group({
-        link: new FormControl(1, {
-          nonNullable: true,
-          validators: [Validators.required],
-        }),
+      superAttack: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
       }),
-    ]),
-    passivePart: this.formBuilder.array([
-      this.formBuilder.group({
-        passiveConditionActivation: new FormControl(1, {
-          nonNullable: true,
-          validators: [Validators.required],
-        }),
-        effect: this.formBuilder.array([
-          this.formBuilder.group({
-            effectDescription: new FormControl('', {
-              nonNullable: true,
-              validators: [Validators.required],
-            }),
-            effectDuration: new FormControl(1, {
-              nonNullable: true,
-              validators: [Validators.required],
-            }),
+      ultraSuperAttack: new FormControl('', {
+        nonNullable: true,
+      }),
+      isLegendaryCharacter: new FormControl(false, {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      categories: this.formBuilder.array([
+        this.formBuilder.group({
+          category: new FormControl(1, {
+            nonNullable: true,
+            validators: [Validators.required],
           }),
-        ]),
-      }),
-    ]),
-  });
-
+        }),
+      ]),
+      links: this.formBuilder.array([
+        this.formBuilder.group({
+          link: new FormControl(1, {
+            nonNullable: true,
+            validators: [Validators.required],
+          }),
+        }),
+      ]),
+      passivePart: this.formBuilder.array([
+        this.formBuilder.group({
+          passiveConditionActivation: new FormControl(1, {
+            nonNullable: true,
+            validators: [Validators.required],
+          }),
+          effect: this.formBuilder.array([
+            this.formBuilder.group({
+              effectDescription: new FormControl('', {
+                nonNullable: true,
+                validators: [Validators.required],
+              }),
+              effectDuration: new FormControl(1, {
+                nonNullable: true,
+                validators: [Validators.required],
+              }),
+            }),
+          ]),
+        }),
+      ]),
+    },
+    {
+      validators: ultraSuperAttackRequired,
+    }
+  );
+  isLegendaryCharacter = toSignal(
+    this.form.get('isLegendaryCharacter')?.valueChanges ?? of(null)
+  );
   // Get a full passive part
   getPassiveParts(): FormArray {
     return this.form.get('passivePart') as FormArray;

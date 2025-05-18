@@ -1,6 +1,7 @@
 import {
   Component,
   ComponentRef,
+  computed,
   inject,
   inputBinding,
   signal,
@@ -33,6 +34,7 @@ import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
 import { ultraSuperAttackRequired } from './helpers/validators';
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -150,14 +152,44 @@ export class AppComponent {
           ]),
         }),
       ]),
+      hasActiveSkill: new FormControl(false, {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      activeSkill: this.formBuilder.group({
+        activeSkillName: new FormControl(''),
+        activeSkillCondition: new FormControl(''),
+        activeSkillEffect: new FormControl(''),
+      }),
     },
     {
-      validators: ultraSuperAttackRequired,
+      validators: [ultraSuperAttackRequired],
     }
   );
   isLegendaryCharacter = toSignal(
     this.form.get('isLegendaryCharacter')?.valueChanges ?? of(null)
   );
+
+  ActiveSkill = toSignal(
+    this.form.get('hasActiveSkill')?.valueChanges ?? of(null)
+  );
+
+  hasActiveSkill = computed(() => {
+    if (this.ActiveSkill()) {
+      this.form
+        .get('activeSkill.activeSkillName')
+        ?.addValidators(Validators.required);
+      this.form
+        .get('activeSkill.activeSkillCondition')
+        ?.addValidators(Validators.required);
+      this.form
+        .get('activeSkill.activeSkillEffect')
+        ?.addValidators(Validators.required);
+
+      return true;
+    }
+    return false;
+  });
   // Get a full passive part
   getPassiveParts(): FormArray {
     return this.form.get('passivePart') as FormArray;
@@ -262,6 +294,8 @@ export class AppComponent {
 
   onSubmit() {
     const data = this.form.getRawValue();
+    console.log(data.activeSkill);
+
     if (this.form.valid) {
       this.characterInfo.set({
         stats: {

@@ -1,11 +1,4 @@
-import {
-  Component,
-  computed,
-  input,
-  model,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroArrowLeft,
@@ -14,6 +7,7 @@ import {
   heroChevronDoubleRight,
   heroMagnifyingGlassPlus,
 } from '@ng-icons/heroicons/outline';
+
 @Component({
   selector: 'app-card-modal',
   imports: [NgIconComponent],

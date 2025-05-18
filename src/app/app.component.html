@@ -32,15 +32,16 @@
   <div class="flex flex-col items-start lg:px-30">
     <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="isLegendaryCharacter">LR
       ?</label>
-    <select class="text-xl ml-0 text-center m-auto text-white mt-2 select w-full lg:w-36"
-      formControlName="isLegendaryCharacter" id="isLegendaryCharacter">
-      <option [ngValue]="false">
+    <ng-select [searchable]="false" [clearable]="false"
+      class="text-xl ml-0 m-auto text-white mt-2 select w-full lg:w-36 ng-select" formControlName="isLegendaryCharacter"
+      id="isLegendaryCharacter">
+      <ng-option [value]="false">
         No
-      </option>
-      <option [ngValue]="true">
+      </ng-option>
+      <ng-option [value]="true">
         Yes
-      </option>
-    </select>
+      </ng-option>
+    </ng-select>
 
   </div>
 
@@ -95,11 +96,11 @@
         Categories</label>
       @for (control of this.getCategories().controls; track control; let index = $index) {
       <div class="flex gap-1 m-auto w-full lg:px-20" [formGroupName]="index">
-        <select class="my-2 select flex-1" formControlName="category">
+        <ng-select class="my-2 select flex-1 ng-select" formControlName="category">
           @for (category of categories; track $index) {
-          <option class="bg-black" [value]="category.value">{{category.categoryName}}</option>
+          <ng-option class="bg-black" [value]="category.value">{{category.categoryName}}</ng-option>
           }
-        </select>
+        </ng-select>
         <button type="button" class="h-12 w-10 mt-2" [disabled]="index === 0" (click)="removeCategory(index)" ubButton
           variant="destructive" size="icon">
           <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />
@@ -120,11 +121,11 @@
         Links</label>
       @for (control of this.getLinks().controls; track control; let index = $index) {
       <div class="flex gap-1 m-auto w-full lg:px-20" [formGroupName]="index">
-        <select class="my-2 select flex-1" formControlName="link">
+        <ng-select class="my-2 select flex-1 ng-select" formControlName="link">
           @for (link of links; track $index) {
-          <option class="bg-black" [value]="link.value">{{link.linkName}}</option>
+          <ng-option class="bg-black" [value]="link.value">{{link.linkName}}</ng-option>
           }
-        </select>
+        </ng-select>
         <button type="button" class="h-12 w-10 mt-2" [disabled]="index === 0" (click)="removeLink(index)" ubButton
           variant="destructive" size="icon">
           <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />
@@ -146,12 +147,12 @@
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>Passive
         Condition
         Activation</label>
-      <select class="my-2 select" formControlName="passiveConditionActivation">
+      <ng-select class="my-2 select ng-select" formControlName="passiveConditionActivation">
         @for (effect of passiveConditionActivation; track $index) {
-        <option class="bg-black" [value]="effect.value">{{effect.effect}}</option>
+        <ng-option class="" [value]="effect.value">{{effect.effect}}</ng-option>
         }
 
-      </select>
+      </ng-select>
       <div class="flex gap-1 flex-col" formArrayName="effect">
         @for (control of this.getPassiveEffects(index).controls; track control; let index2 = $index)
         {
@@ -166,8 +167,8 @@
               }
 
             </div>
-            <ng-select [clearable]="false" [searchable]="false" class="mt-2 duration" formControlName="effectDuration"
-              id="">
+            <ng-select [clearable]="false" [searchable]="false" class="mt-2 w-20 ng-select"
+              formControlName="effectDuration" id="">
               @for (duration of effectDuration; track $index) {
               <ng-option [value]="duration.value">
                 @if (duration.icon === "None") {
@@ -209,9 +210,71 @@
       (click)="AddPassivePart()">Add new Passive
       Part</button>
 
+
+
   </div>
-  <button [disabled]="!form.valid" type="submit" class="lg:w-96 w-full m-auto bg-white text-black hover:text-white"
+
+
+
+  <!-- Active Skill ?  -->
+  <div class="flex flex-col items-start lg:px-30 mb-5">
+    <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="hasActiveSkill">Active Skill
+      ?</label>
+    <ng-select [searchable]="false" [clearable]="false"
+      class="text-xl ml-0 m-auto text-white mt-2 select w-full lg:w-36 ng-select" formControlName="hasActiveSkill"
+      id="hasActiveSkill">
+      <ng-option [value]="false">
+        No
+      </ng-option>
+      <ng-option [value]="true">
+        Yes
+      </ng-option>
+    </ng-select>
+
+  </div>
+  <!-- Active Skill  -->
+  @if (hasActiveSkill()) {
+  <div formGroupName="activeSkill" class="flex items-center justify-center gap-1 lg:px-20 my-5">
+    <div class="flex flex-col flex-1 relative lg:px-10">
+      <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Active
+        Skill Name</label>
+      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2 " id="leaderSkill"
+        formControlName="activeSkillName" type="text">
+
+      @if (
+      form.get('activeSkill.activeSkillName')?.dirty &&
+      form.get('activeSkill.activeSkillName')?.hasError('required'))
+      {
+      <app-error errorMessage="Active skill name field required" />
+      }
+      <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Active
+        Skill Condition(s)</label>
+      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2 " id="leaderSkill"
+        formControlName="activeSkillCondition" type="text">
+      @if (
+      form.get('activeSkill.activeSkillCondition')?.dirty &&
+      form.get('activeSkill.activeSkillCondition')?.hasError('required'))
+      {
+      <app-error errorMessage="Active skill condition field required" />
+      }
+      <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Active
+        Skill Efect(s)</label>
+      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2  " id="leaderSkill"
+        formControlName="activeSkillEffect" type="text">
+      @if (
+      form.get('activeSkill.activeSkillEffect')?.dirty &&
+      form.get('activeSkill.activeSkillEffect')?.hasError('required'))
+      {
+      <app-error errorMessage="Active skill effect field required" />
+      }
+    </div>
+
+  </div>
+
+  }
+  <button [disabled]="!form.valid" type="submit" class="lg:w-96 w-full m-auto mt-5 bg-white text-black hover:text-white"
     ubButton>Create</button>
+
 </form>
 
 <router-outlet />

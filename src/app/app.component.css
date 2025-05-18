@@ -12,10 +12,12 @@ select, input {
 .select option {
     display: flex;
     width: 100px;
-      background: #141414;
+    background: #141414;
    
 }
-.ng-select.duration ::ng-deep .ng-select-container   {
+
+/* ng-select custom style */
+.ng-select.ng-select ::ng-deep .ng-select-container {
     background: #141414;
     height: 50px;
     border-radius: 10px;
@@ -23,19 +25,16 @@ select, input {
     align-items: center;
     justify-content: center;
     color: white;
-    width: 95px;
-   
 }
-.ng-select.duration ::ng-deep .ng-option{
+.ng-select.ng-select ::ng-deep .ng-option{
        background: #141414;
         display: flex;
     align-items: center;
     justify-content: center;
- 
+    color: white;
     }
-.ng-select.duration ::ng-deep .ng-option-selected {
-       background: #141414 !important;
-    }
+
+
 
 button {
     cursor: pointer;

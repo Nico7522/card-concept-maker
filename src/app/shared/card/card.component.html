@@ -1,10 +1,10 @@
 <button type="button" (click)="openModal()"
-    class="flex items-center w-20 m-auto bg-gray-900 text-center z-40 top-1/2 left-1 transform -translate-y-1/2 bg-transparent  cursor-pointer"
+    class="flex items-center w-20 m-auto bg-gray-900 text-center z-40 top-1/2 left-1 transform -translate-y-1/2 bg-transparent cursor-pointer"
     ubButton size="icon">
     <ng-icon size="2em" name="heroMagnifyingGlassPlus" class="h-20 w-20" />
 </button>
 <div
-    class="border-4 rounded-lg relative card-details overflow-x-hidden overflow-y-auto w-full mb-5 lg:mb-5 lg:w-[30%] lg:m-auto">
+    class="border-4 rounded-lg relative card-details overflow-x-hidden overflow-y-auto text-clip w-full mb-5 lg:mb-5 lg:w-[30%] lg:m-auto">
     <!-- Background -->
     <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50">
     </div>
@@ -160,13 +160,13 @@
         </section>
         }
         @case (3) {
-        <div class=" relative z-10 flex flex-col p-7">
+        <div class="relative z-10 flex flex-col w-full p-7">
             @for (part of passiveDetails(); track $index) {
             <div class="flex flex-col">
                 <h3 class="text-orange-500 text-xl mt-2">{{part.passiveConditionActivation}}</h3>
-                <ul class="ml-5 flex flex-col inline">
+                <ul class="ml-5 flex flex-col w-full">
                     @for (effect of part.effect; track $index) {
-                    <li class="flex items-center">
+                    <li class="flex items-center break-all ">
                         {{'- ' + effect.description}}
                         @if (effect.imageSrc) {
                         <img [src]="effect.imageSrc" alt="effect duration logo">
@@ -178,6 +178,25 @@
 
             </div>
             }
+            <!-- Active skill -->
+            <div class="z-10 mt-2 relative flex justify-center">
+                <span class="italic text-orange-500">
+                    Active<span class="block -mt-2 ">skill</span>
+                </span>
+                <div class="w-full p-2 mx-10 bg-black flex flex-col  justify-center" style="transform: skewX(-10deg);">
+                    <div class="border-b">Special Fusion</div>
+                    <div class="flex">
+                        <span class="italic text-orange-500 mr-1">Condition(s)</span>
+                        <span>Can be actived after receiving 3 attacks during battle</span>
+                    </div>
+                    <div>
+                        <span class="italic text-orange-500 mr-1">Effet(s)</span>
+                        <span>Perform special fusion</span>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
         }
         }

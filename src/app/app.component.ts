@@ -176,44 +176,64 @@ export class AppComponent {
     {
       validators: [
         ultraSuperAttackRequired,
-        activeSkillNameRequired,
-        activeSkillConditionRequired,
-        activeSkillEffectRequired,
+        // activeSkillNameRequired,
+        // activeSkillConditionRequired,
+        // activeSkillEffectRequired,
       ],
     }
   );
-  isLegendaryCharacter = toSignal(
+  legendaryCharacter = toSignal(
     this.form.get('isLegendaryCharacter')?.valueChanges ?? of(null)
   );
 
-  ActiveSkill = toSignal(
+  isLegendaryCharacter = computed(() => {
+    if (this.legendaryCharacter()) {
+      this.form.get('ultraSuperAttack')?.addValidators(Validators.required);
+      this.form.get('ultraSuperAttack')?.updateValueAndValidity();
+      return true;
+    }
+    this.form.get('ultraSuperAttack')?.removeValidators(Validators.required);
+    this.form.get('ultraSuperAttack')?.updateValueAndValidity();
+    return false;
+  });
+
+  activeSkill = toSignal(
     this.form.get('hasActiveSkill')?.valueChanges ?? of(null)
   );
 
   hasActiveSkill = computed(() => {
-    // if (this.ActiveSkill()) {
-    //   this.form
-    //     .get('activeSkill.activeSkillName')
-    //     ?.addValidators(Validators.required);
-    //   this.form
-    //     .get('activeSkill.activeSkillCondition')
-    //     ?.addValidators(Validators.required);
-    //   this.form
-    //     .get('activeSkill.activeSkillEffect')
-    //     ?.addValidators(Validators.required);
-    //   return true;
-    // }
-    // this.form
-    //   .get('activeSkill.activeSkillName')
-    //   ?.removeValidators(Validators.required);
-    // this.form
-    //   .get('activeSkill.activeSkillCondition')
-    //   ?.removeValidators(Validators.required);
-    // this.form
-    //   .get('activeSkill.activeSkillEffect')
-    //   ?.removeValidators(Validators.required);
-    // this.form.updateValueAndValidity();
-    // return false;
+    if (this.activeSkill()) {
+      this.form
+        .get('activeSkill.activeSkillName')
+        ?.addValidators(Validators.required);
+      this.form.get('activeSkill.activeSkillName')?.updateValueAndValidity();
+      this.form
+        .get('activeSkill.activeSkillCondition')
+        ?.addValidators(Validators.required);
+      this.form
+        .get('activeSkill.activeSkillCondition')
+        ?.updateValueAndValidity();
+      this.form
+        .get('activeSkill.activeSkillEffect')
+        ?.addValidators(Validators.required);
+      this.form.get('activeSkill.activeSkillEffect')?.updateValueAndValidity();
+      return true;
+    }
+    this.form
+      .get('activeSkill.activeSkillName')
+      ?.removeValidators(Validators.required);
+    this.form.get('activeSkill.activeSkillName')?.updateValueAndValidity();
+
+    this.form
+      .get('activeSkill.activeSkillCondition')
+      ?.removeValidators(Validators.required);
+    this.form.get('activeSkill.activeSkillCondition')?.updateValueAndValidity();
+    this.form
+      .get('activeSkill.activeSkillEffect')
+      ?.removeValidators(Validators.required);
+    this.form.get('activeSkill.activeSkillEffect')?.updateValueAndValidity();
+
+    return false;
   });
   // Get a full passive part
   getPassiveParts(): FormArray {

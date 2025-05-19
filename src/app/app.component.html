@@ -81,7 +81,7 @@
       <input
         placeholder="Raises ATK & DEF for 1 turn, causes colossal damage to enemy and raises chance of evading enemy's attack (including Super Attack) & chance of performing a critical hit by 6% for 1 turn"
         class="pl-2" id="ultraSuperAttack" formControlName="ultraSuperAttack" type="text">
-      @if (form.get('ultraSuperAttack')?.dirty && form.hasError('ultraSuperAttackRequired')) {
+      @if (form.get('ultraSuperAttack')?.dirty && form.get('ultraSuperAttack')?.getError('required')) {
       <app-error errorMessage="Ultra super attack field is required for legendary character" />
       }
     </div>
@@ -240,7 +240,7 @@
 
   </div>
   <!-- Active Skill  -->
-  @if (ActiveSkill()) {
+  @if (hasActiveSkill()) {
   <div formGroupName="activeSkill" class="flex items-center justify-center gap-1 lg:px-20 my-5">
     <div class="flex flex-col flex-1 relative lg:px-10">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="activeSkillName">Active
@@ -250,7 +250,7 @@
 
       @if (
       form.get('activeSkill.activeSkillName')?.dirty &&
-      form.hasError('activeSkillNameRequired'))
+      form.get('activeSkill.activeSkillName')?.getError('required'))
       {
       <app-error errorMessage="Active skill name field required" />
       }
@@ -261,7 +261,7 @@
         formControlName="activeSkillCondition" type="text">
       @if (
       form.get('activeSkill.activeSkillCondition')?.dirty &&
-      form.hasError('activeSkillConditionRequired'))
+      form.get('activeSkill.activeSkillCondition')?.getError('required'))
       {
       <app-error errorMessage="Active skill condition field required" />
       }
@@ -272,7 +272,7 @@
         formControlName="activeSkillEffect" type="text">
       @if (
       form.get('activeSkill.activeSkillEffect')?.dirty &&
-      form.hasError('activeSkillEffectRequired'))
+      form.get('activeSkill.activeSkillEffect')?.getError('required'))
       {
       <app-error errorMessage="Active skill effect field required" />
       }

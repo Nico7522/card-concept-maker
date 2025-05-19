@@ -158,8 +158,18 @@
         </section>
         }
         @case (3) {
+        @if (passiveDetails().name) {
+        <div class="z-10 mt-2 relative flex pl-7 pt-7">
+            <span class="italic text-orange-500">
+                Name
+            </span>
+            <div class="p-2 w-full mx-20 m-auto bg-black" style="transform: skewX(-10deg);">
+                <h4 class="text-center text-xl">Test</h4>
+            </div>
+        </div>
+        }
         <div class=" relative z-10 flex flex-col p-7">
-            @for (part of passiveDetails(); track $index) {
+            @for (part of passiveDetails().passive; track $index) {
             <div class="flex flex-col">
                 <h3 class="text-orange-500 text-xl mt-2">{{part.passiveConditionActivation}}</h3>
                 <ul class="ml-5 flex flex-col inline">
@@ -175,6 +185,26 @@
                 </ul>
 
             </div>
+            }
+            <!-- Active skill -->
+            @if (characterInfo().activeSkill) {
+            <div class="z-10 mt-2 relative flex justify-center">
+                <span class="italic text-orange-500">
+                    Active<span class="block -mt-2 ">skill</span>
+                </span>
+                <div class="w-full p-2 mx-10 bg-black flex flex-col justify-center" style="transform: skewX(-10deg);">
+                    <div class="border-b">{{characterInfo().activeSkill?.activeSkillName}}</div>
+                    <div class="flex">
+                        <span class="italic text-orange-500 mr-1">Condition(s)</span>
+                        <span>{{characterInfo().activeSkill?.activeSkillCondition}}</span>
+                    </div>
+                    <div>
+                        <span class="italic text-orange-500 mr-1">Effect(s)</span>
+                        <span>{{characterInfo().activeSkill?.activeSkillEffect}}</span>
+                    </div>
+                </div>
+            </div>
+
             }
         </div>
         }

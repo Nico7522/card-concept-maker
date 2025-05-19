@@ -33,7 +33,12 @@ import { categories } from './select-options/categories';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
-import { ultraSuperAttackRequired } from './helpers/validators';
+import {
+  activeSkillConditionRequired,
+  activeSkillEffectRequired,
+  activeSkillNameRequired,
+  ultraSuperAttackRequired,
+} from './helpers/validators';
 
 @Component({
   selector: 'app-root',
@@ -75,14 +80,19 @@ export class AppComponent {
     isLegendaryCharacter: boolean;
     categories: string[];
     links: string[];
+    activeSkill: {
+      activeSkillName: string;
+      activeSkillCondition: string;
+      activeSkillEffect: string;
+    } | null;
   } | null>(null);
-  passiveDetails = signal<
-    | {
-        passiveConditionActivation: string;
-        effect: { description: string; imageSrc: string }[];
-      }[]
-    | null
-  >(null);
+  passiveDetails = signal<{
+    name: string;
+    passive: {
+      passiveConditionActivation: string;
+      effect: { description: string; imageSrc: string }[];
+    }[];
+  } | null>(null);
 
   isFirstPartShow = signal(true);
   title = signal('Card Details');
@@ -132,6 +142,7 @@ export class AppComponent {
           }),
         }),
       ]),
+      passiveName: new FormControl(''),
       passivePart: this.formBuilder.array([
         this.formBuilder.group({
           passiveConditionActivation: new FormControl(1, {
@@ -163,7 +174,12 @@ export class AppComponent {
       }),
     },
     {
-      validators: [ultraSuperAttackRequired],
+      validators: [
+        ultraSuperAttackRequired,
+        activeSkillNameRequired,
+        activeSkillConditionRequired,
+        activeSkillEffectRequired,
+      ],
     }
   );
   isLegendaryCharacter = toSignal(
@@ -175,20 +191,29 @@ export class AppComponent {
   );
 
   hasActiveSkill = computed(() => {
-    if (this.ActiveSkill()) {
-      this.form
-        .get('activeSkill.activeSkillName')
-        ?.addValidators(Validators.required);
-      this.form
-        .get('activeSkill.activeSkillCondition')
-        ?.addValidators(Validators.required);
-      this.form
-        .get('activeSkill.activeSkillEffect')
-        ?.addValidators(Validators.required);
-
-      return true;
-    }
-    return false;
+    // if (this.ActiveSkill()) {
+    //   this.form
+    //     .get('activeSkill.activeSkillName')
+    //     ?.addValidators(Validators.required);
+    //   this.form
+    //     .get('activeSkill.activeSkillCondition')
+    //     ?.addValidators(Validators.required);
+    //   this.form
+    //     .get('activeSkill.activeSkillEffect')
+    //     ?.addValidators(Validators.required);
+    //   return true;
+    // }
+    // this.form
+    //   .get('activeSkill.activeSkillName')
+    //   ?.removeValidators(Validators.required);
+    // this.form
+    //   .get('activeSkill.activeSkillCondition')
+    //   ?.removeValidators(Validators.required);
+    // this.form
+    //   .get('activeSkill.activeSkillEffect')
+    //   ?.removeValidators(Validators.required);
+    // this.form.updateValueAndValidity();
+    // return false;
   });
   // Get a full passive part
   getPassiveParts(): FormArray {
@@ -294,7 +319,6 @@ export class AppComponent {
 
   onSubmit() {
     const data = this.form.getRawValue();
-    console.log(data.activeSkill);
 
     if (this.form.valid) {
       this.characterInfo.set({
@@ -311,30 +335,62 @@ export class AppComponent {
           (value) => this.categories[value.category - 1].categoryName
         ),
         links: data.links.map((value) => this.links[value.link - 1].linkName),
+        activeSkill: data.hasActiveSkill
+          ? {
+              activeSkillName: data.activeSkill.activeSkillName ?? '',
+              activeSkillCondition: data.activeSkill.activeSkillCondition ?? '',
+              activeSkillEffect: data.activeSkill.activeSkillEffect ?? '',
+            }
+          : null,
       });
+      let passiveInfo: {
+        name: string;
+        passive: {
+          passiveConditionActivation: string;
+          effect: { description: string; imageSrc: string }[];
+        }[];
+      } = {
+        name: data.passiveName ?? '',
+        passive: data.passivePart.map((value) => {
+          return {
+            passiveConditionActivation:
+              this.passiveConditionActivation[
+                value.passiveConditionActivation - 1
+              ].effect,
+            effect: value.effect.map((e) => {
+              return {
+                description: e.effectDescription,
+                imageSrc:
+                  e.effectDuration > 1
+                    ? this.getDurationLogo(e.effectDuration)
+                    : '',
+              };
+            }),
+          };
+        }),
+      };
+      // let passive: {
+      //   passiveConditionActivation: string;
+      //   effect: { description: string; imageSrc: string }[];
+      // }[] = [];
+      // data.passivePart.map((v) => {
+      //   passive.push({
+      //     passiveConditionActivation:
+      //       this.passiveConditionActivation[v.passiveConditionActivation - 1]
+      //         .effect,
+      //     effect: v.effect.map((e) => {
+      //       return {
+      //         description: e.effectDescription,
+      //         imageSrc:
+      //           e.effectDuration > 1
+      //             ? this.getDurationLogo(e.effectDuration)
+      //             : '',
+      //       };
+      //     }),
+      //   });
+      // });
 
-      let passive: {
-        passiveConditionActivation: string;
-        effect: { description: string; imageSrc: string }[];
-      }[] = [];
-      data.passivePart.map((v) => {
-        passive.push({
-          passiveConditionActivation:
-            this.passiveConditionActivation[v.passiveConditionActivation - 1]
-              .effect,
-          effect: v.effect.map((e) => {
-            return {
-              description: e.effectDescription,
-              imageSrc:
-                e.effectDuration > 1
-                  ? this.getDurationLogo(e.effectDuration)
-                  : '',
-            };
-          }),
-        });
-      });
-
-      this.passiveDetails.set(passive);
+      this.passiveDetails.set(passiveInfo);
       if (this.componentRefs) {
         this.componentRefs.destroy();
       }

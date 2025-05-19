@@ -51,13 +51,19 @@ export class CardComponent {
     isLegendaryCharacter: boolean;
     categories: string[];
     links: string[];
+    activeSkill: {
+      activeSkillName: string;
+      activeSkillCondition: string;
+      activeSkillEffect: string;
+    } | null;
   }>();
-  passiveDetails = input.required<
-    {
+  passiveDetails = input.required<{
+    name: string;
+    passive: {
       passiveConditionActivation: string;
       effect: { description: string; imageSrc: string }[];
-    }[]
-  >();
+    }[];
+  }>();
   private readonly titles = [
     'Card Details',
     'Categories',

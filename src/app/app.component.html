@@ -81,7 +81,7 @@
       <input
         placeholder="Raises ATK & DEF for 1 turn, causes colossal damage to enemy and raises chance of evading enemy's attack (including Super Attack) & chance of performing a critical hit by 6% for 1 turn"
         class="pl-2" id="ultraSuperAttack" formControlName="ultraSuperAttack" type="text">
-      @if (form.hasError('ultraSuperAttackRequired')) {
+      @if (form.get('ultraSuperAttack')?.dirty && form.hasError('ultraSuperAttackRequired')) {
       <app-error errorMessage="Ultra super attack field is required for legendary character" />
       }
     </div>
@@ -92,7 +92,7 @@
   <!-- Categories -->
   <div>
     <div class="flex flex-col lg:px-10 mt-5 w-full" formArrayName="categories">
-      <label class="pl-20 my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>
+      <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md lg:ml-20" oriLabel>
         Categories</label>
       @for (control of this.getCategories().controls; track control; let index = $index) {
       <div class="flex gap-1 m-auto w-full lg:px-20" [formGroupName]="index">
@@ -117,7 +117,7 @@
   <!-- Links -->
   <div>
     <div class="flex flex-col lg:px-10 mt-5 w-full" formArrayName="links">
-      <label class="pl-20 my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>
+      <label class=" my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md lg:ml-20" oriLabel>
         Links</label>
       @for (control of this.getLinks().controls; track control; let index = $index) {
       <div class="flex gap-1 m-auto w-full lg:px-20" [formGroupName]="index">
@@ -140,10 +140,17 @@
   </div>
 
   <!-- Passive -->
-  <div class="flex flex-col lg:p-10 w-full" formArrayName="passivePart">
+  <div class="w-full flex flex-col lg:px-10 w-full">
+    <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md lg:ml-20" for="passiveName">Passive
+      Name</label>
+    <input placeholder="Passive name ..." class="pl-2 lg:mx-20" id="passiveName" formControlName="passiveName"
+      type="text">
+
+  </div>
+  <div class="flex flex-col lg:px-10 w-full" formArrayName="passivePart">
     @for (control of this.getPassiveParts().controls; track control; let index = $index)
     {
-    <div class="flex flex-col m-auto w-full lg:px-20 py-10 mt-5" [formGroupName]="index">
+    <div class="flex flex-col m-auto w-full lg:px-20  mt-5" [formGroupName]="index">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>Passive
         Condition
         Activation</label>
@@ -233,37 +240,39 @@
 
   </div>
   <!-- Active Skill  -->
-  @if (hasActiveSkill()) {
+  @if (ActiveSkill()) {
   <div formGroupName="activeSkill" class="flex items-center justify-center gap-1 lg:px-20 my-5">
     <div class="flex flex-col flex-1 relative lg:px-10">
-      <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Active
+      <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="activeSkillName">Active
         Skill Name</label>
-      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2 " id="leaderSkill"
+      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2 " id="activeSkillName"
         formControlName="activeSkillName" type="text">
 
       @if (
       form.get('activeSkill.activeSkillName')?.dirty &&
-      form.get('activeSkill.activeSkillName')?.hasError('required'))
+      form.hasError('activeSkillNameRequired'))
       {
       <app-error errorMessage="Active skill name field required" />
       }
-      <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Active
+      <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md"
+        for="activeSkillCondition">Active
         Skill Condition(s)</label>
-      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2 " id="leaderSkill"
+      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2 " id="activeSkillCondition"
         formControlName="activeSkillCondition" type="text">
       @if (
       form.get('activeSkill.activeSkillCondition')?.dirty &&
-      form.get('activeSkill.activeSkillCondition')?.hasError('required'))
+      form.hasError('activeSkillConditionRequired'))
       {
       <app-error errorMessage="Active skill condition field required" />
       }
-      <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Active
+      <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md"
+        for="activeSkillEffect">Active
         Skill Efect(s)</label>
-      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2  " id="leaderSkill"
+      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2  " id="activeSkillEffect"
         formControlName="activeSkillEffect" type="text">
       @if (
       form.get('activeSkill.activeSkillEffect')?.dirty &&
-      form.get('activeSkill.activeSkillEffect')?.hasError('required'))
+      form.hasError('activeSkillEffectRequired'))
       {
       <app-error errorMessage="Active skill effect field required" />
       }

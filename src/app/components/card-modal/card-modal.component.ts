@@ -41,13 +41,19 @@ export class CardModalComponent {
     isLegendaryCharacter: boolean;
     categories: string[];
     links: string[];
+    activeSkill: {
+      activeSkillName: string;
+      activeSkillCondition: string;
+      activeSkillEffect: string;
+    } | null;
   }>();
-  passiveDetails = input.required<
-    {
+  passiveDetails = input.required<{
+    name: string;
+    passive: {
       passiveConditionActivation: string;
       effect: { description: string; imageSrc: string }[];
-    }[]
-  >();
+    }[];
+  }>();
   showedPart = model(1);
   title = model<string>();
   close = output();

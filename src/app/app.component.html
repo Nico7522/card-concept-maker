@@ -1,4 +1,4 @@
-<h1 class="text-center mt-5 m-auto scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create your passive
+<h1 class="text-center mt-5 m-auto scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Create your Card
 </h1>
 
 <form (ngSubmit)="onSubmit()" class="flex flex-col m-5 py-5" [formGroup]="form">
@@ -50,8 +50,8 @@
     <div class="flex flex-col flex-1 relative lg:px-10">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Leader
         Skill</label>
-      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2" id="leaderSkill"
-        formControlName="leaderSkill" type="text">
+      <input placeholder="'Power Beyond Super Saiyan' or 'Movie Heroes' Category Ki +3 and HP, ATK & DEF +170% ..."
+        class="pl-2" id="leaderSkill" formControlName="leaderSkill" type="text">
       @if ( form.get('leaderSkill')?.dirty && form.get('leaderSkill')?.getError('required')) {
       <app-error errorMessage="Leader skill field required" />
       }
@@ -65,9 +65,8 @@
     <div class="flex flex-col flex-1 relative lg:px-10">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="superAttack">Super
         Attack</label>
-      <input
-        placeholder="Raises ATK & DEF for 1 turn, causes colossal damage to enemy and raises chance of evading enemy's attack (including Super Attack) & chance of performing a critical hit by 6% for 1 turn"
-        class="pl-2" id="superAttack" formControlName="superAttack" type="text">
+      <input placeholder="Greatly raises ATK & DEF and causes colossal damage to enemy ..." class="pl-2"
+        id="superAttack" formControlName="superAttack" type="text">
       @if ( form.get('superAttack')?.dirty && form.get('superAttack')?.getError('required')) {
       <app-error errorMessage="super attack field required" />
       }
@@ -78,9 +77,8 @@
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="ultraSuperAttack">Ultra
         Super
         Attack</label>
-      <input
-        placeholder="Raises ATK & DEF for 1 turn, causes colossal damage to enemy and raises chance of evading enemy's attack (including Super Attack) & chance of performing a critical hit by 6% for 1 turn"
-        class="pl-2" id="ultraSuperAttack" formControlName="ultraSuperAttack" type="text">
+      <input placeholder="Greatly raises ATK & DEF and causes mega-colossal damage to enemy ..." class="pl-2"
+        id="ultraSuperAttack" formControlName="ultraSuperAttack" type="text">
       @if (form.get('ultraSuperAttack')?.dirty && form.hasError('ultraSuperAttackRequired')) {
       <app-error errorMessage="Ultra super attack field is required for legendary character" />
       }
@@ -143,7 +141,7 @@
   <div class="w-full flex flex-col lg:px-10 w-full">
     <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md lg:ml-20" for="passiveName">Passive
       Name</label>
-    <input placeholder="Passive name ..." class="pl-2 lg:mx-20" id="passiveName" formControlName="passiveName"
+    <input placeholder="Super Saiyan God Duo ..." class="pl-2 lg:mx-20" id="passiveName" formControlName="passiveName"
       type="text">
 
   </div>
@@ -245,8 +243,8 @@
     <div class="flex flex-col flex-1 relative lg:px-10">
       <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="activeSkillName">Active
         Skill Name</label>
-      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2 " id="activeSkillName"
-        formControlName="activeSkillName" type="text">
+      <input placeholder="Transformation ..." class="pl-2 " id="activeSkillName" formControlName="activeSkillName"
+        type="text">
 
       @if (
       form.get('activeSkill.activeSkillName')?.dirty &&
@@ -257,8 +255,8 @@
       <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md"
         for="activeSkillCondition">Active
         Skill Condition(s)</label>
-      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2 " id="activeSkillCondition"
-        formControlName="activeSkillCondition" type="text">
+      <input placeholder="Can be activated starting from the 4th turn from the start of battle (once only) ..."
+        class="pl-2 " id="activeSkillCondition" formControlName="activeSkillCondition" type="text">
       @if (
       form.get('activeSkill.activeSkillCondition')?.dirty &&
       form.hasError('activeSkillConditionRequired'))
@@ -267,9 +265,9 @@
       }
       <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md"
         for="activeSkillEffect">Active
-        Skill Efect(s)</label>
-      <input placeholder="'Universe 6' Category Ki +4 and HP, ATK & DEF +220%" class="pl-2  " id="activeSkillEffect"
-        formControlName="activeSkillEffect" type="text">
+        Skill Effect(s)</label>
+      <input placeholder="Transforms ..." class="pl-2  " id="activeSkillEffect" formControlName="activeSkillEffect"
+        type="text">
       @if (
       form.get('activeSkill.activeSkillEffect')?.dirty &&
       form.hasError('activeSkillEffectRequired'))

@@ -20,6 +20,8 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { UbButtonDirective } from '~/components/ui/button';
 import { CardModalComponent } from '../../components/card-modal/card-modal.component';
+import { Character } from '../../types/character.type';
+import { Passive } from '../../types/passive.type';
 @Component({
   selector: 'app-card',
   imports: [NgIconComponent, UbButtonDirective],
@@ -39,31 +41,8 @@ import { CardModalComponent } from '../../components/card-modal/card-modal.compo
   },
 })
 export class CardComponent {
-  characterInfo = input.required<{
-    stats: {
-      attack: number;
-      defense: number;
-      hp: number;
-    };
-    leaderSkill: string;
-    superAttack: string;
-    ultraSuperAttack?: string;
-    isLegendaryCharacter: boolean;
-    categories: string[];
-    links: string[];
-    activeSkill: {
-      activeSkillName: string;
-      activeSkillCondition: string;
-      activeSkillEffect: string;
-    } | null;
-  }>();
-  passiveDetails = input.required<{
-    name: string;
-    passive: {
-      passiveConditionActivation: string;
-      effect: { description: string; imageSrc: string }[];
-    }[];
-  }>();
+  characterInfo = input.required<Character>();
+  passiveDetails = input.required<Passive>();
   private readonly titles = [
     'Card Details',
     'Categories',

@@ -39,4 +39,41 @@ export const passiveConditionActivation = [
     value: 10,
     effect: 'Starting from the 6th turn from the start of battle',
   },
+  {
+    value: 11,
+    effect:
+      'When there is another "X" or "Y" Category ally attacking in the same turn',
+  },
+  {
+    value: 12,
+    effect:
+      'When there is another "X" Category ally attacking in the same turn',
+  },
+  {
+    value: 13,
+    effect: 'When attacking',
+  },
+  {
+    value: 14,
+    effect: 'When attacking with 12 or more Ki',
+  },
+  {
+    value: 15,
+    effect: 'After performing 7 or more Super Attacks in battle',
+  },
+  {
+    value: 16,
+    effect:
+      'Activates the Entrance Animation when there is another "X", "Y" or "Z" Category ally attacking in the same turn upon the character\'s entry',
+  },
+  {
+    value: 17,
+    effect:
+      'Activates the Entrance Animation when there is another "X" or "Z" Category ally attacking in the same turn upon the character\'s entry',
+  },
+  {
+    value: 18,
+    effect:
+      'Activates the Entrance Animation when there is another "X" Category ally attacking in the same turn upon the character\'s entry',
+  },
 ];

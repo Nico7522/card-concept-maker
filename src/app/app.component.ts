@@ -39,6 +39,8 @@ import {
   activeSkillNameRequired,
   ultraSuperAttackRequired,
 } from './helpers/validators';
+import { Character } from './types/character.type';
+import { Passive } from './types/passive.type';
 
 @Component({
   selector: 'app-root',
@@ -68,31 +70,8 @@ export class AppComponent {
   effectDuration = effectDuration;
   categories = categories;
   links = Links;
-  characterInfo = signal<{
-    stats: {
-      attack: number;
-      defense: number;
-      hp: number;
-    };
-    leaderSkill: string;
-    superAttack: string;
-    ultraSuperAttack?: string;
-    isLegendaryCharacter: boolean;
-    categories: string[];
-    links: string[];
-    activeSkill: {
-      activeSkillName: string;
-      activeSkillCondition: string;
-      activeSkillEffect: string;
-    } | null;
-  } | null>(null);
-  passiveDetails = signal<{
-    name: string;
-    passive: {
-      passiveConditionActivation: string;
-      effect: { description: string; imageSrc: string }[];
-    }[];
-  } | null>(null);
+  characterInfo = signal<Character>(null);
+  passiveDetails = signal<Passive>(null);
 
   isFirstPartShow = signal(true);
   title = signal('Card Details');
@@ -190,31 +169,6 @@ export class AppComponent {
     this.form.get('hasActiveSkill')?.valueChanges ?? of(null)
   );
 
-  hasActiveSkill = computed(() => {
-    // if (this.ActiveSkill()) {
-    //   this.form
-    //     .get('activeSkill.activeSkillName')
-    //     ?.addValidators(Validators.required);
-    //   this.form
-    //     .get('activeSkill.activeSkillCondition')
-    //     ?.addValidators(Validators.required);
-    //   this.form
-    //     .get('activeSkill.activeSkillEffect')
-    //     ?.addValidators(Validators.required);
-    //   return true;
-    // }
-    // this.form
-    //   .get('activeSkill.activeSkillName')
-    //   ?.removeValidators(Validators.required);
-    // this.form
-    //   .get('activeSkill.activeSkillCondition')
-    //   ?.removeValidators(Validators.required);
-    // this.form
-    //   .get('activeSkill.activeSkillEffect')
-    //   ?.removeValidators(Validators.required);
-    // this.form.updateValueAndValidity();
-    // return false;
-  });
   // Get a full passive part
   getPassiveParts(): FormArray {
     return this.form.get('passivePart') as FormArray;
@@ -343,13 +297,7 @@ export class AppComponent {
             }
           : null,
       });
-      let passiveInfo: {
-        name: string;
-        passive: {
-          passiveConditionActivation: string;
-          effect: { description: string; imageSrc: string }[];
-        }[];
-      } = {
+      let passiveInfo: Passive = {
         name: data.passiveName ?? '',
         passive: data.passivePart.map((value) => {
           return {
@@ -369,26 +317,6 @@ export class AppComponent {
           };
         }),
       };
-      // let passive: {
-      //   passiveConditionActivation: string;
-      //   effect: { description: string; imageSrc: string }[];
-      // }[] = [];
-      // data.passivePart.map((v) => {
-      //   passive.push({
-      //     passiveConditionActivation:
-      //       this.passiveConditionActivation[v.passiveConditionActivation - 1]
-      //         .effect,
-      //     effect: v.effect.map((e) => {
-      //       return {
-      //         description: e.effectDescription,
-      //         imageSrc:
-      //           e.effectDuration > 1
-      //             ? this.getDurationLogo(e.effectDuration)
-      //             : '',
-      //       };
-      //     }),
-      //   });
-      // });
 
       this.passiveDetails.set(passiveInfo);
       if (this.componentRefs) {

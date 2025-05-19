@@ -34,16 +34,16 @@
         <section>
             <!-- ATK, DEF & HP -->
             <div class="flex items-center justify-center gap-1 p-2 z-10 relative text-center px-6">
-                <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo().stats.attack}} ATK</span>
-                <span class="bg-blue-500 flex-1 rounded-sm">{{characterInfo().stats.defense}} DEF</span>
-                <span class="bg-green-500 flex-1 rounded-sm">{{characterInfo().stats.hp}} HP</span>
+                <span class="bg-red-500 flex-1 rounded-sm">{{characterInfo()?.stats?.attack}} ATK</span>
+                <span class="bg-blue-500 flex-1 rounded-sm">{{characterInfo()?.stats?.defense}} DEF</span>
+                <span class="bg-green-500 flex-1 rounded-sm">{{characterInfo()?.stats?.hp}} HP</span>
 
             </div>
 
             <!-- Lvl - XP - Cost -->
             <div class="flex items-center relative z-10 ">
                 <span class="px-6 text-3xl text-orange-500">Lv</span>
-                <span class="text-3xl">{{characterInfo().isLegendaryCharacter ? '150/150' : '120/120'}}</span>
+                <span class="text-3xl">{{characterInfo()?.isLegendaryCharacter ? '150/150' : '120/120'}}</span>
                 <div class="w-72 h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);"></div>
                 <div class="flex flex-col items-center text-sm mr-2">
                     <span class="italic text-yellow-300 font-extrabold">COST</span>
@@ -59,8 +59,8 @@
                 </span>
                 <div class="w-full p-2 mx-10 bg-black flex items-center justify-center"
                     style="transform: skewX(-10deg);">
-                    @if (characterInfo().leaderSkill) {
-                    {{characterInfo().leaderSkill}}
+                    @if (characterInfo()?.leaderSkill) {
+                    {{characterInfo()?.leaderSkill}}
                     }@else {
                     "Tournament Participants" or "Worldwide Chaos" Category Ki +3, HP +200% and ATK & DEF +170%, plus an
                     additional
@@ -77,7 +77,7 @@
                         Super ATK Lv
                     </span>
                     <div class="bg-black w-11" style="transform: skewX(-10deg);">
-                        @if (characterInfo().isLegendaryCharacter) {
+                        @if (characterInfo()?.isLegendaryCharacter) {
                         <span class="text-yellow-300">20</span>/20
 
                         }@else {
@@ -89,8 +89,8 @@
                 </div>
                 <div class="w-full p-2 mr-10 bg-black flex items-center justify-center"
                     style=" transform: skewX(-10deg);">
-                    @if (characterInfo().superAttack) {
-                    {{characterInfo().superAttack}}
+                    @if (characterInfo()?.superAttack) {
+                    {{characterInfo()?.superAttack}}
                     }@else {
                     Greatly raises ATK & DEF for 1 turn and causes immense damage to enemy
 
@@ -101,7 +101,7 @@
 
             <!-- Ultra super attack -->
 
-            @if (characterInfo().isLegendaryCharacter) {
+            @if (characterInfo()?.isLegendaryCharacter) {
             <div class="z-10 relative flex items-center justify-center">
                 <div class="pl-6">
                     <span class="italic text-orange-500">
@@ -115,7 +115,7 @@
                 </div>
                 <div class="w-full p-2 mr-10 bg-black flex items-center justify-center"
                     style=" transform: skewX(-10deg);">
-                    {{characterInfo().ultraSuperAttack}}
+                    {{characterInfo()?.ultraSuperAttack}}
                 </div>
 
             </div>
@@ -124,7 +124,7 @@
             <div class="z-10 relative mt-5 ">
                 <span class="pl-6 italic text-orange-500">Link skill</span>
                 <div class="h-full mx-6 mt-2 grid grid-cols-2 gap-4 gap-1">
-                    @for (link of characterInfo().links; track $index) {
+                    @for (link of characterInfo()?.links; track $index) {
                     <div
                         class="rounded-md text-xs sm:text-md text-center border border-green-600 px-3 py-1 w-36 sm:w-auto bg-black">
                         {{link}}
@@ -144,7 +144,7 @@
             <div class="z-10 relative mt-5">
                 <span class="pl-6 italic text-orange-500">Category</span>
                 <div class="h-full mx-6 mt-2 grid grid-cols-2 gap-4 gap-1">
-                    @for (category of characterInfo().categories; track $index) {
+                    @for (category of characterInfo()?.categories; track $index) {
                     <div
                         class="rounded-md text-xs sm:text-md text-center border border-green-600 px-3 py-1 w-36 sm:w-auto bg-black  text-yellow-300">
                         {{category}}
@@ -160,7 +160,7 @@
         </section>
         }
         @case (3) {
-        @if (passiveDetails().name) {
+        @if (passiveDetails()?.name) {
         <div class="z-10 mt-2 relative flex pl-7 pt-7">
             <span class="italic text-orange-500">
                 Name
@@ -171,7 +171,7 @@
         </div>
         }
         <div class="relative z-10 flex flex-col w-full p-7">
-            @for (part of passiveDetails().passive; track $index) {
+            @for (part of passiveDetails()?.passive; track $index) {
             <div class="flex flex-col">
                 <h3 class="text-orange-500 text-xl mt-2">{{part.passiveConditionActivation}}</h3>
                 <ul class="ml-5 flex flex-col w-full">
@@ -189,20 +189,20 @@
             </div>
             }
             <!-- Active skill -->
-            @if (characterInfo().activeSkill) {
+            @if (characterInfo()?.activeSkill) {
             <div class="z-10 mt-2 relative flex justify-center">
                 <span class="italic text-orange-500">
                     Active<span class="block -mt-2">skill</span>
                 </span>
                 <div class="w-full p-2 mx-10 bg-black flex flex-col justify-center" style="transform: skewX(-10deg);">
-                    <div class="border-b">{{characterInfo().activeSkill?.activeSkillName}}</div>
+                    <div class="border-b">{{characterInfo()?.activeSkill?.activeSkillName}}</div>
                     <div class="flex">
                         <span class="italic text-orange-500 mr-1">Condition(s)</span>
-                        <span>{{characterInfo().activeSkill?.activeSkillCondition}}</span>
+                        <span>{{characterInfo()?.activeSkill?.activeSkillCondition}}</span>
                     </div>
                     <div>
                         <span class="italic text-orange-500 mr-1">Effect(s)</span>
-                        <span>{{characterInfo().activeSkill?.activeSkillEffect}}</span>
+                        <span>{{characterInfo()?.activeSkill?.activeSkillEffect}}</span>
                     </div>
 
 

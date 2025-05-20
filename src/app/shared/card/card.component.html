@@ -54,47 +54,39 @@
             <!-- Leader -->
 
             <div class="z-10 relative flex items-center justify-center">
-                <span class="pl-6 italic text-orange-500">
-                    Leader<span class="block  -mt-2 ">skill</span>
+                <span class="pl-6 italic text-orange-500 w-20">
+                    Leader<span class="block -mt-2">skill</span>
                 </span>
-                <div class="w-full p-2 mx-10 bg-black flex items-center justify-center"
+                <div class="w-full p-2 mx-7 bg-black flex items-center justify-center"
                     style="transform: skewX(-10deg);">
                     @if (characterInfo()?.leaderSkill) {
                     {{characterInfo()?.leaderSkill}}
-                    }@else {
-                    "Tournament Participants" or "Worldwide Chaos" Category Ki +3, HP +200% and ATK & DEF +170%, plus an
-                    additional
-                    HP, ATK & DEF +50% for characters who also belong to the "Androids" or "Accelerated Battle" Category
-
                     }
                 </div>
             </div>
 
             <!-- Super ATK -->
             <div class="z-10 relative flex items-center justify-center">
-                <div class="pl-6">
+                <div class="pl-6 w-20">
                     <span class="italic text-orange-500">
                         Super ATK Lv
                     </span>
                     <div class="bg-black w-11" style="transform: skewX(-10deg);">
                         @if (characterInfo()?.isLegendaryCharacter) {
                         <span class="text-yellow-300">20</span>/20
-
                         }@else {
                         <span class="text-yellow-300">10</span>/10
-
                         }
                     </div>
-
                 </div>
-                <div class="w-full p-2 mr-10 bg-black flex items-center justify-center"
+                <div class="w-full p-2 mx-7 bg-black flex items-center flex-col justify-center"
                     style=" transform: skewX(-10deg);">
-                    @if (characterInfo()?.superAttack) {
-                    {{characterInfo()?.superAttack}}
-                    }@else {
-                    Greatly raises ATK & DEF for 1 turn and causes immense damage to enemy
-
+                    @if (characterInfo()?.superAttackName) {
+                    <div class="bg-black border-b w-full text-center" style="transform: skewX(-10deg);">
+                        {{characterInfo()?.superAttackName}}
+                    </div>
                     }
+                    {{characterInfo()?.superAttack}}
                 </div>
 
             </div>
@@ -103,18 +95,22 @@
 
             @if (characterInfo()?.isLegendaryCharacter) {
             <div class="z-10 relative flex items-center justify-center">
-                <div class="pl-6">
+                <div class="pl-6 w-20">
                     <span class="italic text-orange-500">
                         Ultra Super ATK Lv
                     </span>
                     <div class="bg-black w-11" style="transform: skewX(-10deg);">
                         <span class="text-yellow-300">20</span>/20
-
                     </div>
 
                 </div>
-                <div class="w-full p-2 mr-10 bg-black flex items-center justify-center"
+                <div class="w-full p-2 mx-7 bg-black flex flex-col items-center justify-center"
                     style=" transform: skewX(-10deg);">
+                    @if (characterInfo()?.ultraSuperAttackName) {
+                    <div class="bg-black border-b w-full text-center" style="transform: skewX(-10deg);">
+                        {{characterInfo()?.ultraSuperAttackName}}
+                    </div>
+                    }
                     {{characterInfo()?.ultraSuperAttack}}
                 </div>
 
@@ -166,7 +162,7 @@
                 Name
             </span>
             <div class="p-2 w-full mx-20 m-auto bg-black" style="transform: skewX(-10deg);">
-                <h4 class="text-center text-xl">Test</h4>
+                <h4 class="text-center text-xl">{{passiveDetails()?.name}}</h4>
             </div>
         </div>
         }
@@ -195,7 +191,7 @@
                     Active<span class="block -mt-2">skill</span>
                 </span>
                 <div class="w-full p-2 mx-10 bg-black flex flex-col justify-center" style="transform: skewX(-10deg);">
-                    <div class="border-b">{{characterInfo()?.activeSkill?.activeSkillName}}</div>
+                    <div class="border-b text-center italic">{{characterInfo()?.activeSkill?.activeSkillName}}</div>
                     <div class="flex">
                         <span class="italic text-orange-500 mr-1">Condition(s)</span>
                         <span>{{characterInfo()?.activeSkill?.activeSkillCondition}}</span>

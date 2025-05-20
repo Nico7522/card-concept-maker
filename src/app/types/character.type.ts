@@ -5,7 +5,9 @@ export type Character = {
     hp: number;
   };
   leaderSkill: string;
+  superAttackName?: string;
   superAttack: string;
+  ultraSuperAttackName?: string;
   ultraSuperAttack?: string;
   isLegendaryCharacter: boolean;
   categories: string[];

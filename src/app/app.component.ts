@@ -89,14 +89,19 @@ export class AppComponent {
         nonNullable: true,
         validators: [Validators.required],
       }),
-
       leaderSkill: new FormControl('', {
         nonNullable: true,
         validators: [Validators.required],
       }),
+      superAttackName: new FormControl('', {
+        nonNullable: true,
+      }),
       superAttack: new FormControl('', {
         nonNullable: true,
         validators: [Validators.required],
+      }),
+      ultraSuperAttackName: new FormControl('', {
+        nonNullable: true,
       }),
       ultraSuperAttack: new FormControl('', {
         nonNullable: true,
@@ -282,7 +287,9 @@ export class AppComponent {
           hp: +data.hp,
         },
         leaderSkill: data.leaderSkill,
+        superAttackName: data.superAttackName,
         superAttack: data.superAttack,
+        ultraSuperAttackName: data.ultraSuperAttackName,
         ultraSuperAttack: data.ultraSuperAttack,
         isLegendaryCharacter: data.isLegendaryCharacter,
         categories: data.categories.map(

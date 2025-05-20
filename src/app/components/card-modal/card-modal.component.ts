@@ -7,6 +7,8 @@ import {
   heroChevronDoubleRight,
   heroMagnifyingGlassPlus,
 } from '@ng-icons/heroicons/outline';
+import { Character } from '../../types/character.type';
+import { Passive } from '../../types/passive.type';
 
 @Component({
   selector: 'app-card-modal',
@@ -29,31 +31,8 @@ export class CardModalComponent {
     'Categories',
     'Passive Skill Details',
   ];
-  characterInfo = input.required<{
-    stats: {
-      attack: number;
-      defense: number;
-      hp: number;
-    };
-    leaderSkill: string;
-    superAttack: string;
-    ultraSuperAttack?: string;
-    isLegendaryCharacter: boolean;
-    categories: string[];
-    links: string[];
-    activeSkill: {
-      activeSkillName: string;
-      activeSkillCondition: string;
-      activeSkillEffect: string;
-    } | null;
-  }>();
-  passiveDetails = input.required<{
-    name: string;
-    passive: {
-      passiveConditionActivation: string;
-      effect: { description: string; imageSrc: string }[];
-    }[];
-  }>();
+  characterInfo = input.required<Character>();
+  passiveDetails = input.required<Passive>();
   showedPart = model(1);
   title = model<string>();
   close = output();

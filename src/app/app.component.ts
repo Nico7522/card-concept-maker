@@ -72,7 +72,6 @@ export class AppComponent {
   links = Links;
   characterInfo = signal<Character>(null);
   passiveDetails = signal<Passive>(null);
-
   isFirstPartShow = signal(true);
   title = signal('Card Details');
   form = this.formBuilder.group(
@@ -133,6 +132,7 @@ export class AppComponent {
             nonNullable: true,
             validators: [Validators.required],
           }),
+          customPassiveConditionActivation: new FormControl(''),
           effect: this.formBuilder.array([
             this.formBuilder.group({
               effectDescription: new FormControl('', {
@@ -174,6 +174,23 @@ export class AppComponent {
     this.form.get('hasActiveSkill')?.valueChanges ?? of(null)
   );
 
+  // Return true if custom condition option is selected.
+  isCustomConditionSelected(index: number): boolean {
+    const control = this.getPassiveParts().at(index);
+    return control.get('passiveConditionActivation')?.value === 'custom';
+  }
+
+  // Check whenever the passive condition select change and show the custom passive input when custom condition option is selected.
+  onOptionChange(event: any, index: number) {
+    const control = this.getPassiveParts().at(index);
+    if (event === 'custom') {
+      control.get('customPassiveConditionActivation')?.enable();
+    } else {
+      control.get('customPassiveConditionActivation')?.disable();
+      control.get('customPassiveConditionActivation')?.reset();
+    }
+  }
+
   // Get a full passive part
   getPassiveParts(): FormArray {
     return this.form.get('passivePart') as FormArray;
@@ -202,6 +219,7 @@ export class AppComponent {
           this.passiveConditionActivation[0].value,
           [Validators.required]
         ),
+        customPassiveConditionActivation: new FormControl(''),
         effect: this.formBuilder.array([
           this.formBuilder.group({
             effectDescription: new FormControl('', {
@@ -308,10 +326,11 @@ export class AppComponent {
         name: data.passiveName ?? '',
         passive: data.passivePart.map((value) => {
           return {
-            passiveConditionActivation:
-              this.passiveConditionActivation[
-                value.passiveConditionActivation - 1
-              ].effect,
+            passiveConditionActivation: value.customPassiveConditionActivation
+              ? value.customPassiveConditionActivation
+              : this.passiveConditionActivation[
+                  value.passiveConditionActivation - 1
+                ].effect,
             effect: value.effect.map((e) => {
               return {
                 description: e.effectDescription,

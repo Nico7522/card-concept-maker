@@ -171,13 +171,23 @@
         <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>Passive
           Condition
           Activation</label>
-        <ng-select class="my-2 select ng-select" formControlName="passiveConditionActivation">
+        <ng-select (change)="onOptionChange($event, index)" class="my-2 select ng-select"
+          formControlName="passiveConditionActivation">
           @for (effect of passiveConditionActivation; track $index) {
-          <ng-option class="" [value]="effect.value">{{effect.effect}}</ng-option>
+          <ng-option [value]="effect.value">{{effect.effect}}</ng-option>
           }
-
+          <ng-option value="custom">--- Custom condition ---</ng-option>
         </ng-select>
-        <div class="flex gap-1 flex-col" formArrayName="effect">
+        @if (isCustomConditionSelected(index)) {
+        <div class="flex gap-1 flex-col my-2">
+          <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md"
+            for="customPassiveConditionActivation">Custom condition ?</label>
+          <input placeholder="Custom condition ..." class="pl-2" id="customPassiveConditionActivation"
+            formControlName="customPassiveConditionActivation" type="text">
+        </div>
+        }
+
+        <div class="flex gap-1 flex-col my-2" formArrayName="effect">
           @for (control of this.getPassiveEffects(index).controls; track control; let index2 = $index)
           {
           <div [formGroupName]="index2">

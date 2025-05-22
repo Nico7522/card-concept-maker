@@ -25,7 +25,7 @@ import { Passive } from '../../types/passive.type';
 import { SuperAttackDetailsComponent } from '../../components/super-attack-details/super-attack-details.component';
 @Component({
   selector: 'app-card',
-  imports: [NgIconComponent, UbButtonDirective, SuperAttackDetailsComponent],
+  imports: [NgIconComponent, UbButtonDirective],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   viewProviders: [
@@ -53,7 +53,9 @@ export class CardComponent {
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   modal = viewChild.required('modal', { read: ViewContainerRef });
-  componentRefs: ComponentRef<CardModalComponent> | null = null;
+  modalRef: ComponentRef<CardModalComponent> | null = null;
+  saDetails = viewChild.required('sadetails', { read: ViewContainerRef });
+  saDetailsRef: ComponentRef<SuperAttackDetailsComponent> | null = null;
   showNextPart() {
     this.showedPart.update((val) => val + 1);
   }
@@ -70,14 +72,41 @@ export class CardComponent {
         twoWayBinding('showedPart', this.showedPart),
         twoWayBinding('title', this.title),
         outputBinding('close', () => {
-          if (this.componentRefs) {
-            this.componentRefs.destroy();
+          if (this.modalRef) {
+            this.modalRef.destroy();
           }
           document.querySelector('body')?.classList.remove('overflow-y-hidden');
         }),
       ],
     });
     document.querySelector('body')?.classList.add('overflow-y-hidden');
-    this.componentRefs = componentRef;
+    this.modalRef = componentRef;
+  }
+
+  openSuperAttackDetails() {
+    const componentRef = this.saDetails().createComponent(
+      SuperAttackDetailsComponent,
+      {
+        bindings: [
+          inputBinding('characterInfo', this.characterInfo),
+          outputBinding('close', () => {
+            if (this.saDetailsRef) {
+              this.saDetailsRef.destroy();
+            }
+          }),
+        ],
+      }
+    );
+    this.saDetailsRef = componentRef;
+  }
+
+  ngOnDestroy() {
+    if (this.modalRef) {
+      this.modalRef.destroy();
+    }
+
+    if (this.saDetailsRef) {
+      this.saDetailsRef.destroy();
+    }
   }
 }

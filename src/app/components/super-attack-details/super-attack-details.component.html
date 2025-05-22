@@ -1,24 +1,103 @@
-<div class="w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40">
+<div class="w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 border-2 ">
     <!-- Background -->
     <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50 ">
     </div>
-    <button type="button" class="h-5 w-5 absolute z-40 right-0 top-0 bg-transparent hover:bg-black cursor-pointer"
-        ubButton size="icon">
-        X
-    </button>
+
+
     <h2
         class="text-center relative mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl mx-5 rounded-lg">
         S. Atk Lv 20</h2>
     <!-- Content -->
-    <div class="relative">
-        <div class="min-h-64 m-2 rounded-md border super-attack">
-            <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10">Enchaînement d'influx</h3>
+    <div class="relative m-auto">
+        <!-- Super attack -->
+        <div class="min-h-64 m-2 pb-2 rounded-md border super-attack">
+            <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center">{{characterInfo()?.superAttackName}}</h3>
 
             <!-- Ki meter -->
             <div class="flex items-center justify-around">
                 <div class="flex flex-col items-center">
                     <p class="text-orange-500">ki</p>
-                    <p class="-skew-x-10 bg-[#09111d] px-2">12</p>
+                    <p class="-skew-x-10 bg-[#09111d] px-2">From 12</p>
+                </div>
+
+                <div class="flex items-end -skew-x-10">
+                    <div class="border border-black w-3 h-3 bg-green-300"></div>
+                    <div class="border border-black w-3 h-3 bg-green-300"></div>
+                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-3 h-3 bg-orange-300"></div>
+                    @if (characterInfo()?.isLegendaryCharacter) {
+                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-3 h-5 bg-red-300"></div>
+                    }
+
+
+                </div>
+            </div>
+
+            <!-- Special attack effect (description) -->
+            <div class="flex flex-col mt-1">
+                <p class="text-orange-500 ml-3">Super Attack Effect</p>
+                <p class="-skew-x-10 bg-[#09111d] px-2 mx-3 break-words">
+                    {{characterInfo()?.superAttack}}
+                </p>
+            </div>
+
+            <div class="flex items-center justify-around mt-2">
+                <div class="flex flex-col items-center w-30">
+                    <p class=" text-orange-500 ">S. Atk Lv</p>
+                    @if (characterInfo()?.isLegendaryCharacter) {
+                    <p class="-skew-x-10 bg-[#09111d] px-1">
+                        From 20
+                    </p>
+                    }@else {
+                    <p class="-skew-x-10 bg-[#09111d] px-4">
+                        -
+                    </p>
+                    }
+
+                </div>
+                <div class="flex flex-col w-full">
+                    <p class="text-orange-500 ml-10">Secondary Effect</p>
+                    <p class="-skew-x-10 bg-[#09111d] px-1 mr-5 ml-10">
+                        @if (characterInfo()?.isLegendaryCharacter) {
+                        Super Attack power will be increased even more!
+                        } @else {
+                        None
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ultra -->
+        @if (characterInfo()?.isLegendaryCharacter) {
+        <div class="min-h-64 m-2 pb-2 rounded-md border border-yellow-500 super-attack">
+            <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center">{{characterInfo()?.ultraSuperAttackName}}
+            </h3>
+
+            <!-- Ki meter -->
+            <div class=" flex items-center justify-around">
+                <div class="flex flex-col items-center">
+                    <p class="text-orange-500">ki</p>
+                    <p class="-skew-x-10 bg-[#09111d] px-2">From 18</p>
                 </div>
 
                 <div class="flex items-end -skew-x-10 ">
@@ -55,14 +134,14 @@
             <div class="flex flex-col mt-1">
                 <p class="text-orange-500 ml-3">Super Attack Effect</p>
                 <p class="-skew-x-10 bg-[#09111d] px-2 mx-3 break-words">
-                    fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                    {{characterInfo()?.ultraSuperAttack}}
                 </p>
             </div>
 
             <div class="flex items-center justify-around mt-2">
                 <div class="flex flex-col items-center w-30">
                     <p class="text-orange-500 -ml-4">S. Atk Lv</p>
-                    <p class="-skew-x-10 bg-[#09111d] px-1">20</p>
+                    <p class="-skew-x-10 bg-[#09111d] px-1">From 20</p>
                 </div>
                 <div class="flex flex-col w-full">
                     <p class="text-orange-500 ml-10">Secondary Effect</p>
@@ -72,8 +151,9 @@
             </div>
         </div>
 
-
-        <div class="min-h-64 m-2 rounded-md border border-yellow-500 super-attack"></div>
+        }
 
     </div>
+    <button (click)="onClose()"
+        class="relative w-52 m-auto flex items-center text-center justify-center font-extrabold tracking-tight border-4 mb-1 text-center -skew-x-10 bg-orange-600 cursor-pointer">OK</button>
 </div>

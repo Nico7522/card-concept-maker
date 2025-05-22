@@ -429,4 +429,19 @@ export const Links = [
     linkName: 'Dismal Future',
     description: 'Ki +1',
   },
+  {
+    value: 87,
+    linkName: 'Fierce Battle',
+    description: 'ATK +15%',
+  },
+  {
+    value: 88,
+    linkName: 'Champion Strength',
+    description: 'Ki +1',
+  },
+  {
+    value: 89,
+    linkName: 'Power Bestowed by God',
+    description: 'ATK +5% when performing a Super Attack',
+  },
 ];

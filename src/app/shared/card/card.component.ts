@@ -22,9 +22,10 @@ import { UbButtonDirective } from '~/components/ui/button';
 import { CardModalComponent } from '../../components/card-modal/card-modal.component';
 import { Character } from '../../types/character.type';
 import { Passive } from '../../types/passive.type';
+import { SuperAttackDetailsComponent } from '../../components/super-attack-details/super-attack-details.component';
 @Component({
   selector: 'app-card',
-  imports: [NgIconComponent, UbButtonDirective],
+  imports: [NgIconComponent, UbButtonDirective, SuperAttackDetailsComponent],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   viewProviders: [

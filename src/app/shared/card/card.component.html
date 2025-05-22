@@ -80,16 +80,19 @@
                     </div>
                 </div>
                 <div class="w-full p-2 mx-7 bg-black flex items-center flex-col justify-center"
-                    style=" transform: skewX(-10deg);">
+                    style="transform: skewX(-10deg);">
                     @if (characterInfo()?.superAttackName) {
-                    <div class="bg-black border-b w-full text-center" style="transform: skewX(-10deg);">
+                    <div class="bg-black border-b w-full text-center flex justify-between"
+                        style="transform: skewX(-10deg);">
                         {{characterInfo()?.superAttackName}}
+                        <button class="bg-green-600 px-1 mb-1 cursor-pointer">More</button>
                     </div>
                     }
                     {{characterInfo()?.superAttack}}
                 </div>
 
             </div>
+            <app-super-attack-details />
 
             <!-- Ultra super attack -->
 

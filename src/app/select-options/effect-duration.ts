@@ -19,4 +19,8 @@ export const effectDuration = [
     value: 5,
     icon: 'down.webp',
   },
+  {
+    value: 6,
+    icon: 'downred.webp',
+  },
 ];

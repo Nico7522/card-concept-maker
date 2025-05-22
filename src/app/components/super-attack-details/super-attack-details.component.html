@@ -6,12 +6,25 @@
 
     <h2
         class="text-center relative mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl mx-5 rounded-lg">
-        S. Atk Lv 20</h2>
+        @if (characterInfo()?.isLegendaryCharacter) {
+        S. Atk Lv 20
+
+        }@else {
+        S. Atk Lv 10
+
+        }
+    </h2>
     <!-- Content -->
     <div class="relative m-auto">
         <!-- Super attack -->
         <div class="min-h-64 m-2 pb-2 rounded-md border super-attack">
+            @if (characterInfo()?.superAttackName) {
+
             <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center">{{characterInfo()?.superAttackName}}</h3>
+            } @else {
+            <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center text-red-500">No Super Attack Name</h3>
+
+            }
 
             <!-- Ki meter -->
             <div class="flex items-center justify-around">
@@ -90,8 +103,13 @@
         <!-- ultra -->
         @if (characterInfo()?.isLegendaryCharacter) {
         <div class="min-h-64 m-2 pb-2 rounded-md border border-yellow-500 super-attack">
+            @if (characterInfo()?.ultraSuperAttackName) {
             <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center">{{characterInfo()?.ultraSuperAttackName}}
             </h3>
+            }@else {
+            <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center text-red-500">No Ultra Super Attack Name</h3>
+
+            }
 
             <!-- Ki meter -->
             <div class=" flex items-center justify-around">
@@ -145,7 +163,8 @@
                 </div>
                 <div class="flex flex-col w-full">
                     <p class="text-orange-500 ml-10">Secondary Effect</p>
-                    <p class="-skew-x-10 bg-[#09111d] px-1 mr-5 ml-10">Super Attack power will be increased even more!
+                    <p class="-skew-x-10 bg-[#09111d] px-1 mr-5 ml-10">Super Attack power will be increased even
+                        more!
                     </p>
                 </div>
             </div>

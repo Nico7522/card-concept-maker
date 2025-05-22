@@ -81,14 +81,16 @@
                 </div>
                 <div class="w-full p-2 mx-7 bg-black flex items-center flex-col justify-center"
                     style="transform: skewX(-10deg);">
-                    @if (characterInfo()?.superAttackName) {
                     <div class="bg-black border-b w-full text-center flex justify-between"
                         style="transform: skewX(-10deg);">
+                        @if (characterInfo()?.superAttackName) {
                         {{characterInfo()?.superAttackName}}
+                        }@else {
+                        <span class="text-red-00">No Super Attack Name</span>
+                        }
                         <button (click)="openSuperAttackDetails()"
                             class="bg-green-600 px-1 mb-1 cursor-pointer font-extrabold tracking-tight border-2">Details</button>
                     </div>
-                    }
                     {{characterInfo()?.superAttack}}
                 </div>
 
@@ -161,13 +163,12 @@
         }
         @case (3) {
         @if (passiveDetails()?.name) {
-        <div class="z-10 mt-2 relative flex pl-7 pt-7">
+        <div class="z-10 mt-2 relative flex items-center pl-7 pt-7">
             <span class="italic text-orange-500">
                 Name
             </span>
-            <div class="p-2 w-full mx-20 m-auto bg-black" style="transform: skewX(-10deg);">
-                <h4 class="text-center text-xl">{{passiveDetails()?.name}}</h4>
-            </div>
+            <h4 style="transform: skewX(-10deg);" class="text-center text-xl bg-black px-10 py-1 m-auto">
+                {{passiveDetails()?.name}}</h4>
         </div>
         }
         <div class="relative z-10 flex flex-col w-full p-7">

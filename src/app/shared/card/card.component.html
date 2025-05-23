@@ -142,6 +142,8 @@
         </section>
         }
         @case (2) {
+        <!-- Categories -->
+
         <section>
             <div class="z-10 relative mt-5">
                 <span class="pl-6 italic text-orange-500">Category</span>
@@ -158,10 +160,10 @@
                 </div>
             </div>
 
-            <!-- Categories -->
         </section>
         }
         @case (3) {
+        <!-- Passive -->
         @if (passiveDetails()?.name) {
         <div class="z-10 mt-2 relative flex items-center pl-7 pt-7">
             <span class="italic text-orange-500">
@@ -175,12 +177,12 @@
             @for (part of passiveDetails()?.passive; track $index) {
             <div class="flex flex-col">
                 <h3 class="text-orange-500 text-xl mt-2">{{part.passiveConditionActivation}}</h3>
-                <ul class="ml-5 flex flex-col w-full">
+                <ul class="ml-5 flex flex-col list-disc w-full">
                     @for (effect of part.effect; track $index) {
-                    <li class="flex items-center break-all ">
-                        {{'- ' + effect.description}}
+                    <li class="break-all">
+                        {{effect.description}}
                         @if (effect.imageSrc) {
-                        <img [src]="effect.imageSrc" alt="effect duration logo">
+                        <img class="inline-block" [src]="effect.imageSrc" alt="effect duration logo">
                         }
                     </li>
 

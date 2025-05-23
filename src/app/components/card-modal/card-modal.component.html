@@ -174,12 +174,12 @@
             @for (part of passiveDetails()?.passive; track $index) {
             <div class="flex flex-col">
                 <h3 class="text-orange-500 text-xl mt-2">{{part.passiveConditionActivation}}</h3>
-                <ul class="ml-5 flex flex-col inline">
+                <ul class="ml-5 flex flex-col list-disc w-full">
                     @for (effect of part.effect; track $index) {
-                    <li class="flex items-center">
-                        {{'- ' + effect.description}}
+                    <li class="break-all">
+                        {{effect.description}}
                         @if (effect.imageSrc) {
-                        <img [src]="effect.imageSrc" alt="effect duration logo">
+                        <img class="inline-block" [src]="effect.imageSrc" alt="effect duration logo">
                         }
                     </li>
 

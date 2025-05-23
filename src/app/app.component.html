@@ -185,7 +185,7 @@
         </div>
         }
 
-        <div class="flex gap-1 flex-col my-2" formArrayName="effect">
+        <div class="flex gap-5  flex-col my-2" formArrayName="effect">
           @for (control of this.getPassiveEffects(index).controls; track control; let index2 = $index)
           {
           <div [formGroupName]="index2">

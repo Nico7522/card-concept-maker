@@ -83,15 +83,15 @@
                     style="transform: skewX(-10deg);">
                     <div class="bg-black border-b w-full text-center flex justify-between"
                         style="transform: skewX(-10deg);">
-                        @if (characterInfo()?.superAttackName) {
-                        {{characterInfo()?.superAttackName}}
+                        @if (superAttackInfo()?.superAttackName) {
+                        {{superAttackInfo()?.superAttackName}}
                         }@else {
-                        <span class="text-red-00">No Super Attack Name</span>
+                        <span class="text-sm lg:text-md text-red-500">No Super Attack Name</span>
                         }
                         <button (click)="openSuperAttackDetails()"
                             class="bg-green-600 px-1 mb-1 cursor-pointer font-extrabold tracking-tight border-2">Details</button>
                     </div>
-                    {{characterInfo()?.superAttack}}
+                    {{superAttackInfo()?.superAttackEffect}}
                 </div>
 
             </div>

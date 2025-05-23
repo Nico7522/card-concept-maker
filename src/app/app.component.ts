@@ -1,7 +1,6 @@
 import {
   Component,
   ComponentRef,
-  computed,
   inject,
   inputBinding,
   signal,
@@ -41,6 +40,7 @@ import {
 } from './helpers/validators';
 import { Character } from './types/character.type';
 import { Passive } from './types/passive.type';
+import { SuperAttack } from './types/super-attack.type';
 
 @Component({
   selector: 'app-root',
@@ -72,6 +72,7 @@ export class AppComponent {
   links = Links;
   characterInfo = signal<Character>(null);
   passiveDetails = signal<Passive>(null);
+  superAttackInfo = signal<SuperAttack>(null);
   isFirstPartShow = signal(true);
   title = signal('Card Details');
   form = this.formBuilder.group(
@@ -305,10 +306,6 @@ export class AppComponent {
           hp: +data.hp,
         },
         leaderSkill: data.leaderSkill,
-        superAttackName: data.superAttackName,
-        superAttack: data.superAttack,
-        ultraSuperAttackName: data.ultraSuperAttackName,
-        ultraSuperAttack: data.ultraSuperAttack,
         isLegendaryCharacter: data.isLegendaryCharacter,
         categories: data.categories.map(
           (value) => this.categories[value.category - 1].categoryName
@@ -343,8 +340,14 @@ export class AppComponent {
           };
         }),
       };
-
+      this.superAttackInfo.set({
+        superAttackName: data.superAttackName,
+        superAttackEffect: data.superAttack,
+        ultraSuperAttackName: data.ultraSuperAttackName,
+        ultraSuperAttackEffect: data.ultraSuperAttack,
+      });
       this.passiveDetails.set(passiveInfo);
+
       if (this.componentRefs) {
         this.componentRefs.destroy();
       }
@@ -359,6 +362,7 @@ export class AppComponent {
       bindings: [
         inputBinding('characterInfo', this.characterInfo),
         inputBinding('passiveDetails', this.passiveDetails),
+        inputBinding('superAttackInfo', this.superAttackInfo),
       ],
     });
 

@@ -23,6 +23,7 @@ import { CardModalComponent } from '../../components/card-modal/card-modal.compo
 import { Character } from '../../types/character.type';
 import { Passive } from '../../types/passive.type';
 import { SuperAttackDetailsComponent } from '../../components/super-attack-details/super-attack-details.component';
+import { SuperAttack } from '../../types/super-attack.type';
 @Component({
   selector: 'app-card',
   imports: [NgIconComponent, UbButtonDirective],
@@ -44,6 +45,7 @@ import { SuperAttackDetailsComponent } from '../../components/super-attack-detai
 export class CardComponent {
   characterInfo = input.required<Character>();
   passiveDetails = input.required<Passive>();
+  superAttackInfo = input.required<SuperAttack>();
   private readonly titles = [
     'Card Details',
     'Categories',
@@ -69,6 +71,8 @@ export class CardComponent {
       bindings: [
         inputBinding('characterInfo', this.characterInfo),
         inputBinding('passiveDetails', this.passiveDetails),
+        inputBinding('superAttackInfo', this.superAttackInfo),
+
         twoWayBinding('showedPart', this.showedPart),
         twoWayBinding('title', this.title),
         outputBinding('close', () => {
@@ -89,6 +93,8 @@ export class CardComponent {
       {
         bindings: [
           inputBinding('characterInfo', this.characterInfo),
+          inputBinding('superAttackInfo', this.superAttackInfo),
+
           outputBinding('close', () => {
             if (this.saDetailsRef) {
               this.saDetailsRef.destroy();

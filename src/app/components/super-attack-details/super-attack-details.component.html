@@ -1,11 +1,11 @@
-<div class="w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 border-2 ">
+<div
+    class="w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 border-2 text-sm xl:text-md ">
     <!-- Background -->
     <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50 ">
     </div>
 
 
-    <h2
-        class="text-center relative mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl mx-5 rounded-lg">
+    <h2 class="text-center relative mt-5 scroll-m-20 font-extrabold tracking-tight text-2xl mx-5 rounded-lg">
         @if (characterInfo()?.isLegendaryCharacter) {
         S. Atk Lv 20
 
@@ -18,9 +18,9 @@
     <div class="relative m-auto">
         <!-- Super attack -->
         <div class="min-h-64 m-2 pb-2 rounded-md border super-attack">
-            @if (characterInfo()?.superAttackName) {
+            @if (superAttackInfo()?.superAttackName) {
 
-            <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center">{{characterInfo()?.superAttackName}}</h3>
+            <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center">{{superAttackInfo()?.superAttackName}}</h3>
             } @else {
             <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center text-red-500">No Super Attack Name</h3>
 
@@ -33,32 +33,32 @@
                     <p class="-skew-x-10 bg-[#09111d] px-2">From 12</p>
                 </div>
 
-                <div class="flex items-end -skew-x-10">
-                    <div class="border border-black w-3 h-3 bg-green-300"></div>
-                    <div class="border border-black w-3 h-3 bg-green-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-orange-300"></div>
+                <div class="flex items-end -skew-x-10 ">
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-green-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-green-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-orange-300"></div>
                     @if (characterInfo()?.isLegendaryCharacter) {
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
                     }
 
 
@@ -69,7 +69,7 @@
             <div class="flex flex-col mt-1">
                 <p class="text-orange-500 ml-3">Super Attack Effect</p>
                 <p class="-skew-x-10 bg-[#09111d] px-2 mx-3 break-words">
-                    {{characterInfo()?.superAttack}}
+                    {{superAttackInfo()?.superAttackEffect}}
                 </p>
             </div>
 
@@ -103,8 +103,8 @@
         <!-- ultra -->
         @if (characterInfo()?.isLegendaryCharacter) {
         <div class="min-h-64 m-2 pb-2 rounded-md border border-yellow-500 super-attack">
-            @if (characterInfo()?.ultraSuperAttackName) {
-            <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center">{{characterInfo()?.ultraSuperAttackName}}
+            @if (superAttackInfo()?.ultraSuperAttackName) {
+            <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center">{{superAttackInfo()?.ultraSuperAttackName}}
             </h3>
             }@else {
             <h3 class="text-lg bg-[#09111d] m-3 p-2 -skew-x-10 text-center text-red-500">No Ultra Super Attack Name</h3>
@@ -119,30 +119,30 @@
                 </div>
 
                 <div class="flex items-end -skew-x-10 ">
-                    <div class="border border-black w-3 h-3 bg-green-300"></div>
-                    <div class="border border-black w-3 h-3 bg-green-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-3 h-3 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-green-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-green-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-3 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
 
 
                 </div>
@@ -152,7 +152,7 @@
             <div class="flex flex-col mt-1">
                 <p class="text-orange-500 ml-3">Super Attack Effect</p>
                 <p class="-skew-x-10 bg-[#09111d] px-2 mx-3 break-words">
-                    {{characterInfo()?.ultraSuperAttack}}
+                    {{superAttackInfo()?.ultraSuperAttackEffect}}
                 </p>
             </div>
 

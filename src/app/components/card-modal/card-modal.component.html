@@ -84,12 +84,12 @@
                 </div>
                 <div class="w-full p-2 mx-7 bg-black flex items-center flex-col justify-center"
                     style=" transform: skewX(-10deg);">
-                    @if (characterInfo()?.superAttackName) {
+                    @if (superAttackInfo()?.superAttackName) {
                     <div class="bg-black border-b w-full text-center" style="transform: skewX(-10deg);">
-                        {{characterInfo()?.superAttackName}}
+                        {{superAttackInfo()?.superAttackName}}
                     </div>
                     }
-                    {{characterInfo()?.superAttack}}
+                    {{superAttackInfo()?.superAttackEffect}}
                 </div>
 
             </div>
@@ -109,12 +109,12 @@
                 </div>
                 <div class="w-full p-2 mx-7 bg-black flex flex-col items-center justify-center"
                     style=" transform: skewX(-10deg);">
-                    @if (characterInfo()?.ultraSuperAttackName) {
+                    @if (superAttackInfo()?.ultraSuperAttackName) {
                     <div class="bg-black border-b w-full text-center" style="transform: skewX(-10deg);">
-                        {{characterInfo()?.ultraSuperAttackName}}
+                        {{superAttackInfo()?.ultraSuperAttackName}}
                     </div>
                     }
-                    {{characterInfo()?.ultraSuperAttack}}
+                    {{superAttackInfo()?.ultraSuperAttackEffect}}
                 </div>
 
             </div>

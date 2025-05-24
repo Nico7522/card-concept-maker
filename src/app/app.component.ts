@@ -44,7 +44,6 @@ import {
 import { Character } from './types/character.type';
 import { Passive } from './types/passive.type';
 import { SuperAttack } from './types/super-attack.type';
-
 @Component({
   selector: 'app-root',
   imports: [

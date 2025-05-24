@@ -1,8 +1,11 @@
 import {
   Component,
   ComponentRef,
+  HostListener,
   inject,
   inputBinding,
+  OnDestroy,
+  OnInit,
   signal,
   viewChild,
   ViewContainerRef,
@@ -31,7 +34,7 @@ import { Links } from './select-options/links';
 import { categories } from './select-options/categories';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { of } from 'rxjs';
+import { of, Subject, take } from 'rxjs';
 import {
   activeSkillConditionRequired,
   activeSkillEffectRequired,
@@ -64,7 +67,19 @@ import { SuperAttack } from './types/super-attack.type';
     }),
   ],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+  isFormUntouched = signal(true);
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: Event): void {
+    const confirmationMessage = 'Are you sure ?';
+    (event as BeforeUnloadEvent).returnValue = confirmationMessage;
+  }
+
+  ngOnInit(): void {
+    this.form.valueChanges
+      .pipe()
+      .subscribe((x) => this.isFormUntouched.set(false));
+  }
   private readonly formBuilder = inject(NonNullableFormBuilder);
   passiveConditionActivation = passiveConditionActivation;
   effectDuration = effectDuration;
@@ -75,6 +90,7 @@ export class AppComponent {
   superAttackInfo = signal<SuperAttack>(null);
   isFirstPartShow = signal(true);
   title = signal('Card Details');
+  canQuit$: Subject<boolean> = new Subject<boolean>();
   form = this.formBuilder.group(
     {
       attack: new FormControl('', {
@@ -388,5 +404,6 @@ export class AppComponent {
 
   ngOnDestroy() {
     this.componentRefs?.destroy();
+    window.removeEventListener('beforeunload', this.onBeforeUnload);
   }
 }

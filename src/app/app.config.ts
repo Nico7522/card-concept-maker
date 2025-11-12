@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
         inject({ mode: isDevMode() ? 'development' : 'production' });
       },
     },
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirebaseApp(() => initializeApp(environment)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
   ],

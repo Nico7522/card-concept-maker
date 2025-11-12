@@ -5,7 +5,6 @@ const checkSign = "\u{2705}";
 const dotenv = require("dotenv").config({ path: "src/.env" });
 
 const envFile = `export const environment = {
- firebaseConfig: {
  apiKey: '${process.env.API_KEY}',
  authDomain: '${process.env.AUTH_DOMAIN}',
  projectId: '${process.env.PROJECT_ID}',
@@ -13,7 +12,6 @@ const envFile = `export const environment = {
  messagingSenderId: '${process.env.MESSAGING_SENDER_ID}',
  appId: '${process.env.APP_ID}',
  measurementId: '${process.env.MEASUREMENT_ID}',
-},
 };
 `;
 const targetPath = path.join(__dirname, "./src/environments/environment.ts");

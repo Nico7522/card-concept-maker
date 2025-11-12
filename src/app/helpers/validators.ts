@@ -1,5 +1,6 @@
 import {
   AbstractControl,
+  FormControl,
   FormGroup,
   ValidationErrors,
   ValidatorFn,
@@ -23,11 +24,8 @@ export const activeSkillNameRequired: ValidatorFn = (
   const hasActiveSkill = control.get(
     'hasActiveSkill'
   ) as AbstractControl<boolean>;
-  const activeSkill = control.get('activeSkill') as FormGroup;
-  if (
-    hasActiveSkill.value &&
-    activeSkill.get('activeSkillName')?.value === ''
-  ) {
+  const activeSkillName = control.get('activeSkillName') as FormControl;
+  if (hasActiveSkill.value && activeSkillName.value === '') {
     return { activeSkillNameRequired: true };
   }
   return null;
@@ -39,11 +37,10 @@ export const activeSkillConditionRequired: ValidatorFn = (
   const hasActiveSkill = control.get(
     'hasActiveSkill'
   ) as AbstractControl<boolean>;
-  const activeSkill = control.get('activeSkill') as FormGroup;
-  if (
-    hasActiveSkill.value &&
-    activeSkill.get('activeSkillCondition')?.value === ''
-  ) {
+  const activeSkillCondition = control.get(
+    'activeSkillCondition'
+  ) as FormControl;
+  if (hasActiveSkill.value && activeSkillCondition.value === '') {
     return { activeSkillConditionRequired: true };
   }
   return null;
@@ -55,11 +52,8 @@ export const activeSkillEffectRequired: ValidatorFn = (
   const hasActiveSkill = control.get(
     'hasActiveSkill'
   ) as AbstractControl<boolean>;
-  const activeSkill = control.get('activeSkill') as FormGroup;
-  if (
-    hasActiveSkill.value &&
-    activeSkill.get('activeSkillEffect')?.value === ''
-  ) {
+  const activeSkillEffect = control.get('activeSkillEffect') as FormControl;
+  if (hasActiveSkill.value && activeSkillEffect.value === '') {
     return { activeSkillEffectRequired: true };
   }
   return null;

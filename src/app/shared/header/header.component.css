@@ -1,0 +1,24 @@
+/* Styles personnalisés pour le header */
+/* Tous les styles sont maintenant gérés par Tailwind CSS */
+
+/* Animation pour le bouton de connexion */
+@keyframes pulse-google {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Effet hover personnalisé pour le bouton Google */
+.google-login-btn:hover {
+  animation: pulse-google 0.3s ease-in-out;
+}
+
+/* Responsive design pour les très petits écrans */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+}

@@ -1,0 +1,42 @@
+/* Custom styles pour compléter Tailwind */
+.card {
+  /* Effet de survol personnalisé */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+/* Animation personnalisée pour le spinner */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Effet de brillance sur les cartes légendaires */
+.card:has(.bg-gradient-to-r.from-yellow-400.to-yellow-600) {
+  position: relative;
+}
+
+
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Amélioration des effets de glassmorphism */
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+

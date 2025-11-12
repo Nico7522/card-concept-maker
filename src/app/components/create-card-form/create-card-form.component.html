@@ -1,0 +1,12 @@
+<form class="flex flex-col" (ngSubmit)="onSubmit()" [formGroup]="cardForm">
+    <app-card-form controlKey="cardForm" label="Card" />
+
+    <button type="submit" [disabled]="cardForm.invalid" class="w-96 m-auto my-5 bg-white text-black"
+        ubButton>Create</button>
+</form>
+
+@if (isLoading()) {
+<app-loader [isVisible]="isLoading()" />
+}
+
+<ng-container #card />

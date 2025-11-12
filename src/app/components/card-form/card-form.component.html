@@ -1,0 +1,99 @@
+<div [formGroupName]="controlKey()" class="flex flex-col m-5 py-5">
+    <!-- Card name -->
+    <div class="flex items-center justify-center gap-1 lg:px-20 mt-5 mb-10">
+        <div class="flex flex-col flex-1 relative lg:px-10">
+            <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="cardName">Card
+                Name</label>
+            <input placeholder="Vegeta (SSJ)" class="pl-2" id="cardName" formControlName="cardName" type="text">
+            @if ( parentFormGroup.get('cardForm')?.get('cardName')?.dirty &&
+            parentFormGroup.get('cardForm')?.get('cardName')?.getError('required')) {
+            <app-error errorMessage="Card name field required" />
+            }
+        </div>
+    </div>
+
+    <!-- Type and class -->
+    <div class="flex items-start  gap-3 lg:px-30 mb-10">
+        <div>
+            <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="type">Type
+                ?</label>
+            <ng-select [searchable]="false" [clearable]="false"
+                class="text-xl ml-0 m-auto text-white mt-2 select w-full lg:w-36 ng-select" formControlName="type"
+                id="type">
+                <ng-option value="teq">
+                    TEQ
+                </ng-option>
+                <ng-option value="str">
+                    STR
+                </ng-option>
+                <ng-option value="agl">
+                    AGL
+                </ng-option>
+                <ng-option value="int">
+                    INT
+                </ng-option>
+                <ng-option value="phy">
+                    PHY
+                </ng-option>
+            </ng-select>
+
+        </div>
+        <div>
+            <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="class">Class
+                ?</label>
+            <ng-select [searchable]="false" [clearable]="false"
+                class="text-xl ml-0 m-auto text-white mt-2 select w-full lg:w-36 ng-select" formControlName="class"
+                id="class">
+                <ng-option value="super">
+                    SUPER
+                </ng-option>
+                <ng-option value="extreme">
+                    EXTREME
+                </ng-option>
+
+            </ng-select>
+
+        </div>
+
+    </div>
+    <app-base-stat-form controlKey="stats" label="Stats" />
+    <!-- Legendary character ? -->
+    <div class="flex flex-col items-start lg:px-30 mb-10">
+        <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="isLegendary">LR
+            ?</label>
+        <ng-select [searchable]="false" [clearable]="false"
+            class="text-xl ml-0 m-auto text-white mt-2 select w-full lg:w-36 ng-select" formControlName="isLegendary"
+            id="isLegendary">
+            <ng-option [value]="false">
+                No
+            </ng-option>
+            <ng-option [value]="true">
+                Yes
+            </ng-option>
+        </ng-select>
+
+    </div>
+    <!-- Leader skill -->
+    <div class="flex items-center justify-center gap-1 lg:px-20 mt-5 mb-10">
+        <div class="flex flex-col flex-1 relative lg:px-10">
+            <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="leaderSkill">Leader
+                Skill</label>
+            <input
+                placeholder="'Power Beyond Super Saiyan' or 'Movie Heroes' Category Ki +3 and HP, ATK & DEF +170% ..."
+                class="pl-2" id="leaderSkill" formControlName="leaderSkill" type="text">
+            @if ( parentFormGroup.get('cardForm')?.get('leaderSkill')?.dirty &&
+            parentFormGroup.get('cardForm')?.get('leaderSkill')?.getError('required'))
+            {
+            <app-error errorMessage="Leader skill field required" />
+            }
+        </div>
+
+    </div>
+    <app-super-attack-form controlKey="superAttack" label="Super Attack" [isLegendaryCharacter]="isLegendary()" />
+    <app-categories-form controlKey="categories" label="Categories" />
+    <app-links-form controlKey="links" label="Links" />
+    <app-passive-form controlKey="passive" label="Passive" />
+    <app-active-skill-form controlKey="activeSkill" label="Active Skill" />
+
+
+</div>

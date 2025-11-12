@@ -1,0 +1,25 @@
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-center gap-1 lg:px-20 mb-10"
+    [formGroupName]="controlKey()">
+    <div class="flex flex-col flex-1 relative lg:px-10 w-full">
+        <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="attack">Attack</label>
+        <input placeholder="7777" class="pl-2" id="attack" formControlName="attack" type="number">
+        @if ( parentFormGroup.get('stats.attack')?.dirty && parentFormGroup.get('stats.attack')?.getError('required')) {
+        <app-error errorMessage="Attack field required" />
+        }
+    </div>
+    <div class="flex flex-col flex-1">
+        <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="defense">Defense</label>
+        <input placeholder="7777" class="pl-2" id="defense" formControlName="defense" type="number">
+        @if ( parentFormGroup.get('stats.defense')?.dirty && parentFormGroup.get('stats.defense')?.getError('required'))
+        {
+        <app-error errorMessage="Defense field required" />
+        }
+    </div>
+    <div class="flex flex-col flex-1 lg:px-10">
+        <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="hp">HP</label>
+        <input placeholder="7777" class="pl-2" id="hp" formControlName="hp" type="number">
+        @if ( parentFormGroup.get('stats.hp')?.dirty && parentFormGroup.get('stats.hp')?.getError('required')) {
+        <app-error errorMessage="HP field required" />
+        }
+    </div>
+</div>

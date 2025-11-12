@@ -1,0 +1,23 @@
+<div [formGroupName]="controlKey()">
+    <div class="flex flex-col lg:px-10 mt-5 w-full mb-10" formArrayName="links">
+        <label class=" my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md lg:ml-20" oriLabel>
+            Links</label>
+        @for (control of this.links.controls; track control; let index = $index) {
+        <div class="flex gap-1 m-auto w-full lg:px-20">
+            <ng-select class="my-2 select flex-1 ng-select" [formControlName]="index">
+                @for (link of linkSkill; track $index) {
+                <ng-option class="bg-black" [value]="link.value">{{link.linkName}}</ng-option>
+                }
+            </ng-select>
+            <button type="button" class="h-12 w-10 mt-2" [disabled]="index === 0" (click)="removeLink(index)" ubButton
+                variant="destructive" size="icon">
+                <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />
+            </button>
+        </div>
+        }
+        <button type="button" class="h-12 w-10 mt-2 m-auto rounded-lg bg-green-900 hover:bg-green-800"
+            (click)="addLink()" ubButton size="icon">
+            <ng-icon name="heroPlus" class="h-4 w-4" />
+        </button>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<!-- Active Skill ?  -->
+<div [formGroupName]="controlKey()">
+
+    <div class="flex flex-col items-start lg:px-30 mb-5">
+        <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="hasActiveSkill">Active
+            Skill
+            ?</label>
+        <ng-select [searchable]="false" [clearable]="false"
+            class="text-xl ml-0 m-auto text-white mt-2 select w-full lg:w-36 ng-select" formControlName="hasActiveSkill"
+            id="hasActiveSkill">
+            <ng-option [value]="false">
+                No
+            </ng-option>
+            <ng-option [value]="true">
+                Yes
+            </ng-option>
+        </ng-select>
+
+    </div>
+    <!-- Active Skill  -->
+    @if (activeSkill) {
+    <div class="flex items-center justify-center gap-1 lg:px-20 my-5">
+        <div class="flex flex-col flex-1 relative lg:px-10">
+            <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md"
+                for="activeSkillName">Active
+                Skill Name</label>
+            <input placeholder="Transformation ..." class="pl-2 " id="activeSkillName" formControlName="activeSkillName"
+                type="text">
+
+            @if (
+            parentFormGroup.get('activeSkill')?.get('activeSkillName')?.dirty &&
+            parentFormGroup.get('activeSkill')?.hasError('activeSkillNameRequired'))
+            {
+            <app-error errorMessage="Active skill name field required" />
+            }
+            <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md"
+                for="activeSkillCondition">Active
+                Skill Condition(s)</label>
+            <input placeholder="Can be activated starting from the 4th turn from the start of battle (once only) ..."
+                class="pl-2 " id="activeSkillCondition" formControlName="activeSkillCondition" type="text">
+            @if (
+            parentFormGroup.get('activeSkill')?.get('activeSkillCondition')?.dirty &&
+            parentFormGroup.get('activeSkill')?.hasError('activeSkillConditionRequired'))
+            {
+            <app-error errorMessage="Active skill condition field required" />
+            }
+            <label class="mb-2 mt-5 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md"
+                for="activeSkillEffect">Active
+                Skill Effect(s)</label>
+            <input placeholder="Transforms ..." class="pl-2  " id="activeSkillEffect"
+                formControlName="activeSkillEffect" type="text">
+            @if (
+            parentFormGroup.get('activeSkill')?.get('activeSkillEffect')?.dirty &&
+            parentFormGroup.get('activeSkill')?.hasError('activeSkillEffectRequired'))
+            {
+            <app-error errorMessage="Active skill effect field required" />
+            }
+        </div>
+
+    </div>
+
+    }
+
+
+</div>

@@ -1,0 +1,15 @@
+<div [ngClass]="{
+      'animate-in slide-in-from-right duration-300': !isClosing(),
+      'animate-out slide-out-to-right duration-300': isClosing()
+    }"
+    class="fixed top-5 right-5 z-[10000] min-w-[300px] max-w-[500px] bg-red-600 text-white rounded-lg shadow-lg overflow-hidden">
+    <div class="flex items-center gap-3 px-5 py-4">
+        <span class="text-xl shrink-0">⚠️</span>
+        <p class="flex-1 m-0 text-sm leading-relaxed font-medium">{{ message() }}</p>
+        <button
+            class="bg-transparent border-0 text-white text-2xl cursor-pointer p-0 w-6 h-6 flex items-center justify-center shrink-0 opacity-80 hover:opacity-100 hover:bg-white/10 rounded transition-opacity active:scale-95"
+            (click)="close()" aria-label="Fermer">
+            ×
+        </button>
+    </div>
+</div>

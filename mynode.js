@@ -14,7 +14,10 @@ const envFile = `export const environment = {
  measurementId: '${process.env.MEASUREMENT_ID}',
 };
 `;
-const targetPath = path.join(__dirname, "./src/environments/environment.ts");
+const targetPath = path.join(
+  __dirname,
+  "./src/environments/environment.development.ts"
+);
 fs.writeFile(targetPath, envFile, (err) => {
   if (err) {
     console.error(err);

@@ -54,7 +54,6 @@ export class CardService {
    * @returns The added card
    */
   private async addCard(card: Card) {
-    throw new Error('Not implemented');
     return await addDoc(this.cardsCollection, card);
   }
 
@@ -65,7 +64,9 @@ export class CardService {
    * @returns The updated card
    */
   private async updateCard(id: string, card: Card) {
-    return await updateDoc(doc(this.cardsCollection, id), card);
+    return await runAsyncInInjectionContext(this.injector, async () => {
+      return await updateDoc(doc(this.cardsCollection, id), card);
+    });
   }
 
   /**

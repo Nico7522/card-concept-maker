@@ -11,7 +11,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @for (card of cards; track $index) {
             <div [routerLink]="['/card', card.id]"
-                class="card bg-black border border-gray-700 rounded-2xl p-6 shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-gray-500/25 relative overflow-hidden">
+                class="card cursor-pointer bg-black border border-gray-700 rounded-2xl p-6 shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-gray-500/25 relative overflow-hidden">
 
                 <!-- Card Header -->
                 <div class="relative z-10 flex justify-between items-center mb-6">

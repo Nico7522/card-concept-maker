@@ -12,8 +12,6 @@ import { passiveConditionActivation } from '../select-options/passive-condition-
 import getDurationLogo from './get-duration-logo';
 
 export default function generateCard(form: FormGroup<CardForm>) {
-  console.log(form);
-
   let characterInfo = signal<Character>(null);
   let passiveDetails = signal<Passive>(null);
   let superAttackInfo = signal<SuperAttack>(null);

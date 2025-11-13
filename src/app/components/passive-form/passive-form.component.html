@@ -8,7 +8,7 @@
 
     </div>
     <div class="flex flex-col lg:px-10 w-full" formArrayName="passivePart">
-        @for (control of this.passiveParts.controls; track control; let index = $index)
+        @for (control of this.passiveParts.controls; track control.value; let index = $index)
         {
         <div class="flex flex-col m-auto w-full lg:px-20  mt-5" [formGroupName]="index">
             <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" oriLabel>Passive

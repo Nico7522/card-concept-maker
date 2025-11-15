@@ -1,24 +1,23 @@
 import { signal } from '@angular/core';
-import { CardForm } from '../shared/models/form-interface';
-import { Character } from '../types/character.type';
-import { Passive } from '../types/passive.type';
-import { SuperAttack } from '../types/super-attack.type';
-import { CharacterType } from '../shared/models/character-type-type';
-import { ClassType } from '../shared/models/class-type';
+
 import { FormGroup } from '@angular/forms';
 import { categories } from '../select-options/categories';
 import { Links } from '../select-options/links';
 import { passiveConditionActivation } from '../select-options/passive-condition-activation';
 import getDurationLogo from './get-duration-logo';
+import { CardForm } from '~/src/widgets/model/card-form-interface';
+import { Character } from '~/src/shared/model/character-interface';
+import { Passive } from '~/src/shared/model/passive-interface';
+import { SuperAttack } from '~/src/shared/model/super-attack-interface';
 
 export default function generateCard(form: FormGroup<CardForm>) {
-  let characterInfo = signal<Character>(null);
-  let passiveDetails = signal<Passive>(null);
-  let superAttackInfo = signal<SuperAttack>(null);
+  let characterInfo = signal<Character | null>(null);
+  let passiveDetails = signal<Passive | null>(null);
+  let superAttackInfo = signal<SuperAttack | null>(null);
   const data = form.getRawValue();
   characterInfo.set({
-    type: data.type as CharacterType,
-    class: data.class as ClassType,
+    type: data.type as 'teq' | 'str' | 'agl' | 'int' | 'phy',
+    class: data.class as 'super' | 'extreme',
     stats: {
       attack: data.stats.attack ?? 0,
       defense: data.stats.defense ?? 0,

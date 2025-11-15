@@ -1,14 +1,15 @@
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
-import { Card } from '../types/card.type';
+import { Card } from '~/src/shared/model/card-interface';
+import { CardForm } from '~/src/widgets/model/card-form-interface';
+
+import { categories } from '~/src/app/select-options/categories';
+import { Links } from '~/src/app/select-options/links';
+import { effectDuration } from '~/src/app/select-options/effect-duration';
+import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
 import {
-  CardForm,
   EffectFormGroup,
   PassivePartFormGroup,
-} from '../shared/models/form-interface';
-import { categories } from '../select-options/categories';
-import { Links } from '../select-options/links';
-import { effectDuration } from '../select-options/effect-duration';
-import { passiveConditionActivation } from '../select-options/passive-condition-activation';
+} from '~/src/shared/model/passive-form-group-interface';
 
 export default function patchCardForm(form: FormGroup<CardForm>, card: Card) {
   if (card.characterInfo) {

@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './shared/header/header.component';
-import { ErrorToastComponent } from './shared/error-toast/error-toast.component';
-import { ErrorToastService } from './services/error-toast.service';
+import { ErrorToastService } from '~/src/shared/services/error-toast-service/error-toast.service';
+import { HeaderComponent } from '~/src/shared/ui/header/header.component';
+import { ErrorToastComponent } from '~/src/shared/ui/error-toast/error-toast.component';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, HeaderComponent, ErrorToastComponent],

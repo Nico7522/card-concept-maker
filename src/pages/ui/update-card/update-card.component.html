@@ -1,8 +1,11 @@
 <form class="flex flex-col" (ngSubmit)="onSubmit()" [formGroup]="cardForm">
     <app-card-form controlKey="cardForm" label="Card" />
 
+    @if (canUpdate$ | async) {
     <button type="submit" [disabled]="cardForm.invalid" class="w-96 m-auto my-5 bg-white text-black"
         ubButton>Update</button>
+    }
+
 </form>
 @if (isLoading()) {
 <app-loader [isVisible]="isLoading()" />

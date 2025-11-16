@@ -20,8 +20,7 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { UbButtonDirective } from '~/components/ui/button';
 import { SuperAttackDetailsComponent } from '../../../shared/ui/super-attack-details/super-attack-details.component';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, switchMap, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 

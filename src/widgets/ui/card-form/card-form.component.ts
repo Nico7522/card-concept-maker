@@ -66,9 +66,7 @@ export class CardFormComponent {
     (event as BeforeUnloadEvent).returnValue = confirmationMessage;
   }
   ngOnDestroy(): void {
-    this.#destroyRef.onDestroy(() => {
-      this.parentFormGroup.removeControl(this.controlKey());
-    });
+    this.parentFormGroup.removeControl(this.controlKey());
     window.removeEventListener('beforeunload', this.onBeforeUnload);
   }
 

@@ -37,9 +37,7 @@ export class BaseStatFormComponent implements OnDestroy, OnInit {
     return this.#parentContainer.control as FormGroup;
   }
   ngOnDestroy(): void {
-    this.#destroyRef.onDestroy(() => {
-      this.parentFormGroup.removeControl(this.controlKey());
-    });
+    this.parentFormGroup.removeControl(this.controlKey());
   }
   ngOnInit(): void {
     this.parentFormGroup.addControl(

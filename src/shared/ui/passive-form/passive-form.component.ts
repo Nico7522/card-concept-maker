@@ -90,9 +90,7 @@ export class PassiveFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.#destroyRef.onDestroy(() => {
-      this.parentFormGroup.removeControl(this.controlKey());
-    });
+    this.parentFormGroup.removeControl(this.controlKey());
   }
 
   // Get a full passive part

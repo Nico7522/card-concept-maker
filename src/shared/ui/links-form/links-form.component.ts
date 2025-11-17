@@ -63,9 +63,7 @@ export class LinksFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.#destroyRef.onDestroy(() => {
-      this.parentFormGroup.removeControl(this.controlKey());
-    });
+    this.parentFormGroup.removeControl(this.controlKey());
   }
 
   // get links

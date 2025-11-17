@@ -55,9 +55,7 @@ export class ActiveSkillFormComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    this.#destroyRef.onDestroy(() => {
-      this.parentFormGroup.removeControl(this.controlKey());
-    });
+    this.parentFormGroup.removeControl(this.controlKey());
   }
 
   ngOnInit(): void {

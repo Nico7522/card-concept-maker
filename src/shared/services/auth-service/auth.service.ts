@@ -27,7 +27,13 @@ export class AuthService {
   private googleProvider = new GoogleAuthProvider();
   private injector = inject(Injector);
   // Observable holding the current user
-  user$ = user(this.auth);
+  user$ = user(this.auth)
+    .pipe
+    // map((u) => {
+    //   throw new Error('test');
+    //   return u;
+    // })
+    ();
   // Signal holding the current user
   user = toSignal(this.user$);
 

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { CreateCardComponent } from '../pages/ui/create-card/create-card.component';
+import { canAccessGuard } from '../features/guards/can-access.guard';
 
 export const routes: Routes = [
   {
@@ -26,5 +27,6 @@ export const routes: Routes = [
       import('../pages/ui/update-card/update-card.component').then(
         (m) => m.UpdateCardComponent
       ),
+    canActivate: [canAccessGuard],
   },
 ];

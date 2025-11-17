@@ -19,7 +19,6 @@ import generateCard from '../../../app/helpers/generate-card';
 import { CardFormComponent } from '../../../widgets/ui/card-form/card-form.component';
 import { CardService } from '~/src/shared/services/card-service/card.service';
 import { CardForm } from '~/src/widgets/model/card-form-interface';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-update-card-form',
@@ -28,7 +27,6 @@ import { AsyncPipe } from '@angular/common';
     UbButtonDirective,
     LoaderComponent,
     CardFormComponent,
-    AsyncPipe,
   ],
   templateUrl: './update-card.component.html',
   styleUrl: './update-card.component.css',
@@ -41,7 +39,7 @@ import { AsyncPipe } from '@angular/common';
     }),
   ],
 })
-export class UpdateCardComponent {
+export class UpdateCardComponent implements AfterViewInit {
   readonly #cardService = inject(CardService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #router = inject(Router);
@@ -49,32 +47,7 @@ export class UpdateCardComponent {
   readonly #errorToastService = inject(ErrorToastService);
   isLoading = signal(true);
   isError = signal(false);
-  canUpdate$ = this.#activatedRoute.params.pipe(
-    switchMap((params) => {
-      const id = params['id'];
-      const nestedCardForm = this.cardForm.get(
-        'cardForm'
-      ) as FormGroup<CardForm> | null;
-      return this.#cardService.getCardById(id).pipe(
-        switchMap((card) => {
-          if (nestedCardForm) {
-            patchCardForm(nestedCardForm, card);
-          }
-          return this.#authService.user$.pipe(
-            map((user) => {
-              this.isLoading.set(false);
-              return user?.uid === card.creatorId;
-            })
-          );
-        })
-      );
-    }),
-    catchError(() => {
-      this.isLoading.set(false);
-      this.#errorToastService.showToast('An error has occurred');
-      return EMPTY;
-    })
-  );
+
   cardForm = new FormGroup({});
 
   onSubmit() {
@@ -120,30 +93,30 @@ export class UpdateCardComponent {
     }
   }
 
-  // ngAfterViewInit(): void {
-  //   const nestedCardForm = this.cardForm.get(
-  //     'cardForm'
-  //   ) as FormGroup<CardForm> | null;
-  //   if (nestedCardForm) {
-  //     this.#activatedRoute.params
-  //       .pipe(
-  //         take(1),
-  //         switchMap((params) => {
-  //           const id = params['id'];
-  //           return this.#cardService.getCardById(id);
-  //         }),
-  //         map((card) => {
-  //           patchCardForm(nestedCardForm, card);
-  //           this.isLoading.set(false);
-  //           return card;
-  //         }),
-  //         catchError(() => {
-  //           this.isLoading.set(false);
-  //           this.#errorToastService.showToast('Card not found');
-  //           return EMPTY;
-  //         })
-  //       )
-  //       .subscribe();
-  //   }
-  // }
+  ngAfterViewInit(): void {
+    const nestedCardForm = this.cardForm.get(
+      'cardForm'
+    ) as FormGroup<CardForm> | null;
+    if (nestedCardForm) {
+      this.#activatedRoute.params
+        .pipe(
+          take(1),
+          switchMap((params) => {
+            const id = params['id'];
+            return this.#cardService.getCardById(id);
+          }),
+          map((card) => {
+            patchCardForm(nestedCardForm, card);
+            this.isLoading.set(false);
+            return card;
+          }),
+          catchError(() => {
+            this.isLoading.set(false);
+            this.#errorToastService.showToast('Card not found');
+            return EMPTY;
+          })
+        )
+        .subscribe();
+    }
+  }
 }

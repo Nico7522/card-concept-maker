@@ -20,14 +20,14 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { UbButtonDirective } from '~/components/ui/button';
 import { SuperAttackDetailsComponent } from '../../../shared/ui/super-attack-details/super-attack-details.component';
-import { catchError, EMPTY, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, map, shareReplay, switchMap, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
-
 import { ErrorFetchingComponent } from '../../../shared/ui/error-fetching/error-fetching.component';
-import { CardService } from '~/src/shared/services/card-service/card.service';
 import { SuperAttack } from '~/src/shared/model/super-attack-interface';
 import { Character } from '~/src/shared/model/character-interface';
+import { AuthService } from '~/src/shared/services/auth-service/auth.service';
+import { Card } from '~/src/shared/model/card-interface';
 
 @Component({
   selector: 'app-card-details',
@@ -57,32 +57,38 @@ export class CardDetailsComponent {
     'Categories',
     'Passive Skill Details',
   ];
-  readonly #cardService = inject(CardService);
-  readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #route = inject(ActivatedRoute);
+  readonly #authService = inject(AuthService);
   isLoading = signal(true);
   isError = signal(false);
   characterInfo = signal<Character | null>(null);
   superAttackInfo = signal<SuperAttack | null>(null);
   cardId = signal<string | null>(null);
-  card$ = this.#activatedRoute.params.pipe(
-    switchMap((params) => {
-      const id = params['id'];
-      return this.#cardService.getCardById(id).pipe(
-        tap((card) => {
-          this.characterInfo.set(card.characterInfo);
-          this.superAttackInfo.set(card.superAttackInfo);
-          this.cardId.set(id);
-          this.isLoading.set(false);
-        }),
-        catchError(() => {
-          this.isError.set(true);
-          this.isLoading.set(false);
-          return EMPTY;
-        })
+
+  card$ = this.#route.data.pipe(
+    map((data) => data['card'] as Card),
+    tap((card) => {
+      console.log(card);
+
+      this.characterInfo.set(card.characterInfo);
+      this.superAttackInfo.set(card.superAttackInfo);
+      this.cardId.set(card.id ?? '');
+      this.isLoading.set(false);
+    }),
+    catchError(() => {
+      this.isError.set(true);
+      this.isLoading.set(false);
+      return EMPTY;
+    }),
+    shareReplay({ refCount: true, bufferSize: 1 })
+  );
+  canUpdate$ = this.card$.pipe(
+    switchMap((card) => {
+      return this.#authService.user$.pipe(
+        map((user) => user?.uid === card.creatorId)
       );
     })
   );
-
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   saDetails = viewChild.required('saDetails', { read: ViewContainerRef });

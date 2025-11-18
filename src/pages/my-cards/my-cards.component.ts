@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { AuthService } from '../../../shared/services/auth-service/auth.service';
+import { AuthService } from '../../shared/services/auth-service/auth.service';
 import { AsyncPipe } from '@angular/common';
 import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
-import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
+import { LoaderComponent } from '../../shared/ui/loader/loader.component';
 import { RouterModule } from '@angular/router';
-import { ErrorFetchingComponent } from '../../../shared/ui/error-fetching/error-fetching.component';
+import { ErrorFetchingComponent } from '../../shared/ui/error-fetching/error-fetching.component';
 import { CardService } from '~/src/shared/services/card-service/card.service';
 
 @Component({

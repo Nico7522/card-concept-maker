@@ -5,12 +5,14 @@
         {{card.cardName}} by {{card.creatorName}}
     </h1>
 
+    @if (canUpdate$ | async) {
     <div class="flex w-full lg:w-[30%] justify-end mb-3 lg:mb-5">
         <button ubButton size="sm" class="cursor-pointer bg-blue-600 hover:bg-blue-700"
             [routerLink]="['/card', cardId(), 'update']">
             Update card
         </button>
     </div>
+    }
     <div class="border-4 rounded-lg relative card-details overflow-visible text-clip w-full lg:w-[30%]">
         <div class="absolute -top-5 right-0 z-50 flex gap-1">
             <!-- Logo de rareté (LR/UR) -->

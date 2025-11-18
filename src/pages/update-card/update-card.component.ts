@@ -11,12 +11,12 @@ import {
 import { catchError, EMPTY, filter, map, of, switchMap, take } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../shared/services/auth-service/auth.service';
-import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
-import { ErrorToastService } from '../../../shared/services/error-toast-service/error-toast.service';
-import patchCardForm from '../../../app/helpers/patch-card-form';
-import generateCard from '../../../app/helpers/generate-card';
-import { CardFormComponent } from '../../../widgets/ui/card-form/card-form.component';
+import { AuthService } from '../../shared/services/auth-service/auth.service';
+import { LoaderComponent } from '../../shared/ui/loader/loader.component';
+import { ErrorToastService } from '../../shared/services/error-toast-service/error-toast.service';
+import patchCardForm from '../../app/helpers/patch-card-form';
+import generateCard from '../../app/helpers/generate-card';
+import { CardFormComponent } from '../../widgets/ui/card-form/card-form.component';
 import { CardService } from '~/src/shared/services/card-service/card.service';
 import { CardForm } from '~/src/widgets/model/card-form-interface';
 

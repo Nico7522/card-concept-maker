@@ -1,22 +1,40 @@
 import {
-  APP_INITIALIZER,
   ApplicationConfig,
+  inject as angularInject,
   isDevMode,
   provideAppInitializer,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import {
+  provideRouter,
+  Router,
+  withComponentInputBinding,
+  withNavigationErrorHandler,
+} from '@angular/router';
 import { inject } from '@vercel/analytics';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { setLogLevel, LogLevel } from '@angular/fire';
+import { ErrorToastService } from '../shared/services/error-toast-service/error-toast.service';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withNavigationErrorHandler((error) => {
+        const router = angularInject(Router);
+        const errorToastService = angularInject(ErrorToastService);
+        if (error?.error?.message) {
+          errorToastService.showToast(error.error.message);
+        } else {
+          errorToastService.showToast('An error occurred, try later');
+        }
+        router.navigate(['/']);
+      })
+    ),
     {
       provide: provideAppInitializer(() => {}),
       useFactory: () => {

@@ -57,7 +57,7 @@ export class CardDetailsComponent {
     'Categories',
     'Passive Skill Details',
   ];
-  readonly #route = inject(ActivatedRoute);
+  readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
   isLoading = signal(true);
   isError = signal(false);
@@ -65,7 +65,7 @@ export class CardDetailsComponent {
   superAttackInfo = signal<SuperAttack | null>(null);
   cardId = signal<string | null>(null);
 
-  card$ = this.#route.data.pipe(
+  card$ = this.#activatedRoute.data.pipe(
     map((data) => data['card'] as Card),
     tap((card) => {
       console.log(card);

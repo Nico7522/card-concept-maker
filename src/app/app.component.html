@@ -1,5 +1,8 @@
 <app-header />
 <router-outlet />
+@if (isLoading()) {
+<app-loader [isVisible]="isLoading() ?? false" />
+}
 @if (isVisible()) {
 <app-error-toast />
 }

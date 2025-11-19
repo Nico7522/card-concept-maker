@@ -1,13 +1,16 @@
 <div class="min-h-screen p-8">
     <div class="max-w-7xl mx-auto">
+
         @if (cards$ | async; as cards) {
-        @if (cards.length === 0) {
+        @if (cards?.length === 0) {
         <div class="text-center py-16">
             <h2 class="text-4xl font-bold text-white mb-4">No cards created</h2>
             <a routerLink="/" class="text-xl text-gray-400 hover:text-gray-300 hover:underline">Start creating your
                 first card !</a>
         </div>
-        } @else {
+        }
+
+        @else {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @for (card of cards; track $index) {
             <div [routerLink]="['/card', card.id]"
@@ -85,11 +88,7 @@
         </div>
         }
         }
-        @else if (isError()) {
-        <app-error-fetching [message]="'An error occurred while loading your cards'" />
-        }
-        @else {
-        <app-loader [isVisible]="isLoading()" />
-        }
+
+
     </div>
 </div>

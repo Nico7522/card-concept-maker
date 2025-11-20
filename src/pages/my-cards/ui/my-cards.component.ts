@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { map } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Card } from '~/src/shared/model/card-interface';
-import { RouterService } from '~/src/shared/services/router/router.service';
+import { Card } from '../../../shared/model/card-interface';
+import { RouterService } from '../../../shared/api/router/router.service';
 
 @Component({
   selector: 'app-my-cards',
@@ -14,7 +14,6 @@ import { RouterService } from '~/src/shared/services/router/router.service';
 export class MyCardsComponent {
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #routerService = inject(RouterService);
-  isLoading = this.#routerService.loading;
 
   cards$ = this.#activatedRoute.data.pipe(
     map((data) => {

@@ -3,8 +3,8 @@ import { Router, RouterModule } from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { catchError, EMPTY, take } from 'rxjs';
 import { version } from '../../../../package.json';
-import { ErrorToastService } from '~/src/shared/services/error-toast-service/error-toast.service';
-import { AuthService } from '../../services/auth-service/auth.service';
+import { ErrorToastService } from '../../api/error-toast-service/error-toast.service';
+import { AuthService } from '../../api/auth-service/auth.service';
 @Component({
   selector: 'app-header',
   standalone: true,

@@ -17,7 +17,7 @@ import { environment } from '../environments/environment';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { ErrorToastService } from '../shared/services/error-toast-service/error-toast.service';
+import { ErrorToastService } from '../shared/api/error-toast-service/error-toast.service';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),

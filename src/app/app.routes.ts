@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { CreateCardComponent } from '../pages/create-card/create-card.component';
 import { canAccessGuard } from '../features/guards/can-access.guard';
-import { getCardResolver } from '../pages/card-details/api/get-card.resolver';
 import { getCardsResolver } from '../pages/my-cards/api/get-cards.resolver';
+import { getCardResolver } from '../shared/api/card-resolver/get-card.resolver';
 
 export const routes: Routes = [
   {
@@ -33,5 +33,6 @@ export const routes: Routes = [
         (m) => m.UpdateCardComponent
       ),
     canActivate: [canAccessGuard],
+    resolve: { card: getCardResolver },
   },
 ];

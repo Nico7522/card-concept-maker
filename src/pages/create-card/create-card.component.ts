@@ -21,19 +21,19 @@ import { catchError, EMPTY, Subject, take } from 'rxjs';
 
 import { Router } from '@angular/router';
 
-import { UbButtonDirective } from '~/components/ui/button';
+import { UbButtonDirective } from '../../../components/ui/button';
 import { LoaderComponent } from '~/src/shared/ui/loader/loader.component';
 import { CardFormComponent } from '~/src/widgets/ui/card-form/card-form.component';
-import { AuthService } from '~/src/shared/services/auth-service/auth.service';
-import { ErrorToastService } from '~/src/shared/services/error-toast-service/error-toast.service';
 import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
 import { effectDuration } from '~/src/app/select-options/effect-duration';
 import { categories } from '~/src/app/select-options/categories';
 import { Links } from '~/src/app/select-options/links';
 import generateCard from '~/src/app/helpers/generate-card';
-import { CardService } from '~/src/shared/services/card-service/card.service';
 import { CardForm } from '~/src/widgets/model/card-form-interface';
 import { CardComponent } from '~/src/shared/ui/card/card.component';
+import { AuthService } from '~/src/shared/api/auth-service/auth.service';
+import { CardService } from '~/src/shared/api/card-service/card.service';
+import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
 
 @Component({
   selector: 'app-create-card-form',

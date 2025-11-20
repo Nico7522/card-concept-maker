@@ -18,16 +18,16 @@ import {
   heroChevronDoubleLeft,
   heroMagnifyingGlassPlus,
 } from '@ng-icons/heroicons/outline';
-import { UbButtonDirective } from '~/components/ui/button';
 import { SuperAttackDetailsComponent } from '../../../shared/ui/super-attack-details/super-attack-details.component';
 import { catchError, EMPTY, map, shareReplay, switchMap, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 import { ErrorFetchingComponent } from '../../../shared/ui/error-fetching/error-fetching.component';
-import { SuperAttack } from '~/src/shared/model/super-attack-interface';
-import { Character } from '~/src/shared/model/character-interface';
-import { AuthService } from '~/src/shared/services/auth-service/auth.service';
-import { Card } from '~/src/shared/model/card-interface';
+import { SuperAttack } from '../../../shared/model/super-attack-interface';
+import { Character } from '../../../shared/model/character-interface';
+import { AuthService } from '../../../shared/api/auth-service/auth.service';
+import { Card } from '../../../shared/model/card-interface';
+import { UbButtonDirective } from '~/components/ui/button';
 
 @Component({
   selector: 'app-card-details',
@@ -68,8 +68,6 @@ export class CardDetailsComponent {
   card$ = this.#activatedRoute.data.pipe(
     map((data) => data['card'] as Card),
     tap((card) => {
-      console.log(card);
-
       this.characterInfo.set(card.characterInfo);
       this.superAttackInfo.set(card.superAttackInfo);
       this.cardId.set(card.id ?? '');

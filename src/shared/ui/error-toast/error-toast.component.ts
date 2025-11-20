@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ErrorToastService } from '~/src/shared/services/error-toast-service/error-toast.service';
+import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
 
 @Component({
   selector: 'app-error-toast',

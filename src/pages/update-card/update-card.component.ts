@@ -11,14 +11,16 @@ import {
 import { catchError, EMPTY, filter, map, of, switchMap, take } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../shared/services/auth-service/auth.service';
+import { AuthService } from '../../shared/api/auth-service/auth.service';
 import { LoaderComponent } from '../../shared/ui/loader/loader.component';
-import { ErrorToastService } from '../../shared/services/error-toast-service/error-toast.service';
+import { ErrorToastService } from '../../shared/api/error-toast-service/error-toast.service';
 import patchCardForm from '../../app/helpers/patch-card-form';
 import generateCard from '../../app/helpers/generate-card';
 import { CardFormComponent } from '../../widgets/ui/card-form/card-form.component';
-import { CardService } from '~/src/shared/services/card-service/card.service';
+import { CardService } from '~/src/shared/api/card-service/card.service';
 import { CardForm } from '~/src/widgets/model/card-form-interface';
+import { Card } from '~/src/shared/model/card-interface';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-update-card-form',
@@ -27,6 +29,7 @@ import { CardForm } from '~/src/widgets/model/card-form-interface';
     UbButtonDirective,
     LoaderComponent,
     CardFormComponent,
+    AsyncPipe,
   ],
   templateUrl: './update-card.component.html',
   styleUrl: './update-card.component.css',
@@ -39,7 +42,7 @@ import { CardForm } from '~/src/widgets/model/card-form-interface';
     }),
   ],
 })
-export class UpdateCardComponent implements AfterViewInit {
+export class UpdateCardComponent {
   readonly #cardService = inject(CardService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #router = inject(Router);
@@ -47,9 +50,16 @@ export class UpdateCardComponent implements AfterViewInit {
   readonly #errorToastService = inject(ErrorToastService);
   isLoading = signal(true);
   isError = signal(false);
-
+  card = signal<Card | null>(null);
   cardForm = new FormGroup({});
-
+  card$ = this.#activatedRoute.data.pipe(
+    map((data) => {
+      const card = data['card'] as Card;
+      this.card.set(card);
+      this.isLoading.set(false);
+      return card;
+    })
+  );
   onSubmit() {
     const nestedCardForm = this.cardForm.get(
       'cardForm'
@@ -74,6 +84,7 @@ export class UpdateCardComponent implements AfterViewInit {
           })
           .pipe(
             take(1),
+
             catchError(() => {
               this.isLoading.set(false);
               this.#errorToastService.showToast(
@@ -97,26 +108,8 @@ export class UpdateCardComponent implements AfterViewInit {
     const nestedCardForm = this.cardForm.get(
       'cardForm'
     ) as FormGroup<CardForm> | null;
-    if (nestedCardForm) {
-      this.#activatedRoute.params
-        .pipe(
-          take(1),
-          switchMap((params) => {
-            const id = params['id'];
-            return this.#cardService.getCardById(id);
-          }),
-          map((card) => {
-            patchCardForm(nestedCardForm, card);
-            this.isLoading.set(false);
-            return card;
-          }),
-          catchError(() => {
-            this.isLoading.set(false);
-            this.#errorToastService.showToast('Card not found');
-            return EMPTY;
-          })
-        )
-        .subscribe();
+    if (nestedCardForm && this.card()) {
+      patchCardForm(nestedCardForm, this.card() as Card);
     }
   }
 }

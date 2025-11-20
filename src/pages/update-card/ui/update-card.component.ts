@@ -11,16 +11,16 @@ import {
 import { catchError, EMPTY, filter, map, of, switchMap, take } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../shared/api/auth-service/auth.service';
-import { LoaderComponent } from '../../shared/ui/loader/loader.component';
-import { ErrorToastService } from '../../shared/api/error-toast-service/error-toast.service';
-import patchCardForm from '../../app/helpers/patch-card-form';
-import generateCard from '../../app/helpers/generate-card';
-import { CardFormComponent } from '../../widgets/ui/card-form/card-form.component';
-import { CardService } from '~/src/shared/api/card-service/card.service';
+import { AuthService } from '../../../shared/api/auth-service/auth.service';
+import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
+import { ErrorToastService } from '../../../shared/api/error-toast-service/error-toast.service';
+import patchCardForm from '../../../app/helpers/patch-card-form';
+import generateCard from '../../../app/helpers/generate-card';
+import { CardFormComponent } from '../../../widgets/ui/card-form/card-form.component';
 import { CardForm } from '~/src/widgets/model/card-form-interface';
 import { Card } from '~/src/shared/model/card-interface';
 import { AsyncPipe } from '@angular/common';
+import { UpdateCardService } from '../api/update-card.service';
 
 @Component({
   selector: 'app-update-card-form',
@@ -43,7 +43,7 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class UpdateCardComponent {
-  readonly #cardService = inject(CardService);
+  readonly #updateCardService = inject(UpdateCardService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #router = inject(Router);
   readonly #authService = inject(AuthService);
@@ -68,12 +68,14 @@ export class UpdateCardComponent {
       return;
     }
     if (nestedCardForm.valid) {
+      console.log(nestedCardForm.value);
+
       const { characterInfo, passiveDetails, superAttackInfo } =
         generateCard(nestedCardForm);
 
       if (this.#authService.user() !== null) {
         this.isLoading.set(true);
-        this.#cardService
+        this.#updateCardService
           .patchCard(this.#activatedRoute.snapshot.params['id'], {
             creatorName: this.#authService.user()?.displayName ?? '',
             creatorId: this.#authService.user()?.uid ?? '',

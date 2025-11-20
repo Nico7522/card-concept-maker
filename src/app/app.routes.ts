@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { CreateCardComponent } from '../pages/create-card/create-card.component';
+import { CreateCardComponent } from '../pages/create-card/ui/create-card.component';
 import { canAccessGuard } from '../features/guards/can-access.guard';
 import { getCardsResolver } from '../pages/my-cards/api/get-cards.resolver';
 import { getCardResolver } from '../shared/api/card-resolver/get-card.resolver';
@@ -29,7 +29,7 @@ export const routes: Routes = [
   {
     path: 'card/:id/update',
     loadComponent: () =>
-      import('../pages/update-card/update-card.component').then(
+      import('../pages/update-card/ui/update-card.component').then(
         (m) => m.UpdateCardComponent
       ),
     canActivate: [canAccessGuard],

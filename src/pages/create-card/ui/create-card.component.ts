@@ -21,7 +21,7 @@ import { catchError, EMPTY, Subject, take } from 'rxjs';
 
 import { Router } from '@angular/router';
 
-import { UbButtonDirective } from '../../../components/ui/button';
+import { UbButtonDirective } from '../../../../components/ui/button';
 import { LoaderComponent } from '~/src/shared/ui/loader/loader.component';
 import { CardFormComponent } from '~/src/widgets/ui/card-form/card-form.component';
 import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
@@ -32,8 +32,8 @@ import generateCard from '~/src/app/helpers/generate-card';
 import { CardForm } from '~/src/widgets/model/card-form-interface';
 import { CardComponent } from '~/src/shared/ui/card/card.component';
 import { AuthService } from '~/src/shared/api/auth-service/auth.service';
-import { CardService } from '~/src/shared/api/card-service/card.service';
 import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
+import { CreateCardService } from '../api/create-card.service';
 
 @Component({
   selector: 'app-create-card-form',
@@ -56,7 +56,7 @@ import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-to
 })
 export class CreateCardComponent implements OnDestroy {
   readonly #authService = inject(AuthService);
-  readonly #cardService = inject(CardService);
+  readonly #createCardService = inject(CreateCardService);
   readonly #errorToastService = inject(ErrorToastService);
   readonly #router = inject(Router);
   isFormUntouched = signal(true);
@@ -96,7 +96,7 @@ export class CreateCardComponent implements OnDestroy {
       if (this.#authService.user() !== null) {
         this.isLoading.set(true);
 
-        this.#cardService
+        this.#createCardService
           .createCard({
             creatorName: this.#authService.user()?.displayName ?? '',
             creatorId: this.#authService.user()?.uid ?? '',

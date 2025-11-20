@@ -1,30 +1,30 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { map, switchMap, of } from 'rxjs';
+import { collection, doc, docData, Firestore } from '@angular/fire/firestore';
+import { CanActivateFn } from '@angular/router';
+import { map, switchMap } from 'rxjs';
 import { AuthService } from '~/src/shared/api/auth-service/auth.service';
-import { CardService } from '~/src/shared/api/card-service/card.service';
+import { Card } from '~/src/shared/model/card-interface';
 
 export const canAccessGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
-  const cardService = inject(CardService);
-  const router = inject(Router);
-
-  const cardId = route.paramMap.get('id');
-
-  if (!cardId) {
-    router.navigate(['/']);
-    return false;
-  }
-
-  return authService.user$.pipe(
-    switchMap((user) => {
-      return cardService.getCardById(cardId).pipe(
-        map((card) => {
+  const firestore = inject(Firestore);
+  const cardsCollection = collection(firestore, 'cards');
+  return docData(doc(cardsCollection, route.params['id']), {
+    idField: 'id',
+  }).pipe(
+    map((card) => {
+      if (!card) {
+        throw new Error('Card not found');
+      }
+      return card as Card;
+    }),
+    switchMap((card) => {
+      return authService.user$.pipe(
+        map((user) => {
           if (card?.creatorId === user?.uid) {
             return true;
           }
-          router.navigate(['/']);
-          return false;
+          throw new Error('Unauthorized');
         })
       );
     })

@@ -9,7 +9,7 @@ import {
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroArrowLeft,
@@ -19,15 +19,25 @@ import {
   heroMagnifyingGlassPlus,
 } from '@ng-icons/heroicons/outline';
 import { SuperAttackDetailsComponent } from '../../../shared/ui/super-attack-details/super-attack-details.component';
-import { catchError, EMPTY, map, shareReplay, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  map,
+  shareReplay,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
-import { ErrorFetchingComponent } from '../../../shared/ui/error-fetching/error-fetching.component';
 import { SuperAttack } from '../../../shared/model/super-attack-interface';
 import { Character } from '../../../shared/model/character-interface';
 import { AuthService } from '../../../shared/api/auth-service/auth.service';
 import { Card } from '../../../shared/model/card-interface';
 import { UbButtonDirective } from '~/components/ui/button';
+import { DeleteConfirmationModalComponent } from './delete-confirmation-modal/delete-confirmation-modal.component';
+import { DeleteCardService } from '../api/delete-card.service';
+import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
 
 @Component({
   selector: 'app-card-details',
@@ -37,7 +47,6 @@ import { UbButtonDirective } from '~/components/ui/button';
     AsyncPipe,
     LoaderComponent,
     RouterModule,
-    ErrorFetchingComponent,
   ],
   templateUrl: './card-details.component.html',
   styleUrl: './card-details.component.css',
@@ -59,6 +68,9 @@ export class CardDetailsComponent {
   ];
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
+  readonly #deleteCardService = inject(DeleteCardService);
+  readonly #errorToastService = inject(ErrorToastService);
+  readonly #router = inject(Router);
   isLoading = signal(true);
   isError = signal(false);
   characterInfo = signal<Character | null>(null);
@@ -87,6 +99,11 @@ export class CardDetailsComponent {
       );
     })
   );
+  confirmationDelete = viewChild.required('confirmationDelete', {
+    read: ViewContainerRef,
+  });
+  confirmationDeleteRef: ComponentRef<DeleteConfirmationModalComponent> | null =
+    null;
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   saDetails = viewChild.required('saDetails', { read: ViewContainerRef });
@@ -121,6 +138,9 @@ export class CardDetailsComponent {
     if (this.saDetailsRef) {
       this.saDetailsRef.destroy();
     }
+    if (this.confirmationDeleteRef) {
+      this.confirmationDeleteRef.destroy();
+    }
   }
 
   getRarityImage(characterInfo: Character | null): string {
@@ -135,5 +155,39 @@ export class CardDetailsComponent {
     return characterInfo.class === 'super'
       ? `super${characterInfo.type}.png`
       : `extreme${characterInfo.type}.png`;
+  }
+
+  openDeleteConfirmationModal() {
+    const componentRef = this.confirmationDelete().createComponent(
+      DeleteConfirmationModalComponent,
+      {
+        bindings: [
+          outputBinding('confirm', (result: boolean) => {
+            if (result) {
+              this.isLoading.set(true);
+              this.#deleteCardService
+                .deleteCard(this.cardId() ?? '')
+                .pipe(
+                  take(1),
+                  tap(() => {
+                    this.#router.navigate(['/']);
+                    this.isLoading.set(false);
+                  }),
+                  catchError(() => {
+                    this.#errorToastService.showToast(
+                      'An error occurred while deleting the card'
+                    );
+                    this.isLoading.set(false);
+                    return EMPTY;
+                  })
+                )
+                .subscribe();
+            }
+            componentRef.destroy();
+          }),
+        ],
+      }
+    );
+    this.confirmationDeleteRef = componentRef;
   }
 }

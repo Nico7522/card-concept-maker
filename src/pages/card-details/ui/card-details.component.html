@@ -6,10 +6,14 @@
     </h1>
 
     @if (canUpdate$ | async) {
-    <div class="flex w-full lg:w-[30%] justify-end mb-3 lg:mb-5">
+    <div class="flex w-full lg:w-[30%] justify-end mb-3 lg:mb-5 gap-2">
         <button ubButton size="sm" class="cursor-pointer bg-blue-600 hover:bg-blue-700"
             [routerLink]="['/card', cardId(), 'update']">
             Update card
+        </button>
+        <button ubButton size="sm" class="cursor-pointer bg-red-600 hover:bg-red-700"
+            (click)="openDeleteConfirmationModal()">
+            Delete card
         </button>
     </div>
     }
@@ -22,9 +26,7 @@
             <img [src]="'/' + card.characterInfo?.class + card.characterInfo?.type + '.png'"
                 [alt]="card.characterInfo?.class + ' ' + card.characterInfo?.type" class="w-10 h-10 object-contain">
         </div>
-        <!-- Background -->
-        <!-- <div class="absolute details top-0 left-0 w-full h-full bg-black blur-md opacity-50">
-        </div> -->
+
 
         <!-- Logos en haut à droite qui se superposent sur la bordure -->
         <!-- Arrow for switch between first and second part  -->
@@ -217,8 +219,9 @@
             }
     </div>
 </div>
-} @else if (isError()) {
-<app-error-fetching [message]="'An error occurred while loading the card details'" />
-} @else {
+}
+
+@if(isLoading()) {
 <app-loader [isVisible]="isLoading()" />
 }
+<ng-container #confirmationDelete />

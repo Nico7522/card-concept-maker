@@ -1,94 +1,120 @@
-<div class="min-h-screen p-8">
+<div class="min-h-screen p-4 md:p-8">
     <div class="max-w-7xl mx-auto">
+
+        <div class="text-center mb-10">
+            <h1 class="dokkan-header text-3xl md:text-5xl mb-2">My Cards</h1>
+            <p class="text-gray-400">Manage your collection</p>
+        </div>
 
         @if (cards$ | async; as cards) {
         @if (cards?.length === 0) {
-        <div class="text-center py-16">
-            <h2 class="text-4xl font-bold text-white mb-4">No cards created</h2>
-            <a routerLink="/" class="text-xl text-gray-400 hover:text-gray-300 hover:underline">Start creating your
-                first card !</a>
+        <div class="dokkan-panel p-16 text-center flex flex-col items-center justify-center gap-6 bg-opacity-80">
+            <div class="w-24 h-24 rounded-full bg-gray-800 flex items-center justify-center border-2 border-gray-600">
+                <svg class="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                    </path>
+                </svg>
+            </div>
+            <div class="space-y-2">
+                <h2 class="text-2xl font-bold text-gray-300">No cards created yet</h2>
+                <p class="text-gray-500">Your journey begins here.</p>
+            </div>
+            <a routerLink="/"
+                class="px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 text-black font-bold uppercase tracking-wider rounded shadow-lg transform transition hover:scale-105">
+                Create Card
+            </a>
         </div>
         }
-
         @else {
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             @for (card of cards; track $index) {
             <div [routerLink]="['/card', card.id]"
-                class="card cursor-pointer bg-black border border-gray-700 rounded-2xl p-6 shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-gray-500/25 relative overflow-hidden">
+                class="group cursor-pointer relative bg-gray-900/90 border border-gray-700 rounded-xl overflow-hidden hover:border-orange-500 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20 flex flex-col">
 
-                <!-- Card Header -->
-                <div class="relative z-10 flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-bold text-white drop-shadow-lg">{{ card.cardName }}</h3>
-                    <div class="flex items-center">
-                        @if (card.characterInfo?.isLegendaryCharacter) {
-                        <img src="/cha_rare_sm_lr.png" alt="Légendaire" class="h-6 w-auto mr-0" title="Légendaire">
-                        } @else {
-                        <img src="/cha_rare_sm_ur.png" alt="Ultra Rare" class="h-6 w-auto" title="Ultra Rare">
-                        }
-                        @if (card.characterInfo?.class && card.characterInfo?.type) {
-                        <img [src]="'/' + card.characterInfo?.class + card.characterInfo?.type + '.png'"
-                            alt="{{ card.characterInfo?.class }} {{ card.characterInfo?.type }}" class="h-6 w-auto mr-0"
-                            title="{{ card.characterInfo?.class }} {{ card.characterInfo?.type }}">
-                        }
-                    </div>
-                </div>
+                <!-- Type Stripe -->
+                <div class="h-1 w-full" [ngClass]="{
+                    'bg-blue-500': card.characterInfo?.type === 'agl',
+                    'bg-green-500': card.characterInfo?.type === 'teq',
+                    'bg-purple-500': card.characterInfo?.type === 'int',
+                    'bg-red-500': card.characterInfo?.type === 'str',
+                    'bg-yellow-500': card.characterInfo?.type === 'phy'
+                }"></div>
 
-                <!-- Card Body -->
-                <div class="relative z-10">
-                    @if (card.characterInfo) {
-                    <!-- Stats -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/20">
-                        <div class="flex justify-around">
-                            <div class="text-center">
-                                <div class="text-xs font-semibold text-white/80 uppercase tracking-wide mb-1">ATK</div>
-                                <div class="text-2xl font-bold text-white drop-shadow-lg">{{
-                                    card.characterInfo.stats.attack }}</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-xs font-semibold text-white/80 uppercase tracking-wide mb-1">DEF</div>
-                                <div class="text-2xl font-bold text-white drop-shadow-lg">{{
-                                    card.characterInfo.stats.defense }}</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-xs font-semibold text-white/80 uppercase tracking-wide mb-1">HP</div>
-                                <div class="text-2xl font-bold text-white drop-shadow-lg">{{ card.characterInfo.stats.hp
-                                    }}</div>
-                            </div>
+                <div class="p-5 flex-1 flex flex-col gap-4">
+                    <!-- Header -->
+                    <div class="flex justify-between items-start gap-3">
+                        <h3
+                            class="text-lg font-bold text-white group-hover:text-orange-400 transition-colors line-clamp-2">
+                            {{ card.cardName }}
+                        </h3>
+                        <div class="flex items-center gap-1 shrink-0">
+                            @if (card.characterInfo?.isLegendaryCharacter) {
+                            <img src="/cha_rare_sm_lr.png" alt="LR" class="h-6 w-auto drop-shadow-md">
+                            } @else {
+                            <img src="/cha_rare_sm_ur.png" alt="UR" class="h-6 w-auto drop-shadow-md">
+                            }
+                            @if (card.characterInfo?.class && card.characterInfo?.type) {
+                            <img [src]="'/' + card.characterInfo?.class + card.characterInfo?.type + '.png'" alt="Type"
+                                class="h-6 w-auto drop-shadow-md">
+                            }
                         </div>
                     </div>
 
-                    <!-- Categories -->
-                    @if (card.characterInfo.categories && card.characterInfo.categories.length > 0) {
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        @for (category of card.characterInfo.categories; track $index) {
-                        <span
-                            class="bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium border border-white/30">
-                            {{ category }}
-                        </span>
-                        }
+                    <!-- Stats Grid -->
+                    @if (card.characterInfo) {
+                    <div class="grid grid-cols-3 gap-2 p-3 bg-black/40 rounded-lg border border-gray-800">
+                        <div class="text-center">
+                            <div class="text-[10px] font-bold text-gray-500 uppercase">ATK</div>
+                            <div class="font-mono text-sm font-bold text-white">{{ card.characterInfo.stats.attack }}
+                            </div>
+                        </div>
+                        <div class="text-center border-x border-gray-800">
+                            <div class="text-[10px] font-bold text-gray-500 uppercase">DEF</div>
+                            <div class="font-mono text-sm font-bold text-white">{{ card.characterInfo.stats.defense }}
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-[10px] font-bold text-gray-500 uppercase">HP</div>
+                            <div class="font-mono text-sm font-bold text-white">{{ card.characterInfo.stats.hp }}</div>
+                        </div>
                     </div>
-                    }
 
-                    <!-- Leader Skill -->
+                    <!-- Leader Skill Preview -->
                     @if (card.characterInfo.leaderSkill) {
-                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                        <div class="text-sm font-semibold text-white uppercase tracking-wide mb-2">Leader Skill</div>
-                        <p class="text-sm text-white/90 leading-relaxed">{{ card.characterInfo.leaderSkill }}</p>
+                    <div class="flex-1">
+                        <p class="text-xs text-gray-400 line-clamp-3 italic border-l-2 border-gray-700 pl-3">
+                            {{ card.characterInfo.leaderSkill }}
+                        </p>
                     </div>
                     }
-                    }
-                </div>
 
-                <!-- Card Footer -->
-                <div class="relative z-10 mt-6 pt-4 border-t border-white/20">
-                    <span class="text-sm text-white/70 italic">Créé par {{ card.creatorName }}</span>
+                    <!-- Footer -->
+                    <div class="flex justify-between items-end pt-4 mt-auto border-t border-gray-800">
+                        <div class="flex flex-wrap gap-1">
+                            @for (cat of card.characterInfo.categories | slice:0:2; track $index) {
+                            <span
+                                class="px-2 py-0.5 bg-gray-800 rounded text-[10px] text-gray-300 border border-gray-700">
+                                {{ cat }}
+                            </span>
+                            }
+                            @if (card.characterInfo.categories && card.characterInfo.categories.length > 2) {
+                            <span
+                                class="px-2 py-0.5 bg-gray-800 rounded text-[10px] text-gray-500 border border-gray-700">
+                                +{{ card.characterInfo.categories.length - 2 }}
+                            </span>
+                            }
+                        </div>
+                        <span class="text-[10px] text-gray-600 uppercase tracking-wider">
+                            {{ card.creatorName }}
+                        </span>
+                    </div>
+                    }
                 </div>
             </div>
             }
         </div>
         }
         }
-
-
     </div>
 </div>

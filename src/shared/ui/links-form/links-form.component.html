@@ -1,23 +1,35 @@
 <div [formGroupName]="controlKey()">
-    <div class="flex flex-col lg:px-10 mt-5 w-full mb-10" formArrayName="links">
-        <label class=" my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md lg:ml-20" oriLabel>
-            Links</label>
+    <div class="flex flex-col gap-4 w-full" formArrayName="links">
         @for (control of this.links.controls; track control; let index = $index) {
-        <div class="flex gap-1 m-auto w-full lg:px-20">
-            <ng-select class="my-2 select flex-1 ng-select" [formControlName]="index">
-                @for (link of linkSkill; track $index) {
-                <ng-option class="bg-black" [value]="link.value">{{link.linkName}}</ng-option>
-                }
-            </ng-select>
-            <button type="button" class="h-12 w-10 mt-2" [disabled]="index === 0" (click)="removeLink(index)" ubButton
-                variant="destructive" size="icon">
-                <ng-icon name="heroArchiveBoxXMark" class="h-4 w-4" />
+        <div class="flex gap-2 items-center w-full">
+            <div class="flex-1">
+                <ng-select class="custom-select" 
+                    [searchable]="true" 
+                    [clearable]="true"
+                    [formControlName]="index"
+                    placeholder="Select Link Skill">
+                    @for (link of linkSkill; track $index) {
+                        <ng-option [value]="link.value">{{link.linkName}}</ng-option>
+                    }
+                </ng-select>
+            </div>
+            
+            <button type="button" 
+                class="p-3 bg-red-900/30 border border-red-900/50 rounded hover:bg-red-900/50 text-red-400 transition-colors h-[42px] w-[42px] flex items-center justify-center"
+                [disabled]="index === 0"
+                [class.opacity-50]="index === 0"
+                [class.cursor-not-allowed]="index === 0"
+                (click)="removeLink(index)">
+                <ng-icon name="heroArchiveBoxXMark" class="h-5 w-5" />
             </button>
         </div>
         }
-        <button type="button" class="h-12 w-10 mt-2 m-auto rounded-lg bg-green-900 hover:bg-green-800"
-            (click)="addLink()" ubButton size="icon">
+        
+        <button type="button" 
+            class="mt-2 py-2 px-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded text-sm text-gray-300 w-full transition-colors flex items-center justify-center gap-2"
+            (click)="addLink()">
             <ng-icon name="heroPlus" class="h-4 w-4" />
+            Add Link Skill
         </button>
     </div>
 </div>

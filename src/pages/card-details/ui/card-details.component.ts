@@ -17,6 +17,8 @@ import {
   heroChevronDoubleRight,
   heroChevronDoubleLeft,
   heroMagnifyingGlassPlus,
+  heroPencilSquare,
+  heroTrash,
 } from '@ng-icons/heroicons/outline';
 import { SuperAttackDetailsComponent } from '../../../shared/ui/super-attack-details/super-attack-details.component';
 import {
@@ -57,6 +59,8 @@ import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-to
       heroChevronDoubleRight,
       heroChevronDoubleLeft,
       heroMagnifyingGlassPlus,
+      heroPencilSquare,
+      heroTrash,
     }),
   ],
 })

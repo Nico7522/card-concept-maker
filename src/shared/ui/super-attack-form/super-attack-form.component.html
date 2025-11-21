@@ -1,43 +1,52 @@
-<div [formGroupName]="controlKey()" class="flex flex-col  gap-1 lg:px-20 mt-5 mb-10">
-    <div class="flex flex-col flex-1 relative lg:px-10">
-        <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="superAttackName">Super
-            Attack Name</label>
-        <input placeholder="Divine Dance of Fire ..." class="pl-2" id="superAttackName"
-            formControlName="superAttackName" type="text">
-    </div>
-    <div class="flex flex-col flex-1 relative lg:px-10">
-        <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="superAttack">Super
-            Attack</label>
-        <input placeholder="Greatly raises ATK & DEF and causes colossal damage to enemy ..." class="pl-2"
-            id="superAttack" formControlName="superAttackEffect" type="text">
-        @if (parentFormGroup.get('superAttack.superAttackEffect')?.dirty &&
-        parentFormGroup.get('superAttack.superAttackEffect')?.getError('required')) {
-        <app-error errorMessage="super attack field required" />
-        }
+<div [formGroupName]="controlKey()" class="flex flex-col gap-6">
+    <!-- Normal Super Attack -->
+    <div class="grid grid-cols-1 gap-4">
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-gray-400 uppercase" for="superAttackName">Super Attack Name</label>
+            <input placeholder="e.g. Kamehameha"
+                class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
+                id="superAttackName" formControlName="superAttackName" type="text">
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-gray-400 uppercase" for="superAttack">Super Attack Effect</label>
+            <input rows="2" placeholder="e.g. Raises ATK and causes immense damage..."
+                class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
+                id="superAttack" formControlName="superAttackEffect" />
+            @if (parentFormGroup.get('superAttack.superAttackEffect')?.dirty &&
+            parentFormGroup.get('superAttack.superAttackEffect')?.getError('required')) {
+            <app-error errorMessage="Effect description is required" />
+            }
+        </div>
     </div>
 
+    <!-- Ultra Super Attack (LR Only) -->
     @if (isLegendaryCharacter()) {
-    <div class="flex flex-col flex-1 relative lg:px-10">
-        <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md mt-5"
-            for="ultraSuperAttackName">Ultra
-            Super
-            Attack Name</label>
-        <input placeholder="Kamehameha & Big Bang Attack ..." class="pl-2" id="ultraSuperAttackName"
-            formControlName="ultraSuperAttackName" type="text">
-        @if ( parentFormGroup.get('superAttack.ultraSuperAttackName')?.dirty &&
-        parentFormGroup.get('superAttack.ultraSuperAttackName')?.getError('required')) {
-        <app-error errorMessage="super attack name field required" />
-        }
-        <label class="my-2 scroll-m-20 text-1xl font-extrabold tracking-tight lg:text-md" for="ultraSuperAttack">Ultra
-            Super
-            Attack</label>
-        <input placeholder="Greatly raises ATK & DEF and causes mega-colossal damage to enemy ..." class="pl-2"
-            id="ultraSuperAttack" formControlName="ultraSuperAttackEffect" type="text">
-        @if (parentFormGroup.get('superAttack.ultraSuperAttackEffect')?.dirty &&
-        parentFormGroup.get('superAttack.ultraSuperAttackEffect')?.hasError('ultraSuperAttackRequired')) {
-        <app-error errorMessage="Ultra super attack field is required for legendary character" />
-        }
+    <div class="p-4 bg-purple-900/20 rounded border border-purple-500/30 mt-2">
+        <h4 class="text-purple-400 font-bold mb-4 text-sm uppercase tracking-wider">Ultra Super Attack (18 Ki+)</h4>
+        <div class="grid grid-cols-1 gap-4">
+            <div class="flex flex-col gap-2">
+                <label class="text-sm font-semibold text-gray-400 uppercase" for="ultraSuperAttackName">Name</label>
+                <input placeholder="e.g. Final Kamehameha"
+                    class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-purple-500 transition-colors"
+                    id="ultraSuperAttackName" formControlName="ultraSuperAttackName" type="text">
+                @if (parentFormGroup.get('superAttack.ultraSuperAttackName')?.dirty &&
+                parentFormGroup.get('superAttack.ultraSuperAttackName')?.getError('required')) {
+                <app-error errorMessage="Name is required" />
+                }
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="text-sm font-semibold text-gray-400 uppercase" for="ultraSuperAttack">Effect</label>
+                <input rows="2" placeholder="e.g. Greatly raises ATK & DEF..."
+                    class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-purple-500 transition-colors resize-none"
+                    id="ultraSuperAttack" formControlName="ultraSuperAttackEffect" />
+                @if (parentFormGroup.get('superAttack.ultraSuperAttackEffect')?.dirty &&
+                parentFormGroup.get('superAttack.ultraSuperAttackEffect')?.hasError('ultraSuperAttackRequired')) {
+                <app-error errorMessage="Effect is required for LR characters" />
+                }
+            </div>
+        </div>
     </div>
     }
-
 </div>

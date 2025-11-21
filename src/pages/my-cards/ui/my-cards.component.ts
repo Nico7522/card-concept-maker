@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass, SlicePipe } from '@angular/common';
 import { map } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Card } from '../../../shared/model/card-interface';
@@ -7,7 +7,7 @@ import { RouterService } from '../../../shared/api/router/router.service';
 
 @Component({
   selector: 'app-my-cards',
-  imports: [AsyncPipe, RouterModule],
+  imports: [AsyncPipe, RouterModule, NgClass, SlicePipe],
   templateUrl: './my-cards.component.html',
   styleUrl: './my-cards.component.css',
 })

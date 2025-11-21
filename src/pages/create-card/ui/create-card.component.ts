@@ -21,7 +21,6 @@ import { catchError, EMPTY, Subject, take } from 'rxjs';
 
 import { Router } from '@angular/router';
 
-import { UbButtonDirective } from '../../../../components/ui/button';
 import { LoaderComponent } from '~/src/shared/ui/loader/loader.component';
 import { CardFormComponent } from '~/src/widgets/ui/card-form/card-form.component';
 import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
@@ -37,12 +36,7 @@ import { CreateCardService } from '../api/create-card.service';
 
 @Component({
   selector: 'app-create-card-form',
-  imports: [
-    ReactiveFormsModule,
-    LoaderComponent,
-    CardFormComponent,
-    UbButtonDirective,
-  ],
+  imports: [ReactiveFormsModule, LoaderComponent, CardFormComponent],
   templateUrl: './create-card.component.html',
   styleUrl: './create-card.component.css',
   viewProviders: [

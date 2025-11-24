@@ -58,3 +58,15 @@ export const activeSkillEffectRequired: ValidatorFn = (
   }
   return null;
 };
+
+export const artworkFormat: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if (!control.value) {
+    return null;
+  }
+  const validImageRegex = /\.(jpeg|jpg|png|gif|webp)$/i;
+  return validImageRegex.test(control.value)
+    ? null
+    : { invalidArtworkFormat: true };
+};

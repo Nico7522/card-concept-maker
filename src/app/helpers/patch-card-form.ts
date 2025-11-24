@@ -14,6 +14,7 @@ import {
 export default function patchCardForm(form: FormGroup<CardForm>, card: Card) {
   if (card.characterInfo) {
     form.patchValue(card);
+    form.get('artwork.image')?.patchValue('card.artwork ?? ');
     form.get('type')?.patchValue(card.characterInfo.type);
     form.get('class')?.patchValue(card.characterInfo.class);
     form

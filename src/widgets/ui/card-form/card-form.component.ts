@@ -4,6 +4,9 @@ import {
   HostListener,
   inject,
   input,
+  OnDestroy,
+  OnInit,
+  output,
   signal,
 } from '@angular/core';
 import {
@@ -17,7 +20,7 @@ import {
 import { ErrorComponent } from '../../../shared/ui/error/error.component';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { SuperAttackFormComponent } from '~/src/shared/ui/super-attack-form/super-attack-form.component';
 import { CategoriesFormComponent } from '~/src/shared/ui/categories-form/categories-form.component';
 import { LinksFormComponent } from '~/src/shared/ui/links-form/links-form.component';
@@ -25,6 +28,8 @@ import { PassiveFormComponent } from '~/src/shared/ui/passive-form/passive-form.
 import { ActiveSkillFormComponent } from '~/src/shared/ui/active-skill-form/active-skill-form.component';
 import { BaseStatFormComponent } from '~/src/shared/ui/base-stat-form/base-stat-form.component';
 import { CardForm } from '../../model/card-form-interface';
+import { ArtworkFormComponent } from '~/src/shared/ui/artwork-form/artwork-form.component';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-card-form',
@@ -39,6 +44,7 @@ import { CardForm } from '../../model/card-form-interface';
     NgOptionComponent,
     BaseStatFormComponent,
     ReactiveFormsModule,
+    ArtworkFormComponent,
   ],
   templateUrl: './card-form.component.html',
   styleUrl: './card-form.component.css',
@@ -49,25 +55,20 @@ import { CardForm } from '../../model/card-form-interface';
     },
   ],
 })
-export class CardFormComponent {
+export class CardFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
   readonly #destroyRef = inject(DestroyRef);
-
+  artwork = output<FormData>();
   controlKey = input.required<string>();
   label = input.required<string>();
+
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }
   isLegendary = signal(false);
 
-  @HostListener('window:beforeunload', ['$event'])
-  onBeforeUnload(event: Event): void {
-    const confirmationMessage = 'Are you sure ?';
-    (event as BeforeUnloadEvent).returnValue = confirmationMessage;
-  }
   ngOnDestroy(): void {
     this.parentFormGroup.removeControl(this.controlKey());
-    window.removeEventListener('beforeunload', this.onBeforeUnload);
   }
 
   ngOnInit(): void {
@@ -103,5 +104,8 @@ export class CardFormComponent {
       .subscribe((value) => {
         this.isLegendary.set(value as boolean);
       });
+  }
+  handleArtwork(formData: FormData) {
+    this.artwork.emit(formData);
   }
 }

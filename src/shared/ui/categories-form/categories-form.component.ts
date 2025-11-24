@@ -14,10 +14,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { NgIconComponent } from '@ng-icons/core';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 
-import { UbButtonDirective } from '~/components/ui/button';
 import { categories } from '~/src/app/select-options/categories';
 import { CategoriesFormGroup } from '../../model/categories-form-group-interface';
 @Component({
@@ -26,7 +25,6 @@ import { CategoriesFormGroup } from '../../model/categories-form-group-interface
     ReactiveFormsModule,
     NgSelectComponent,
     NgOptionComponent,
-    UbButtonDirective,
     NgIconComponent,
   ],
   templateUrl: './categories-form.component.html',

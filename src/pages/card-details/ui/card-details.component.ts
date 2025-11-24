@@ -84,6 +84,7 @@ export class CardDetailsComponent {
   card$ = this.#activatedRoute.data.pipe(
     map((data) => data['card'] as Card),
     tap((card) => {
+      console.log(card);
       this.characterInfo.set(card.characterInfo);
       this.superAttackInfo.set(card.superAttackInfo);
       this.cardId.set(card.id ?? '');

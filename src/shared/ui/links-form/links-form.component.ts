@@ -16,19 +16,12 @@ import {
 } from '@angular/forms';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { NgIcon } from '@ng-icons/core';
-import { UbButtonDirective } from '~/components/ui/button';
 import { Links } from '~/src/app/select-options/links';
 import { LinksFormGroup } from '../../model/links-form-group-interface';
 
 @Component({
   selector: 'app-links-form',
-  imports: [
-    NgSelectComponent,
-    NgOptionComponent,
-    NgIcon,
-    ReactiveFormsModule,
-    UbButtonDirective,
-  ],
+  imports: [NgSelectComponent, NgOptionComponent, NgIcon, ReactiveFormsModule],
   templateUrl: './links-form.component.html',
   styleUrl: './links-form.component.css',
   viewProviders: [

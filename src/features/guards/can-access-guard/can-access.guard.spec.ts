@@ -4,8 +4,8 @@ import { CanActivateFn } from '@angular/router';
 import { canAccessGuard } from './can-access.guard';
 
 describe('canAccessGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => canAccessGuard(...guardParameters));
+  const executeGuard: CanActivateFn = (...guardParameters) =>
+    TestBed.runInInjectionContext(() => canAccessGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

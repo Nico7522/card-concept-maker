@@ -19,7 +19,6 @@ import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { ErrorComponent } from '../error/error.component';
 import { effectDuration } from '~/src/app/select-options/effect-duration';
 import { NgIcon } from '@ng-icons/core';
-import { UbButtonDirective } from '~/components/ui/button';
 import {
   EffectFormGroup,
   PassiveFormGroup,
@@ -34,7 +33,6 @@ import {
     NgOptionComponent,
     ErrorComponent,
     NgIcon,
-    UbButtonDirective,
   ],
   templateUrl: './passive-form.component.html',
   styleUrl: './passive-form.component.css',

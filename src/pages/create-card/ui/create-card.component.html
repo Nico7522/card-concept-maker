@@ -6,7 +6,7 @@
 
     <div class="dokkan-panel p-6 md:p-8 bg-opacity-90 ">
         <form class="flex flex-col gap-8" (ngSubmit)="onSubmit()" [formGroup]="cardForm">
-            <app-card-form controlKey="cardForm" label="Card Details" />
+            <app-card-form controlKey="cardForm" label="Card Details" (artwork)="handleArtwork($event)" />
 
             <div class="flex justify-center mt-8 pt-8 border-t border-gray-700">
                 <button type="submit" [disabled]="cardForm.invalid"

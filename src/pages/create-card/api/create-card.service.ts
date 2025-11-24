@@ -16,6 +16,11 @@ export class CreateCardService {
   readonly #firestore = inject(Firestore);
   readonly #cardsCollection = collection(this.#firestore, 'cards');
 
+  /**
+   * Creates a new card in the database.
+   * @param card - The card to create.
+   * @returns An observable of document reference.
+   */
   createCard(card: Card) {
     return from(
       runInInjectionContext(this.#injector, () => {

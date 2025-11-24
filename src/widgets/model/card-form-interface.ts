@@ -8,6 +8,7 @@ import { ActiveSkillFormGroup } from '~/src/shared/model/active-skill-form-group
 
 export interface CardForm {
   cardName: FormControl<string>;
+  artwork: FormControl<string | null>;
   type: FormControl<string>;
   class: FormControl<string>;
   stats: FormGroup<BaseStatFormGroup>;

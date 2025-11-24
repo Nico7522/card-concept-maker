@@ -4,6 +4,7 @@ import { SuperAttack } from './super-attack-interface';
 
 export interface Card {
   id?: string;
+  artwork?: string | null;
   creatorName: string;
   creatorId: string;
   cardName: string;

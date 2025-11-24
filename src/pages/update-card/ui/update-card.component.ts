@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { UbButtonDirective } from '~/components/ui/button';
 import { provideIcons } from '@ng-icons/core';
 import {
   heroArchiveBoxXMark,
@@ -8,7 +7,7 @@ import {
   heroArrowLongRight,
   heroPlus,
 } from '@ng-icons/heroicons/outline';
-import { catchError, EMPTY, filter, map, of, switchMap, take } from 'rxjs';
+import { catchError, EMPTY, filter, map, switchMap, take } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../shared/api/auth-service/auth.service';
@@ -21,16 +20,12 @@ import { CardForm } from '~/src/widgets/model/card-form-interface';
 import { Card } from '~/src/shared/model/card-interface';
 import { AsyncPipe } from '@angular/common';
 import { UpdateCardService } from '../api/update-card.service';
+import { HasUnsavedChanges } from '~/src/features/model/has-unsavec-changes-interface';
+import { ArtworkService } from '~/src/shared/api/artwork-service/artwork.service';
 
 @Component({
   selector: 'app-update-card-form',
-  imports: [
-    ReactiveFormsModule,
-    UbButtonDirective,
-    LoaderComponent,
-    CardFormComponent,
-    AsyncPipe,
-  ],
+  imports: [ReactiveFormsModule, LoaderComponent, CardFormComponent, AsyncPipe],
   templateUrl: './update-card.component.html',
   styleUrl: './update-card.component.css',
   viewProviders: [
@@ -42,16 +37,18 @@ import { UpdateCardService } from '../api/update-card.service';
     }),
   ],
 })
-export class UpdateCardComponent {
+export class UpdateCardComponent implements HasUnsavedChanges {
   readonly #updateCardService = inject(UpdateCardService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #router = inject(Router);
   readonly #authService = inject(AuthService);
   readonly #errorToastService = inject(ErrorToastService);
+  readonly #artworkService = inject(ArtworkService);
   isLoading = signal(true);
   isError = signal(false);
   card = signal<Card | null>(null);
   cardForm = new FormGroup({});
+  artwork = signal<FormData | null>(null);
   card$ = this.#activatedRoute.data.pipe(
     map((data) => {
       const card = data['card'] as Card;
@@ -68,8 +65,6 @@ export class UpdateCardComponent {
       return;
     }
     if (nestedCardForm.valid) {
-      console.log(nestedCardForm.value);
-
       const { characterInfo, passiveDetails, superAttackInfo } =
         generateCard(nestedCardForm);
 
@@ -80,14 +75,30 @@ export class UpdateCardComponent {
             creatorName: this.#authService.user()?.displayName ?? '',
             creatorId: this.#authService.user()?.uid ?? '',
             cardName: nestedCardForm.get('cardName')?.value ?? '',
+            artwork: nestedCardForm.get('artwork')?.value ?? null,
             characterInfo: characterInfo(),
             passiveDetails: passiveDetails(),
             superAttackInfo: superAttackInfo(),
           })
           .pipe(
             take(1),
-
-            catchError(() => {
+            switchMap(() => {
+              if (this.artwork()) {
+                return this.#artworkService
+                  .patchArtworkImage(this.artwork() as FormData)
+                  .pipe(
+                    switchMap((response) => {
+                      return this.#artworkService.patchArtworkName(
+                        this.card()?.id ?? '',
+                        response.filename
+                      );
+                    })
+                  );
+              }
+              return EMPTY;
+            }),
+            catchError((err) => {
+              console.log(err);
               this.isLoading.set(false);
               this.#errorToastService.showToast(
                 'An error occurred while updating the card'
@@ -113,5 +124,13 @@ export class UpdateCardComponent {
     if (nestedCardForm && this.card()) {
       patchCardForm(nestedCardForm, this.card() as Card);
     }
+  }
+
+  hasUnsavedChanges(): boolean {
+    return this.cardForm.dirty;
+  }
+
+  handleArtwork(formData: FormData) {
+    this.artwork.set(formData);
   }
 }

@@ -17,7 +17,7 @@ import {
   heroPlus,
 } from '@ng-icons/heroicons/outline';
 
-import { catchError, EMPTY, Subject, take } from 'rxjs';
+import { catchError, EMPTY, map, of, Subject, switchMap, take } from 'rxjs';
 
 import { Router } from '@angular/router';
 
@@ -33,6 +33,8 @@ import { CardComponent } from '~/src/shared/ui/card/card.component';
 import { AuthService } from '~/src/shared/api/auth-service/auth.service';
 import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
 import { CreateCardService } from '../api/create-card.service';
+import { HasUnsavedChanges } from '~/src/features/model/has-unsavec-changes-interface';
+import { ArtworkService } from '~/src/shared/api/artwork-service/artwork.service';
 
 @Component({
   selector: 'app-create-card-form',
@@ -48,18 +50,19 @@ import { CreateCardService } from '../api/create-card.service';
     }),
   ],
 })
-export class CreateCardComponent implements OnDestroy {
+export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   readonly #authService = inject(AuthService);
   readonly #createCardService = inject(CreateCardService);
   readonly #errorToastService = inject(ErrorToastService);
+  readonly #artworkService = inject(ArtworkService);
   readonly #router = inject(Router);
-  isFormUntouched = signal(true);
   isLoading = signal(false);
+  artwork = signal<FormData | null>(null);
+  forSubmitted = signal(false);
   passiveConditionActivation = passiveConditionActivation;
   effectDuration = effectDuration;
   categories = categories;
   links = Links;
-  isFirstPartShow = signal(true);
   title = signal('Card Details');
   canQuit$: Subject<boolean> = new Subject<boolean>();
   card = viewChild.required('card', { read: ViewContainerRef });
@@ -67,6 +70,7 @@ export class CreateCardComponent implements OnDestroy {
   cardForm = new FormGroup({});
 
   onSubmit() {
+    this.forSubmitted.set(true);
     // Retrieve the nested card form
     const nestedCardForm = this.cardForm.get(
       'cardForm'
@@ -79,7 +83,6 @@ export class CreateCardComponent implements OnDestroy {
 
     // Get the raw value of the nested card form
     const data = nestedCardForm.getRawValue();
-
     // If the nested card form is valid, generate the card
     if (nestedCardForm.valid) {
       const { characterInfo, passiveDetails, superAttackInfo } =
@@ -101,6 +104,20 @@ export class CreateCardComponent implements OnDestroy {
           })
           .pipe(
             take(1),
+            switchMap((data) => {
+              if (this.artwork()) {
+                return this.#artworkService
+                  .patchArtworkImage(this.artwork() as FormData)
+                  .pipe(
+                    switchMap((response) => {
+                      return this.#artworkService
+                        .patchArtworkName(data.id, response.filename)
+                        .pipe(map(() => data));
+                    })
+                  );
+              }
+              return of(data);
+            }),
             catchError(() => {
               this.isLoading.set(false);
               this.#errorToastService.showToast(
@@ -129,5 +146,13 @@ export class CreateCardComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.componentRefs?.destroy();
+  }
+
+  hasUnsavedChanges() {
+    return this.cardForm.dirty && !this.forSubmitted();
+  }
+
+  handleArtwork(formData: FormData) {
+    this.artwork.set(formData);
   }
 }

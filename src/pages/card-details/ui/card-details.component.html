@@ -28,7 +28,7 @@
 
     <!-- Card Title Section -->
     <div class="text-center mb-10">
-        <h1 class="dokkan-header text-3xl md:text-5xl mb-2 tracking-tight">
+        <h1 class="dokkan-header text-3xl md:text-5xl mb-2 tracking-tight break-all">
             {{card.cardName}}
         </h1>
         <div class="flex items-center justify-center gap-2 text-gray-400 text-sm">
@@ -38,8 +38,7 @@
     </div>
 
     <!-- Card Container (Untouched) -->
-    <div
-        class="border-4 rounded-lg relative card-details overflow-visible text-clip w-full max-w-[400px] lg:w-[30%] shadow-2xl">
+    <div class="border-4 rounded-lg relative card-details overflow-visible text-clip w-full max-w-[620px]  shadow-2xl">
         <div class="absolute -top-5 right-0 z-50 flex gap-1">
             <!-- Logo de rareté (LR/UR) -->
             <img [src]="'/' + card.characterInfo?.isLegendaryCharacter ? 'cha_rare_sm_ur.png' : 'cha_rare_sm_lr.png'"

@@ -25,7 +25,7 @@ export class ArtworkService {
    */
   patchArtworkImage(artwork: FormData) {
     return this.#httpClient.post<{ filename: string }>(
-      `${environment.apiUrl}`,
+      `${environment.apiUrl}/upload`,
       artwork
     );
   }

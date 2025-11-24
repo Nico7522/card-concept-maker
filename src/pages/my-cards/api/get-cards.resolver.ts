@@ -21,6 +21,8 @@ export const getCardsResolver: ResolveFn<Card[]> = (route, state) => {
 
   return collectionData(q, { idField: 'id' }).pipe(
     map((data) => {
+      console.log(data);
+
       return data as Card[];
     }),
     catchError(() => {

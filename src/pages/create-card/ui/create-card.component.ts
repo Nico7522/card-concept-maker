@@ -58,7 +58,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   readonly #router = inject(Router);
   isLoading = signal(false);
   artwork = signal<FormData | null>(null);
-  forSubmitted = signal(false);
+  isFormSubmitted = signal(false);
   passiveConditionActivation = passiveConditionActivation;
   effectDuration = effectDuration;
   categories = categories;
@@ -70,7 +70,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   cardForm = new FormGroup({});
 
   onSubmit() {
-    this.forSubmitted.set(true);
+    this.isFormSubmitted.set(true);
     // Retrieve the nested card form
     const nestedCardForm = this.cardForm.get(
       'cardForm'
@@ -149,7 +149,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   }
 
   hasUnsavedChanges() {
-    return this.cardForm.dirty && !this.forSubmitted();
+    return this.cardForm.dirty && !this.isFormSubmitted();
   }
 
   handleArtwork(formData: FormData) {

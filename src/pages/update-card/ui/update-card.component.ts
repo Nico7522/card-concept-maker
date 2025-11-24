@@ -7,7 +7,7 @@ import {
   heroArrowLongRight,
   heroPlus,
 } from '@ng-icons/heroicons/outline';
-import { catchError, EMPTY, filter, map, switchMap, take } from 'rxjs';
+import { catchError, EMPTY, filter, map, of, switchMap, take } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../shared/api/auth-service/auth.service';
@@ -49,6 +49,7 @@ export class UpdateCardComponent implements HasUnsavedChanges {
   card = signal<Card | null>(null);
   cardForm = new FormGroup({});
   artwork = signal<FormData | null>(null);
+  isFormSubmitted = signal(false);
   card$ = this.#activatedRoute.data.pipe(
     map((data) => {
       const card = data['card'] as Card;
@@ -58,6 +59,7 @@ export class UpdateCardComponent implements HasUnsavedChanges {
     })
   );
   onSubmit() {
+    this.isFormSubmitted.set(true);
     const nestedCardForm = this.cardForm.get(
       'cardForm'
     ) as FormGroup<CardForm> | null;
@@ -82,7 +84,7 @@ export class UpdateCardComponent implements HasUnsavedChanges {
           })
           .pipe(
             take(1),
-            switchMap(() => {
+            switchMap((data) => {
               if (this.artwork()) {
                 return this.#artworkService
                   .patchArtworkImage(this.artwork() as FormData)
@@ -95,7 +97,7 @@ export class UpdateCardComponent implements HasUnsavedChanges {
                     })
                   );
               }
-              return EMPTY;
+              return of(data);
             }),
             catchError((err) => {
               console.log(err);
@@ -108,6 +110,8 @@ export class UpdateCardComponent implements HasUnsavedChanges {
           )
           .subscribe(() => {
             this.isLoading.set(false);
+            console.log('ici');
+
             this.#router.navigate([
               '/card',
               this.#activatedRoute.snapshot.params['id'],
@@ -127,7 +131,7 @@ export class UpdateCardComponent implements HasUnsavedChanges {
   }
 
   hasUnsavedChanges(): boolean {
-    return this.cardForm.dirty;
+    return this.cardForm.dirty && !this.isFormSubmitted();
   }
 
   handleArtwork(formData: FormData) {

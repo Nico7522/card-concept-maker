@@ -41,11 +41,13 @@
     <div class="border-4 rounded-lg relative card-details overflow-visible text-clip w-full max-w-[620px]  shadow-2xl">
         <div class="absolute -top-5 right-0 z-50 flex gap-1">
             <!-- Logo de rareté (LR/UR) -->
-            <img [src]="'/' + card.characterInfo?.isLegendaryCharacter ? 'cha_rare_sm_ur.png' : 'cha_rare_sm_lr.png'"
-                [alt]="card.characterInfo?.isLegendaryCharacter ? 'UR' : 'LR'" class="w-10 h-10 object-contain">
+            <img [ngSrc]="'/' + (card.characterInfo?.isLegendaryCharacter ? 'cha_rare_sm_ur.png' : 'cha_rare_sm_lr.png')"
+                [alt]="card.characterInfo?.isLegendaryCharacter ? 'UR' : 'LR'" width="40" height="40"
+                class="object-contain">
             <!-- Logo de classe et type -->
-            <img [src]="'/' + card.characterInfo?.class + card.characterInfo?.type + '.png'"
-                [alt]="card.characterInfo?.class + ' ' + card.characterInfo?.type" class="w-10 h-10 object-contain">
+            <img [ngSrc]="'/' + card.characterInfo?.class + card.characterInfo?.type + '.png'"
+                [alt]="card.characterInfo?.class + ' ' + card.characterInfo?.type" width="40" height="40"
+                class="object-contain">
         </div>
 
 
@@ -202,8 +204,8 @@
                         <li class="break-all">
                             {{effect.description}}
                             @if (effect.imageSrc) {
-                            <img class="inline-block h-5 w-auto object-contain align-middle" [src]="effect.imageSrc"
-                                alt="effect duration logo">
+                            <img class="inline-block h-5 w-auto object-contain align-middle" [ngSrc]="effect.imageSrc"
+                                alt="effect duration logo" width="20" height="20" loading="lazy">
                             }
                         </li>
 
@@ -239,9 +241,8 @@
             </div>
             }
             @case(4) {
-            <section class="mt-5 flex justify-center items-center h-[calc(100%-80px)] p-4">
-                <img [src]="apiUrl + card.artwork" alt="Card Artwork"
-                    class="max-w-full max-h-full object-contain rounded-lg">
+            <section class="mt-5 flex justify-center items-center h-[calc(100%-80px)] p-4 relative">
+                <img [ngSrc]="apiUrl + card.artwork" alt="Card Artwork" fill class="object-contain" priority>
             </section>
             }
             }

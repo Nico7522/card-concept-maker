@@ -30,7 +30,7 @@ import {
   take,
   tap,
 } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 import { SuperAttack } from '../../../shared/model/super-attack-interface';
 import { Character } from '../../../shared/model/character-interface';
@@ -50,6 +50,7 @@ import { environment } from '~/src/environments/environment';
     AsyncPipe,
     LoaderComponent,
     RouterModule,
+    NgOptimizedImage,
   ],
   templateUrl: './card-details.component.html',
   styleUrl: './card-details.component.css',

@@ -59,7 +59,7 @@
         </button>
 
         }
-        @if (showedPart() < 3) { <button (click)="showNextPart()" type="button"
+        @if (showedPart() < 4) { <button (click)="showNextPart()" type="button"
             class="h-12 w-5 absolute z-40 z-10 absolute top-1/2 right-1 transform -translate-y-1/2 bg-transparent hover:bg-black cursor-pointer"
             ubButton size="icon">
             <ng-icon name="heroChevronDoubleRight" class="h-4 w-4" />
@@ -202,7 +202,8 @@
                         <li class="break-all">
                             {{effect.description}}
                             @if (effect.imageSrc) {
-                            <img class="inline-block" [src]="effect.imageSrc" alt="effect duration logo">
+                            <img class="inline-block h-5 w-auto object-contain align-middle" [src]="effect.imageSrc"
+                                alt="effect duration logo">
                             }
                         </li>
 
@@ -236,6 +237,12 @@
 
                 }
             </div>
+            }
+            @case(4) {
+            <section class="mt-5 flex justify-center items-center h-[calc(100%-80px)] p-4">
+                <img [src]="apiUrl + card.artwork" alt="Card Artwork"
+                    class="max-w-full max-h-full object-contain rounded-lg">
+            </section>
             }
             }
     </div>

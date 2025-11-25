@@ -40,6 +40,7 @@ import { UbButtonDirective } from '~/components/ui/button';
 import { DeleteConfirmationModalComponent } from './delete-confirmation-modal/delete-confirmation-modal.component';
 import { DeleteCardService } from '../api/delete-card.service';
 import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
+import { environment } from '~/src/environments/environment';
 
 @Component({
   selector: 'app-card-details',
@@ -69,12 +70,14 @@ export class CardDetailsComponent {
     'Card Details',
     'Categories',
     'Passive Skill Details',
+    'Card Artwork',
   ];
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
   readonly #deleteCardService = inject(DeleteCardService);
   readonly #errorToastService = inject(ErrorToastService);
   readonly #router = inject(Router);
+  readonly apiUrl = environment.apiUrl + '/';
   isLoading = signal(true);
   isError = signal(false);
   characterInfo = signal<Character | null>(null);

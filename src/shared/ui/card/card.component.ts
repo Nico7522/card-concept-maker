@@ -24,9 +24,12 @@ import { Character } from '~/src/shared/model/character-interface';
 import { Passive } from '~/src/shared/model/passive-interface';
 import { SuperAttackDetailsComponent } from '~/src/shared/ui/super-attack-details/super-attack-details.component';
 import { SuperAttack } from '~/src/shared/model/super-attack-interface';
+import { Card } from '~/src/shared/model/card-interface';
+import { NgOptimizedImage } from '@angular/common';
+import { environment } from '~/src/environments/environment';
 @Component({
   selector: 'app-card',
-  imports: [NgIconComponent, UbButtonDirective],
+  imports: [NgIconComponent, UbButtonDirective, NgOptimizedImage],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   viewProviders: [
@@ -39,17 +42,20 @@ import { SuperAttack } from '~/src/shared/model/super-attack-interface';
     }),
   ],
   host: {
-    class: 'w-full m-auto mb-10',
+    class: 'w-full',
   },
 })
 export class CardComponent {
-  characterInfo = input.required<Character>();
-  passiveDetails = input.required<Passive>();
-  superAttackInfo = input.required<SuperAttack>();
+  // characterInfo = input.required<Character>();
+  // passiveDetails = input.required<Passive>();
+  // superAttackInfo = input.required<SuperAttack>();
+  card = input.required<Card>();
+  readonly apiUrl = environment.apiUrl + '/';
   private readonly titles = [
     'Card Details',
     'Categories',
     'Passive Skill Details',
+    'Artwork',
   ];
 
   showedPart = signal(1);
@@ -69,9 +75,9 @@ export class CardComponent {
   openModal() {
     const componentRef = this.modal().createComponent(CardModalComponent, {
       bindings: [
-        inputBinding('characterInfo', this.characterInfo),
-        inputBinding('passiveDetails', this.passiveDetails),
-        inputBinding('superAttackInfo', this.superAttackInfo),
+        inputBinding('characterInfo', () => this.card().characterInfo),
+        inputBinding('passiveDetails', () => this.card().passiveDetails),
+        inputBinding('superAttackInfo', () => this.card().superAttackInfo),
 
         twoWayBinding('showedPart', this.showedPart),
         twoWayBinding('title', this.title),
@@ -92,9 +98,8 @@ export class CardComponent {
       SuperAttackDetailsComponent,
       {
         bindings: [
-          inputBinding('characterInfo', this.characterInfo),
-          inputBinding('superAttackInfo', this.superAttackInfo),
-
+          inputBinding('characterInfo', () => this.card().characterInfo),
+          inputBinding('superAttackInfo', () => this.card().superAttackInfo),
           outputBinding('close', () => {
             if (this.saDetailsRef) {
               this.saDetailsRef.destroy();

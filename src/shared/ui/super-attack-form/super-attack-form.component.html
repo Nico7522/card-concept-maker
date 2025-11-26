@@ -42,7 +42,7 @@
                     class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-purple-500 transition-colors resize-none"
                     id="ultraSuperAttack" formControlName="ultraSuperAttackEffect" />
                 @if (parentFormGroup.get('superAttack.ultraSuperAttackEffect')?.dirty &&
-                parentFormGroup.get('superAttack.ultraSuperAttackEffect')?.hasError('ultraSuperAttackRequired')) {
+                parentFormGroup.get('superAttack')?.hasError('ultraSuperAttackRequired')) {
                 <app-error errorMessage="Effect is required for LR characters" />
                 }
             </div>

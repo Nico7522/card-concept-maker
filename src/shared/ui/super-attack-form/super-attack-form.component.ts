@@ -14,14 +14,14 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { Observable, of, startWith } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { ErrorComponent } from '../error/error.component';
 import { SuperAttackFormGroup } from '../../model/super-attack-form-group-interface';
+import { ultraSuperAttackRequired } from '../../model/validators';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-super-attack-form',
-  imports: [ErrorComponent, ReactiveFormsModule],
+  imports: [ErrorComponent, ReactiveFormsModule, JsonPipe],
   templateUrl: './super-attack-form.component.html',
   styleUrl: './super-attack-form.component.css',
   viewProviders: [
@@ -47,21 +47,26 @@ export class SuperAttackFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.parentFormGroup.addControl(
       this.controlKey(),
-      new FormGroup<SuperAttackFormGroup>({
-        superAttackName: new FormControl('', {
-          nonNullable: true,
-        }),
-        superAttackEffect: new FormControl('', {
-          nonNullable: true,
-          validators: [Validators.required],
-        }),
-        ultraSuperAttackName: new FormControl('', {
-          nonNullable: true,
-        }),
-        ultraSuperAttackEffect: new FormControl('', {
-          nonNullable: true,
-        }),
-      })
+      new FormGroup<SuperAttackFormGroup>(
+        {
+          superAttackName: new FormControl('', {
+            nonNullable: true,
+          }),
+          superAttackEffect: new FormControl('', {
+            nonNullable: true,
+            validators: [Validators.required],
+          }),
+          ultraSuperAttackName: new FormControl('', {
+            nonNullable: true,
+          }),
+          ultraSuperAttackEffect: new FormControl('', {
+            nonNullable: true,
+          }),
+        },
+        {
+          validators: [ultraSuperAttackRequired],
+        }
+      )
     );
   }
 }

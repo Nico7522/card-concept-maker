@@ -2,8 +2,6 @@ import {
   Component,
   ComponentRef,
   inject,
-  inputBinding,
-  linkedSignal,
   outputBinding,
   signal,
   viewChild,
@@ -20,7 +18,6 @@ import {
   heroPencilSquare,
   heroTrash,
 } from '@ng-icons/heroicons/outline';
-import { SuperAttackDetailsComponent } from '../../../shared/ui/super-attack-details/super-attack-details.component';
 import {
   catchError,
   EMPTY,
@@ -30,9 +27,8 @@ import {
   take,
   tap,
 } from 'rxjs';
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
-import { SuperAttack } from '../../../shared/model/super-attack-interface';
 import { Character } from '../../../shared/model/character-interface';
 import { AuthService } from '../../../shared/api/auth-service/auth.service';
 import { Card } from '../../../shared/model/card-interface';
@@ -41,6 +37,7 @@ import { DeleteConfirmationModalComponent } from './delete-confirmation-modal/de
 import { DeleteCardService } from '../api/delete-card.service';
 import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
 import { environment } from '~/src/environments/environment';
+import { CardComponent } from '~/src/shared/ui/card/card.component';
 
 @Component({
   selector: 'app-card-details',
@@ -50,7 +47,7 @@ import { environment } from '~/src/environments/environment';
     AsyncPipe,
     LoaderComponent,
     RouterModule,
-    NgOptimizedImage,
+    CardComponent,
   ],
   templateUrl: './card-details.component.html',
   styleUrl: './card-details.component.css',
@@ -67,12 +64,6 @@ import { environment } from '~/src/environments/environment';
   ],
 })
 export class CardDetailsComponent {
-  private readonly titles = [
-    'Card Details',
-    'Categories',
-    'Passive Skill Details',
-    'Card Artwork',
-  ];
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
   readonly #deleteCardService = inject(DeleteCardService);
@@ -81,16 +72,11 @@ export class CardDetailsComponent {
   readonly apiUrl = environment.apiUrl + '/';
   isLoading = signal(true);
   isError = signal(false);
-  characterInfo = signal<Character | null>(null);
-  superAttackInfo = signal<SuperAttack | null>(null);
   cardId = signal<string | null>(null);
 
   card$ = this.#activatedRoute.data.pipe(
     map((data) => data['card'] as Card),
     tap((card) => {
-      console.log(card);
-      this.characterInfo.set(card.characterInfo);
-      this.superAttackInfo.set(card.superAttackInfo);
       this.cardId.set(card.id ?? '');
       this.isLoading.set(false);
     }),
@@ -113,57 +99,11 @@ export class CardDetailsComponent {
   });
   confirmationDeleteRef: ComponentRef<DeleteConfirmationModalComponent> | null =
     null;
-  showedPart = signal(1);
-  title = linkedSignal(() => this.titles[this.showedPart() - 1]);
-  saDetails = viewChild.required('saDetails', { read: ViewContainerRef });
-  saDetailsRef: ComponentRef<SuperAttackDetailsComponent> | null = null;
-  showNextPart() {
-    this.showedPart.update((val) => val + 1);
-  }
-
-  showPreviousPart() {
-    this.showedPart.update((val) => val - 1);
-  }
-
-  openSuperAttackDetails() {
-    const componentRef = this.saDetails().createComponent(
-      SuperAttackDetailsComponent,
-      {
-        bindings: [
-          inputBinding('characterInfo', () => this.characterInfo()),
-          inputBinding('superAttackInfo', () => this.superAttackInfo()),
-          outputBinding('close', () => {
-            if (this.saDetailsRef) {
-              this.saDetailsRef.destroy();
-            }
-          }),
-        ],
-      }
-    );
-    this.saDetailsRef = componentRef;
-  }
 
   ngOnDestroy() {
-    if (this.saDetailsRef) {
-      this.saDetailsRef.destroy();
-    }
     if (this.confirmationDeleteRef) {
       this.confirmationDeleteRef.destroy();
     }
-  }
-
-  getRarityImage(characterInfo: Character | null): string {
-    if (!characterInfo) return '';
-    return characterInfo.isLegendaryCharacter
-      ? 'cha_rare_sm_ur.png'
-      : 'cha_rare_sm_lr.png';
-  }
-
-  getClassTypeImage(characterInfo: Character | null): string {
-    if (!characterInfo) return '';
-    return characterInfo.class === 'super'
-      ? `super${characterInfo.type}.png`
-      : `extreme${characterInfo.type}.png`;
   }
 
   openDeleteConfirmationModal() {

@@ -30,6 +30,7 @@ import { BaseStatFormComponent } from '~/src/shared/ui/base-stat-form/base-stat-
 import { CardForm } from '../../model/card-form-interface';
 import { ArtworkFormComponent } from '~/src/shared/ui/artwork-form/artwork-form.component';
 import { map } from 'rxjs';
+import { ultraSuperAttackRequired } from '~/src/shared/model/validators';
 
 @Component({
   selector: 'app-card-form',

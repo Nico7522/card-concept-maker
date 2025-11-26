@@ -3,7 +3,6 @@ import { AsyncPipe, NgClass, SlicePipe } from '@angular/common';
 import { map } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Card } from '../../../shared/model/card-interface';
-import { RouterService } from '../../../shared/api/router/router.service';
 
 @Component({
   selector: 'app-my-cards',
@@ -13,7 +12,6 @@ import { RouterService } from '../../../shared/api/router/router.service';
 })
 export class MyCardsComponent {
   readonly #activatedRoute = inject(ActivatedRoute);
-  readonly #routerService = inject(RouterService);
 
   cards$ = this.#activatedRoute.data.pipe(
     map((data) => {

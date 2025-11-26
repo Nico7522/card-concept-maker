@@ -133,9 +133,11 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
       } else {
         const componentRef = this.card().createComponent(CardComponent, {
           bindings: [
-            inputBinding('characterInfo', characterInfo),
-            inputBinding('passiveDetails', passiveDetails),
-            inputBinding('superAttackInfo', superAttackInfo),
+            inputBinding('card', () => ({
+              characterInfo: characterInfo(),
+              passiveDetails: passiveDetails(),
+              superAttackInfo: superAttackInfo(),
+            })),
           ],
         });
 

@@ -28,7 +28,7 @@
         }
         @else {
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            @for (card of cards; track $index) {
+            @for (card of cards; track card.id) {
             <div [routerLink]="['/card', card.id]"
                 class="group cursor-pointer relative bg-gray-900/90 border border-gray-700 rounded-xl overflow-hidden hover:border-orange-500 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20 flex flex-col">
 

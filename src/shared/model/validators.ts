@@ -1,7 +1,6 @@
 import {
   AbstractControl,
   FormControl,
-  FormGroup,
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
@@ -9,13 +8,13 @@ import {
 export const ultraSuperAttackRequired: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
-  const isLegendaryCharacter = control.get(
-    'isLegendaryCharacter'
-  ) as AbstractControl<boolean>;
-  const ultraSuperAttack = control.get('ultraSuperAttack');
-  return isLegendaryCharacter.value && ultraSuperAttack?.value === ''
-    ? { ultraSuperAttackRequired: true }
-    : null;
+  const isLegendary = control.parent?.get('isLegendary');
+  const ultraSuperAttackEffect = control.get('ultraSuperAttackEffect');
+
+  if (isLegendary?.value && !ultraSuperAttackEffect?.value) {
+    return { ultraSuperAttackRequired: true };
+  }
+  return null;
 };
 
 export const activeSkillNameRequired: ValidatorFn = (

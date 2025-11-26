@@ -12,6 +12,7 @@ const envFile = `export const environment = {
  messagingSenderId: '${process.env.MESSAGING_SENDER_ID}',
  appId: '${process.env.APP_ID}',
  measurementId: '${process.env.MEASUREMENT_ID}',
+ apiUrl: '${process.env.API_URL}',
 };
 `;
 const targetPath = path.join(__dirname, "./src/environments/environment.ts");

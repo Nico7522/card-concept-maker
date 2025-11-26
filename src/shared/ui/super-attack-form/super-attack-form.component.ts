@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -17,11 +10,10 @@ import {
 import { ErrorComponent } from '../error/error.component';
 import { SuperAttackFormGroup } from '../../model/super-attack-form-group-interface';
 import { ultraSuperAttackRequired } from '../../model/validators';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-super-attack-form',
-  imports: [ErrorComponent, ReactiveFormsModule, JsonPipe],
+  imports: [ErrorComponent, ReactiveFormsModule],
   templateUrl: './super-attack-form.component.html',
   styleUrl: './super-attack-form.component.css',
   viewProviders: [
@@ -33,7 +25,6 @@ import { JsonPipe } from '@angular/common';
 })
 export class SuperAttackFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
-  readonly #destroyRef = inject(DestroyRef);
   controlKey = input.required<string>();
   label = input.required<string>();
   isLegendaryCharacter = input.required<boolean>();

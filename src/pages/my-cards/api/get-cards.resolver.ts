@@ -8,7 +8,7 @@ import {
 } from '@angular/fire/firestore';
 import { ResolveFn } from '@angular/router';
 import { catchError, map, take, throwError } from 'rxjs';
-import { Card } from '~/src/shared/model/card-interface';
+import { Card } from '~/src/shared/model';
 
 export const getCardsResolver: ResolveFn<Card[]> = (route, state) => {
   const firestore = inject(Firestore);
@@ -20,7 +20,7 @@ export const getCardsResolver: ResolveFn<Card[]> = (route, state) => {
   );
 
   return collectionData(q, { idField: 'id' }).pipe(
-    take(1), // Assure que l'Observable complète après la première émission
+    take(1),
     map((data) => {
       return data as Card[];
     }),

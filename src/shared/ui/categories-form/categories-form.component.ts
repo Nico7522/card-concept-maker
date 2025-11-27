@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormArray,
@@ -18,7 +11,7 @@ import { NgIconComponent } from '@ng-icons/core';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 
 import { categories } from '~/src/app/select-options/categories';
-import { CategoriesFormGroup } from '../../model/categories-form-group-interface';
+import { CategoriesFormGroup } from '../../model';
 @Component({
   selector: 'app-categories-form',
   imports: [
@@ -38,7 +31,6 @@ import { CategoriesFormGroup } from '../../model/categories-form-group-interface
 })
 export class CategoriesFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
-  readonly #destroyRef = inject(DestroyRef);
   categoryList = categories;
   controlKey = input.required<string>();
   label = input.required<string>();

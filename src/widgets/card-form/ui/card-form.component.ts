@@ -1,7 +1,6 @@
 import {
   Component,
   DestroyRef,
-  HostListener,
   inject,
   input,
   OnDestroy,
@@ -16,21 +15,21 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-
-import { ErrorComponent } from '../../../shared/ui/error/error.component';
+import { ErrorComponent } from '~/src/shared/ui';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
-
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { SuperAttackFormComponent } from '~/src/shared/ui/super-attack-form/super-attack-form.component';
-import { CategoriesFormComponent } from '~/src/shared/ui/categories-form/categories-form.component';
-import { LinksFormComponent } from '~/src/shared/ui/links-form/links-form.component';
-import { PassiveFormComponent } from '~/src/shared/ui/passive-form/passive-form.component';
-import { ActiveSkillFormComponent } from '~/src/shared/ui/active-skill-form/active-skill-form.component';
-import { BaseStatFormComponent } from '~/src/shared/ui/base-stat-form/base-stat-form.component';
-import { CardForm } from '../../model/card-form-interface';
-import { ArtworkFormComponent } from '~/src/shared/ui/artwork-form/artwork-form.component';
-import { map } from 'rxjs';
-import { ultraSuperAttackRequired } from '~/src/shared/model/validators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  LinksFormComponent,
+  PassiveFormComponent,
+  ActiveSkillFormComponent,
+  BaseStatFormComponent,
+  ArtworkFormComponent,
+  SuperAttackFormComponent,
+  CategoriesFormComponent,
+} from '~/src/shared/ui';
+import { AsyncPipe } from '@angular/common';
+import { AuthService } from '~/src/shared/api';
+import { CardForm } from '..';
 
 @Component({
   selector: 'app-card-form',
@@ -46,6 +45,7 @@ import { ultraSuperAttackRequired } from '~/src/shared/model/validators';
     BaseStatFormComponent,
     ReactiveFormsModule,
     ArtworkFormComponent,
+    AsyncPipe,
   ],
   templateUrl: './card-form.component.html',
   styleUrl: './card-form.component.css',
@@ -59,6 +59,8 @@ import { ultraSuperAttackRequired } from '~/src/shared/model/validators';
 export class CardFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
   readonly #destroyRef = inject(DestroyRef);
+  readonly #authService = inject(AuthService);
+  user$ = this.#authService.user$;
   artwork = output<FormData>();
   controlKey = input.required<string>();
   label = input.required<string>();

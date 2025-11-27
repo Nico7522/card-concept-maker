@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { AsyncPipe, NgClass, SlicePipe } from '@angular/common';
 import { map } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Card } from '../../../shared/model/card-interface';
+import { Card } from '~/src/shared/model';
 
 @Component({
   selector: 'app-my-cards',

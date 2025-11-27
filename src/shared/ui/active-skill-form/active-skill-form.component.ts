@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -14,13 +7,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
-import { ActiveSkillFormGroup } from '../../model/active-skill-form-group-interface';
 import {
+  ActiveSkillFormGroup,
   activeSkillConditionRequired,
   activeSkillEffectRequired,
   activeSkillNameRequired,
-} from '~/src/shared/model/validators';
-import { ErrorComponent } from '~/src/shared/ui/error/error.component';
+} from '../../model';
+import { ErrorComponent } from '~/src/shared/ui';
 
 @Component({
   selector: 'app-active-skill-form',
@@ -41,7 +34,6 @@ import { ErrorComponent } from '~/src/shared/ui/error/error.component';
 })
 export class ActiveSkillFormComponent implements OnDestroy, OnInit {
   readonly #parentContainer = inject(ControlContainer);
-  readonly #destroyRef = inject(DestroyRef);
   controlKey = input.required<string>();
   label = input.required<string>();
 

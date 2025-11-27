@@ -7,9 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { ErrorComponent } from '../error/error.component';
-import { SuperAttackFormGroup } from '../../model/super-attack-form-group-interface';
-import { ultraSuperAttackRequired } from '../../model/validators';
+import { ErrorComponent } from '../../ui';
+import { SuperAttackFormGroup, ultraSuperAttackRequired } from '../../model';
 
 @Component({
   selector: 'app-super-attack-form',

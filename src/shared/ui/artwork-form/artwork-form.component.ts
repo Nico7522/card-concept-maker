@@ -1,19 +1,12 @@
-import {
-  Component,
-  inject,
-  input,
-  OnInit,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { artworkFormat } from '../../model/validators';
-import { ErrorComponent } from '../../ui/error/error.component';
+import { artworkFormat } from '../../model';
+import { ErrorComponent } from '../../ui';
 
 @Component({
   selector: 'app-artwork-form',

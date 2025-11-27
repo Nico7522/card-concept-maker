@@ -7,9 +7,7 @@ import {
   heroChevronDoubleRight,
   heroMagnifyingGlassPlus,
 } from '@ng-icons/heroicons/outline';
-import { Character } from '~/src/shared/model/character-interface';
-import { Passive } from '~/src/shared/model/passive-interface';
-import { SuperAttack } from '~/src/shared/model/super-attack-interface';
+import { Character, Passive, SuperAttack } from '~/src/shared/model';
 
 @Component({
   selector: 'app-card-modal',

@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { CreateCardComponent } from '../pages/create-card/ui/create-card.component';
-import { canAccessGuard } from '../features/guards/can-access-guard/can-access.guard';
+import { canAccessGuard } from '../features/can-access';
+import { hasUnsavedChangesGuard } from '../features/unsaved-changes';
 import { getCardsResolver } from '../pages/my-cards/api/get-cards.resolver';
 import { getCardResolver } from '../shared/api/card-resolver/get-card.resolver';
-import { hasUnsavedChangesGuard } from '../features/guards/has-unsaved-changes-guard/has-unsaved-changes.guard';
 
 export const routes: Routes = [
   {

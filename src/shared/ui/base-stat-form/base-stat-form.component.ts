@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -13,8 +6,8 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ErrorComponent } from '../error/error.component';
-import { BaseStatFormGroup } from '../../model/base-stat-form-group-interface';
+import { ErrorComponent } from '../../ui';
+import { BaseStatFormGroup } from '../../model';
 
 @Component({
   selector: 'app-base-stat-form',
@@ -30,7 +23,6 @@ import { BaseStatFormGroup } from '../../model/base-stat-form-group-interface';
 })
 export class BaseStatFormComponent implements OnDestroy, OnInit {
   readonly #parentContainer = inject(ControlContainer);
-  readonly #destroyRef = inject(DestroyRef);
   controlKey = input.required<string>();
   label = input.required<string>();
   get parentFormGroup(): FormGroup {

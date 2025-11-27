@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormArray,
@@ -16,14 +9,14 @@ import {
 } from '@angular/forms';
 import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
-import { ErrorComponent } from '../error/error.component';
+import { ErrorComponent } from '../../ui';
 import { effectDuration } from '~/src/app/select-options/effect-duration';
 import { NgIcon } from '@ng-icons/core';
 import {
   EffectFormGroup,
   PassiveFormGroup,
   PassivePartFormGroup,
-} from '../../model/passive-form-group-interface';
+} from '../../model';
 
 @Component({
   selector: 'app-passive-form',
@@ -45,7 +38,6 @@ import {
 })
 export class PassiveFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
-  readonly #destroyRef = inject(DestroyRef);
   controlKey = input.required<string>();
   label = input.required<string>();
   passiveConditionActivation = passiveConditionActivation;

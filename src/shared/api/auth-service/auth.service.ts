@@ -1,12 +1,5 @@
 // auth.service.ts
-import {
-  inject,
-  Injectable,
-  signal,
-  computed,
-  Injector,
-  runInInjectionContext,
-} from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import {
   Auth,
   signInWithPopup,
@@ -15,7 +8,7 @@ import {
   user,
   User,
 } from '@angular/fire/auth';
-import { catchError, from, map, Observable, tap, throwError } from 'rxjs';
+import { from } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import runAsyncInInjectionContext from '../../../app/helpers/firebase-helper';
 

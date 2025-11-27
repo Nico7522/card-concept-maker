@@ -7,7 +7,7 @@ import {
   NavigationStart,
   Router,
 } from '@angular/router';
-import { filter, map, Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

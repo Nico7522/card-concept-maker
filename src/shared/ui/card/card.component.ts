@@ -19,12 +19,11 @@ import {
   heroMagnifyingGlassPlus,
 } from '@ng-icons/heroicons/outline';
 import { UbButtonDirective } from '~/components/ui/button';
-import { CardModalComponent } from '~/src/shared/ui/card-modal/card-modal.component';
-import { Character } from '~/src/shared/model/character-interface';
-import { Passive } from '~/src/shared/model/passive-interface';
-import { SuperAttackDetailsComponent } from '~/src/shared/ui/super-attack-details/super-attack-details.component';
-import { SuperAttack } from '~/src/shared/model/super-attack-interface';
-import { Card } from '~/src/shared/model/card-interface';
+import {
+  CardModalComponent,
+  SuperAttackDetailsComponent,
+} from '~/src/shared/ui';
+import { Card } from '~/src/shared/model';
 import { NgOptimizedImage } from '@angular/common';
 import { environment } from '~/src/environments/environment';
 @Component({

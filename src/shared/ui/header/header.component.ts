@@ -1,10 +1,9 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { catchError, EMPTY, take } from 'rxjs';
 import { version } from '../../../../package.json';
-import { ErrorToastService } from '../../api/error-toast-service/error-toast.service';
-import { AuthService } from '../../api/auth-service/auth.service';
+import { ErrorToastService, AuthService } from '../../api';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -14,7 +13,6 @@ import { AuthService } from '../../api/auth-service/auth.service';
 })
 export class HeaderComponent {
   readonly #authService = inject(AuthService);
-  readonly #router = inject(Router);
   readonly #errorToastService = inject(ErrorToastService);
   user$ = this.#authService.user$;
   version = version;

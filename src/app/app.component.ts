@@ -4,7 +4,7 @@ import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-to
 import { HeaderComponent } from '~/src/shared/ui/header/header.component';
 import { ErrorToastComponent } from '~/src/shared/ui/error-toast/error-toast.component';
 import { LoaderComponent } from '../shared/ui/loader/loader.component';
-import { RouterService } from '../shared/api/router/router.service';
+import { RouterService } from '../shared/api/router-service/router.service';
 @Component({
   selector: 'app-root',
   imports: [

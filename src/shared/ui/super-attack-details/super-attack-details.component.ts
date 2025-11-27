@@ -1,6 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { Character } from '../../model/character-interface';
-import { SuperAttack } from '../../model/super-attack-interface';
+import { Character, SuperAttack } from '../../model';
 
 @Component({
   selector: 'app-super-attack-details',

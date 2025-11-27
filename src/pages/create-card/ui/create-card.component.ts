@@ -21,20 +21,21 @@ import { catchError, EMPTY, map, of, Subject, switchMap, take } from 'rxjs';
 
 import { Router } from '@angular/router';
 
-import { LoaderComponent } from '~/src/shared/ui/loader/loader.component';
-import { CardFormComponent } from '~/src/widgets/ui/card-form/card-form.component';
+import { LoaderComponent, CardComponent } from '~/src/shared/ui';
+import { CardFormComponent } from '~/src/widgets/card-form';
 import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
 import { effectDuration } from '~/src/app/select-options/effect-duration';
 import { categories } from '~/src/app/select-options/categories';
 import { Links } from '~/src/app/select-options/links';
 import generateCard from '~/src/app/helpers/generate-card';
-import { CardForm } from '~/src/widgets/model/card-form-interface';
-import { CardComponent } from '~/src/shared/ui/card/card.component';
-import { AuthService } from '~/src/shared/api/auth-service/auth.service';
-import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
+import { CardForm } from '~/src/widgets/card-form';
+import {
+  AuthService,
+  ErrorToastService,
+  ArtworkService,
+} from '~/src/shared/api';
 import { CreateCardService } from '../api/create-card.service';
-import { HasUnsavedChanges } from '~/src/features/model/has-unsavec-changes-interface';
-import { ArtworkService } from '~/src/shared/api/artwork-service/artwork.service';
+import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
 
 @Component({
   selector: 'app-create-card-form',

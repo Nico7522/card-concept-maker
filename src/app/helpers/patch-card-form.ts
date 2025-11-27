@@ -1,6 +1,6 @@
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Card } from '~/src/shared/model/card-interface';
-import { CardForm } from '~/src/widgets/model/card-form-interface';
+import { CardForm } from '~/src/widgets/card-form/model/card-form-interface';
 
 import { categories } from '~/src/app/select-options/categories';
 import { Links } from '~/src/app/select-options/links';

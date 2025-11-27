@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
+import { ErrorToastService } from '~/src/shared/api';
 
 @Component({
   selector: 'app-error-toast',
@@ -32,7 +32,6 @@ export class ErrorToastComponent implements OnInit, OnDestroy {
 
   close() {
     this.isClosing.set(true);
-    // On attend la fin de l'animation avant de masquer le composant
     this.hideToastTimeoutId = setTimeout(() => {
       this.#errorToastService.hideToast();
     }, 100);

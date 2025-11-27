@@ -5,7 +5,7 @@ import { categories } from '../select-options/categories';
 import { Links } from '../select-options/links';
 import { passiveConditionActivation } from '../select-options/passive-condition-activation';
 import getDurationLogo from './get-duration-logo';
-import { CardForm } from '~/src/widgets/model/card-form-interface';
+import { CardForm } from '~/src/widgets/card-form/model/card-form-interface';
 import { Character } from '~/src/shared/model/character-interface';
 import { Passive } from '~/src/shared/model/passive-interface';
 import { SuperAttack } from '~/src/shared/model/super-attack-interface';

@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormArray,
@@ -17,7 +10,7 @@ import {
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { NgIcon } from '@ng-icons/core';
 import { Links } from '~/src/app/select-options/links';
-import { LinksFormGroup } from '../../model/links-form-group-interface';
+import { LinksFormGroup } from '../../model';
 
 @Component({
   selector: 'app-links-form',
@@ -33,7 +26,6 @@ import { LinksFormGroup } from '../../model/links-form-group-interface';
 })
 export class LinksFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
-  readonly #destroyRef = inject(DestroyRef);
   controlKey = input.required<string>();
   label = input.required<string>();
   linkSkill = Links;

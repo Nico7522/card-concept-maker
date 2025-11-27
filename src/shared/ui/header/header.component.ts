@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { catchError, EMPTY, take } from 'rxjs';
 import { version } from '../../../../package.json';
 import { ErrorToastService, AuthService } from '../../api';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, AsyncPipe],
+  imports: [RouterModule, AsyncPipe],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })

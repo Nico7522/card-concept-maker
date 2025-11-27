@@ -16,17 +16,10 @@ import {
   heroArrowLongRight,
   heroPlus,
 } from '@ng-icons/heroicons/outline';
-
-import { catchError, EMPTY, map, of, Subject, switchMap, take } from 'rxjs';
-
+import { catchError, EMPTY, map, of, switchMap, take } from 'rxjs';
 import { Router } from '@angular/router';
-
 import { LoaderComponent, CardComponent } from '~/src/shared/ui';
 import { CardFormComponent } from '~/src/widgets/card-form';
-import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
-import { effectDuration } from '~/src/app/select-options/effect-duration';
-import { categories } from '~/src/app/select-options/categories';
-import { Links } from '~/src/app/select-options/links';
 import generateCard from '~/src/app/helpers/generate-card';
 import { CardForm } from '~/src/widgets/card-form';
 import {
@@ -60,12 +53,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   isLoading = signal(false);
   artwork = signal<FormData | null>(null);
   isFormSubmitted = signal(false);
-  passiveConditionActivation = passiveConditionActivation;
-  effectDuration = effectDuration;
-  categories = categories;
-  links = Links;
   title = signal('Card Details');
-  canQuit$: Subject<boolean> = new Subject<boolean>();
   card = viewChild.required('card', { read: ViewContainerRef });
   componentRefs: ComponentRef<CardComponent> | null = null;
   cardForm = new FormGroup({});

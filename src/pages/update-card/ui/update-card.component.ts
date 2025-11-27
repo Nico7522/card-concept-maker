@@ -7,7 +7,7 @@ import {
   heroArrowLongRight,
   heroPlus,
 } from '@ng-icons/heroicons/outline';
-import { catchError, EMPTY, filter, map, of, switchMap, take } from 'rxjs';
+import { catchError, EMPTY, map, of, switchMap, take } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, ErrorToastService } from '~/src/shared/api';
@@ -35,7 +35,7 @@ import { ArtworkService } from '~/src/shared/api';
     }),
   ],
 })
-export class UpdateCardComponent implements HasUnsavedChanges {
+export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   readonly #updateCardService = inject(UpdateCardService);
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #router = inject(Router);
@@ -45,9 +45,9 @@ export class UpdateCardComponent implements HasUnsavedChanges {
   isLoading = signal(true);
   isError = signal(false);
   card = signal<Card | null>(null);
-  cardForm = new FormGroup({});
   artwork = signal<FormData | null>(null);
   isFormSubmitted = signal(false);
+  cardForm = new FormGroup({});
   card$ = this.#activatedRoute.data.pipe(
     map((data) => {
       const card = data['card'] as Card;

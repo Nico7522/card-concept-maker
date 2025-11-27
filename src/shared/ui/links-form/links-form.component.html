@@ -3,29 +3,24 @@
         @for (control of this.links.controls; track control; let index = $index) {
         <div class="flex gap-2 items-center w-full">
             <div class="flex-1">
-                <ng-select class="custom-select" 
-                    [searchable]="true" 
-                    [clearable]="true"
-                    [formControlName]="index"
+                <ng-select class="custom-select" [searchable]="true" [clearable]="true" [formControlName]="index"
                     placeholder="Select Link Skill">
-                    @for (link of linkSkill; track $index) {
-                        <ng-option [value]="link.value">{{link.linkName}}</ng-option>
+                    @for (link of linkSkill$ | async; track $index) {
+                    <ng-option [value]="link.value">{{link.linkName}}</ng-option>
                     }
                 </ng-select>
             </div>
-            
-            <button type="button" 
+
+            <button type="button"
                 class="p-3 bg-red-900/30 border border-red-900/50 rounded hover:bg-red-900/50 text-red-400 transition-colors h-[42px] w-[42px] flex items-center justify-center"
-                [disabled]="index === 0"
-                [class.opacity-50]="index === 0"
-                [class.cursor-not-allowed]="index === 0"
+                [disabled]="index === 0" [class.opacity-50]="index === 0" [class.cursor-not-allowed]="index === 0"
                 (click)="removeLink(index)">
                 <ng-icon name="heroArchiveBoxXMark" class="h-5 w-5" />
             </button>
         </div>
         }
-        
-        <button type="button" 
+
+        <button type="button"
             class="mt-2 py-2 px-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded text-sm text-gray-300 w-full transition-colors flex items-center justify-center gap-2"
             (click)="addLink()">
             <ng-icon name="heroPlus" class="h-4 w-4" />

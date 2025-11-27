@@ -19,10 +19,8 @@ import {
   heroMagnifyingGlassPlus,
 } from '@ng-icons/heroicons/outline';
 import { UbButtonDirective } from '~/components/ui/button';
-import {
-  CardModalComponent,
-  SuperAttackDetailsComponent,
-} from '~/src/shared/ui';
+import { CardModalComponent } from '../card-modal/card-modal.component';
+import { SuperAttackDetailsComponent } from '../super-attack-details/super-attack-details.component';
 import { Card } from '~/src/shared/model';
 import { NgOptimizedImage } from '@angular/common';
 import { environment } from '~/src/environments/environment';

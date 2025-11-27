@@ -8,4 +8,3 @@ export const hasUnsavedChangesGuard: CanDeactivateFn<HasUnsavedChanges> = (
     ? confirm('You have unsaved changes. Are you sure you want to leave?')
     : true;
 };
-

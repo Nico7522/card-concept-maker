@@ -13,7 +13,7 @@ import {
   activeSkillEffectRequired,
   activeSkillNameRequired,
 } from '../../model';
-import { ErrorComponent } from '~/src/shared/ui';
+import { ErrorComponent } from '../error/error.component';
 
 @Component({
   selector: 'app-active-skill-form',

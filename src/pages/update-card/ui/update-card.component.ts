@@ -61,6 +61,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
     const nestedCardForm = this.cardForm.get(
       'cardForm'
     ) as FormGroup<CardForm> | null;
+    console.log(nestedCardForm?.get('passive')?.value);
     if (!nestedCardForm) {
       return;
     }

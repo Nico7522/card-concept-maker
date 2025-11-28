@@ -226,7 +226,13 @@
             }
             @case(4) {
             <section class="mt-5 flex justify-center items-center h-[calc(100%-80px)] p-4 relative">
+                @if (card().artwork) {
                 <img [ngSrc]="apiUrl + card().artwork" alt="Card Artwork" fill class="object-contain" priority>
+                } @else {
+                <div class="w-full h-full bg-gray-900/50 rounded-lg flex justify-center items-center">
+                    <span class="text-gray-400">No Artwork</span>
+                </div>
+                }
             </section>
             }
             }

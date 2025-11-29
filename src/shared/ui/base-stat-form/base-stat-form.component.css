@@ -1,0 +1,26 @@
+
+
+select, input {
+   height: 50px;
+   border-radius: 10px;
+   border: 1px solid gray;
+}
+
+
+
+input::placeholder {
+   color: gray;
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+ -webkit-appearance: none;
+ margin: 0;
+}
+
+input[type=number] {
+ appearance: textfield;
+}
+
+

@@ -1,0 +1,44 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4" [formGroupName]="controlKey()">
+    <!-- Attack -->
+    <div class="flex flex-col gap-2 pb-2">
+        <label class="text-sm font-semibold text-gray-400 uppercase" for="attack">Attack</label>
+        <input placeholder="e.g. 15000"
+            class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
+            id="attack" formControlName="attack" type="number">
+        @if (parentFormGroup.get('stats.attack')?.dirty && parentFormGroup.get('stats.attack')?.getError('required')) {
+        <app-error errorMessage="Attack is required" />
+        }
+        @if (parentFormGroup.get('stats.attack')?.dirty && parentFormGroup.get('stats.attack')?.getError('max')) {
+        <app-error errorMessage="Attack must be less than 9999" />
+        }
+    </div>
+
+    <!-- Defense -->
+    <div class="flex flex-col gap-2 pb-2">
+        <label class="text-sm font-semibold text-gray-400 uppercase" for="defense">Defense</label>
+        <input placeholder="e.g. 10000"
+            class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
+            id="defense" formControlName="defense" type="number">
+        @if (parentFormGroup.get('stats.defense')?.dirty && parentFormGroup.get('stats.defense')?.getError('required'))
+        {
+        <app-error errorMessage="Defense is required" />
+        }
+        @if (parentFormGroup.get('stats.defense')?.dirty && parentFormGroup.get('stats.defense')?.getError('max')) {
+        <app-error errorMessage="Defense must be less than 9999" />
+        }
+    </div>
+
+    <!-- HP -->
+    <div class="flex flex-col gap-2 pb-2">
+        <label class="text-sm font-semibold text-gray-400 uppercase" for="hp">HP</label>
+        <input placeholder="e.g. 20000"
+            class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
+            id="hp" formControlName="hp" type="number">
+        @if (parentFormGroup.get('stats.hp')?.dirty && parentFormGroup.get('stats.hp')?.getError('required')) {
+        <app-error errorMessage="HP is required" />
+        }
+        @if (parentFormGroup.get('stats.hp')?.dirty && parentFormGroup.get('stats.hp')?.getError('max')) {
+        <app-error errorMessage="HP must be less than 9999" />
+        }
+    </div>
+</div>

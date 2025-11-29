@@ -1,0 +1,8 @@
+<div [formGroupName]="controlKey()">
+    <input type="file" (change)="onFileChange($event)" />
+
+    @if (parentFormGroup.get('artwork')?.dirty &&
+    parentFormGroup.get('artwork')?.hasError('invalidArtworkFormat')) {
+    <app-error errorMessage="Invalid format" />
+    }
+</div>

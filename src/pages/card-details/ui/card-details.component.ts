@@ -71,11 +71,17 @@ export class CardDetailsComponent {
   isLoading = signal(true);
   isError = signal(false);
   cardId = signal<string | null>(null);
-
+  creatorId = signal<string | null>(null);
+  confirmationDelete = viewChild.required('confirmationDelete', {
+    read: ViewContainerRef,
+  });
+  confirmationDeleteRef: ComponentRef<DeleteConfirmationModalComponent> | null =
+    null;
   card$ = this.#activatedRoute.data.pipe(
     map((data) => data['card'] as Card),
     tap((card) => {
       this.cardId.set(card.id ?? '');
+      this.creatorId.set(card.creatorId ?? null);
       this.isLoading.set(false);
     }),
     catchError(() => {
@@ -92,11 +98,6 @@ export class CardDetailsComponent {
       );
     })
   );
-  confirmationDelete = viewChild.required('confirmationDelete', {
-    read: ViewContainerRef,
-  });
-  confirmationDeleteRef: ComponentRef<DeleteConfirmationModalComponent> | null =
-    null;
 
   ngOnDestroy() {
     if (this.confirmationDeleteRef) {
@@ -117,7 +118,7 @@ export class CardDetailsComponent {
                 .pipe(
                   take(1),
                   tap(() => {
-                    this.#router.navigate(['/']);
+                    this.#router.navigate(['user', this.creatorId(), 'cards']);
                     this.isLoading.set(false);
                   }),
                   catchError(() => {

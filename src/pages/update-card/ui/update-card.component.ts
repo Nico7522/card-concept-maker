@@ -61,7 +61,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
     const nestedCardForm = this.cardForm.get(
       'cardForm'
     ) as FormGroup<CardForm> | null;
-    console.log(nestedCardForm?.get('passive')?.value);
+
     if (!nestedCardForm) {
       return;
     }
@@ -109,7 +109,6 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
           )
           .subscribe(() => {
             this.isLoading.set(false);
-            console.log('ici');
 
             this.#router.navigate([
               '/card',

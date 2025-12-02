@@ -55,8 +55,8 @@
                     </div>
 
                     <div class="w-full sm:w-24">
-                        <ng-select [clearable]="false" [searchable]="false" class="custom-select small-select"
-                            formControlName="effectDuration">
+                        <ng-select [clearable]="false" [searchable]="false"
+                            class="custom-select small-select" formControlName="effectDuration">
                             @for (duration of effectDuration; track $index) {
                             <ng-option [value]="duration.value">
                                 @if (duration.icon === "None") {

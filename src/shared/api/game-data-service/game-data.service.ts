@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { defer, from, shareReplay } from 'rxjs';
-
-interface Category {
-  value: number;
-  categoryName: string;
-}
-
-interface Link {
-  value: number;
-  linkName: string;
-  description: string;
-}
+import { Category, Link } from '../../model';
 
 @Injectable({ providedIn: 'root' })
 export class GameDataService {
@@ -22,6 +13,7 @@ export class GameDataService {
       )
     )
   ).pipe(shareReplay(1));
+  readonly categories = toSignal(this.categories$, { initialValue: [] });
 
   readonly links$ = defer(() =>
     from(
@@ -30,4 +22,5 @@ export class GameDataService {
       )
     )
   ).pipe(shareReplay(1));
+  readonly links = toSignal(this.links$, { initialValue: [] });
 }

@@ -1,16 +1,19 @@
 import { signal } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
-import { categories } from '../select-options/categories';
-import { Links } from '../select-options/links';
 import { passiveConditionActivation } from '../select-options/passive-condition-activation';
 import getDurationLogo from './get-duration-logo';
 import { CardForm } from '~/src/widgets/card-form/model/card-form-interface';
 import { Character } from '~/src/shared/model/character-interface';
 import { Passive } from '~/src/shared/model/passive-interface';
 import { SuperAttack } from '~/src/shared/model/super-attack-interface';
+import { Category, Link } from '~/src/shared/model';
 
-export default function generateCard(form: FormGroup<CardForm>) {
+export default function generateCard(
+  form: FormGroup<CardForm>,
+  categories: Category[],
+  links: Link[]
+) {
   let characterInfo = signal<Character | null>(null);
   let passiveDetails = signal<Passive | null>(null);
   let superAttackInfo = signal<SuperAttack | null>(null);
@@ -28,7 +31,7 @@ export default function generateCard(form: FormGroup<CardForm>) {
     categories: data.categories.categories.map(
       (value) => categories[value - 1].categoryName
     ),
-    links: data.links.links.map((value) => Links[value - 1].linkName),
+    links: data.links.links.map((value) => links[value - 1].linkName),
     activeSkill: data.activeSkill.hasActiveSkill
       ? {
           activeSkillName: data.activeSkill.activeSkillName ?? '',

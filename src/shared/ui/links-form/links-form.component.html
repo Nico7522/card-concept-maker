@@ -5,7 +5,7 @@
             <div class="flex-1">
                 <ng-select class="custom-select" [searchable]="true" [clearable]="true" [formControlName]="index"
                     placeholder="Select Link Skill">
-                    @for (link of linkSkill$ | async; track $index) {
+                    @for (link of gameDataService.links(); track $index) {
                     <ng-option [value]="link.value">{{link.linkName}}</ng-option>
                     }
                 </ng-select>

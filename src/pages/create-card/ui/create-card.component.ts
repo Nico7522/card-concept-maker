@@ -26,6 +26,7 @@ import {
   AuthService,
   ErrorToastService,
   ArtworkService,
+  GameDataService,
 } from '~/src/shared/api';
 import { CreateCardService } from '../api/create-card.service';
 import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
@@ -50,6 +51,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   readonly #errorToastService = inject(ErrorToastService);
   readonly #artworkService = inject(ArtworkService);
   readonly #router = inject(Router);
+  readonly #gameDataService = inject(GameDataService);
   isLoading = signal(false);
   artwork = signal<FormData | null>(null);
   isFormSubmitted = signal(false);
@@ -74,8 +76,11 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
     const data = nestedCardForm.getRawValue();
     // If the nested card form is valid, generate the card
     if (nestedCardForm.valid) {
-      const { characterInfo, passiveDetails, superAttackInfo } =
-        generateCard(nestedCardForm);
+      const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
+        nestedCardForm,
+        this.#gameDataService.categories(),
+        this.#gameDataService.links()
+      );
       if (this.componentRefs) {
         this.componentRefs.destroy();
       }

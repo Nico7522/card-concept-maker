@@ -73,7 +73,7 @@
     {
       "value": 15,
       "linkName": "Hero",
-      "description": "DEF +20%"
+      "description": "DEF + 20%"
     },
     {
       "value": 16,
@@ -203,7 +203,7 @@
     {
       "value": 41,
       "linkName": "The Ginyu Force",
-      "description": "ATK +25%"
+      "description": "ATK + 25%"
     },
     {
       "value": 42,
@@ -217,233 +217,453 @@
     },
     {
       "value": 44,
-      "linkName": "Kamehameha",
-      "description": "ATK +5% when performing a Super Attack"
+      "linkName": "Champion's Strength",
+      "description": "Ki +1"
     },
     {
       "value": 45,
-      "linkName": "Shocking Speed",
-      "description": "Ki +2"
-    },
-    {
-      "value": 46,
-      "linkName": "Over in a Flash",
-      "description": "Ki +3"
-    },
-    {
-      "value": 47,
-      "linkName": "GT",
-      "description": "Ki +2 and ATK & DEF +10%"
-    },
-    {
-      "value": 48,
-      "linkName": "Shattering the Limit",
-      "description": "Ki +2"
-    },
-    {
-      "value": 49,
-      "linkName": "Fused Fighter",
-      "description": "Ki +2"
-    },
-    {
-      "value": 50,
-      "linkName": "Legendary Power",
-      "description": "ATK +10% when performing a Super Attack"
-    },
-    {
-      "value": 51,
-      "linkName": "Fear and Faith",
-      "description": "Ki +2 and all enemies' DEF -10%"
-    },
-    {
-      "value": 52,
-      "linkName": "Prepared for Battle",
-      "description": "Ki +2"
-    },
-    {
-      "value": 53,
-      "linkName": "The First Awakened",
-      "description": "ATK +25%"
-    },
-    {
-      "value": 54,
-      "linkName": "Tough as Nails",
-      "description": "DEF +15%"
-    },
-    {
-      "value": 55,
       "linkName": "Z Fighters",
       "description": "ATK +15%"
     },
     {
-      "value": 56,
-      "linkName": "Patrol",
-      "description": "Ki +2"
+      "value": 46,
+      "linkName": "Dodon Ray",
+      "description": "ATK +10% when performing a Super Attack"
     },
     {
-      "value": 57,
-      "linkName": "Majin",
-      "description": "ATK & DEF +10%"
+      "value": 47,
+      "linkName": "Kamehameha",
+      "description": "ATK +5% when performing a Super Attack"
     },
     {
-      "value": 58,
-      "linkName": "Godly Power",
-      "description": "ATK +15%"
-    },
-    {
-      "value": 59,
-      "linkName": "Revival",
-      "description": "Ki +2 and recover 5% HP"
-    },
-    {
-      "value": 60,
-      "linkName": "Saiyan Pride",
-      "description": "ATK +15%"
-    },
-    {
-      "value": 61,
-      "linkName": "Battlefield Diva",
-      "description": "Ki +2"
-    },
-    {
-      "value": 62,
-      "linkName": "The Saiyan Lineage",
-      "description": "Ki +1"
-    },
-    {
-      "value": 63,
-      "linkName": "Warrior Gods",
-      "description": "ATK +10%"
-    },
-    {
-      "value": 64,
-      "linkName": "Supreme Power",
-      "description": "ATK & DEF +15%"
-    },
-    {
-      "value": 65,
-      "linkName": "Resurrection \"F\"",
-      "description": "Ki +2 and ATK +5%"
-    },
-    {
-      "value": 66,
-      "linkName": "Big Bad Bosses",
-      "description": "ATK & DEF +25%"
-    },
-    {
-      "value": 67,
-      "linkName": "Turn of Power",
-      "description": "Ki +3 and ATK & DEF +7%"
-    },
-    {
-      "value": 68,
-      "linkName": "Hero of Justice",
-      "description": "ATK +25%"
-    },
-    {
-      "value": 69,
-      "linkName": "Universe's Most Malevolent",
-      "description": "ATK +15%"
-    },
-    {
-      "value": 70,
-      "linkName": "Nightmare",
-      "description": "ATK +15%"
-    },
-    {
-      "value": 71,
-      "linkName": "Destroyer of the Universe",
-      "description": "ATK +25%"
-    },
-    {
-      "value": 72,
-      "linkName": "Berserker",
-      "description": "ATK +20% when HP is 50% or below"
-    },
-    {
-      "value": 73,
-      "linkName": "Hatred of Saiyans",
-      "description": "ATK +20%"
-    },
-    {
-      "value": 74,
-      "linkName": "Cold Judgment",
-      "description": "DEF +20%"
-    },
-    {
-      "value": 75,
-      "linkName": "Infighter",
-      "description": "ATK +10% and all enemies' DEF -10%"
-    },
-    {
-      "value": 76,
-      "linkName": "Tournament of Power",
-      "description": "Ki +3 and ATK & DEF +7%"
-    },
-    {
-      "value": 77,
-      "linkName": "Solid Support",
-      "description": "ATK +10% and all enemies' DEF -15%"
-    },
-    {
-      "value": 78,
-      "linkName": "Mechanical Menaces",
-      "description": "Ki +1"
-    },
-    {
-      "value": 79,
-      "linkName": "Loyalty",
-      "description": "Ki +1"
-    },
-    {
-      "value": 80,
-      "linkName": "Brainiacs",
-      "description": "ATK & DEF +10%"
-    },
-    {
-      "value": 81,
-      "linkName": "The Wall Standing Tall",
-      "description": "Foils enemy's 'True Power' and boosts ATK by 15%"
-    },
-    {
-      "value": 82,
+      "value": 48,
       "linkName": "Namekians",
       "description": "Recover 5% HP"
     },
     {
-      "value": 83,
+      "value": 49,
+      "linkName": "Berserker",
+      "description": "ATK +20% when HP is 50% or below"
+    },
+    {
+      "value": 50,
+      "linkName": "Big Bad Bosses",
+      "description": "ATK & DEF +25% when HP is 80% or below"
+    },
+    {
+      "value": 51,
       "linkName": "Frieza's Army",
       "description": "DEF +20%"
     },
     {
-      "value": 84,
+      "value": 52,
+      "linkName": "Tough as Nails",
+      "description": "DEF +15%"
+    },
+    {
+      "value": 53,
+      "linkName": "Speedy Retribution",
+      "description": "ATK +10%"
+    },
+    {
+      "value": 54,
+      "linkName": "Tag Team of Terror",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 55,
       "linkName": "RR Army",
       "description": "ATK +10%"
     },
     {
-      "value": 85,
+      "value": 56,
       "linkName": "Gaze of Respect",
       "description": "Ki +2"
     },
     {
-      "value": 86,
+      "value": 57,
+      "linkName": "Bombardment",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 58,
+      "linkName": "Over 9000",
+      "description": "ATK +10%"
+    },
+    {
+      "value": 59,
+      "linkName": "Universe’s Most Malevolent",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 60,
+      "linkName": "Shocking Speed",
+      "description": "Ki +2"
+    },
+    {
+      "value": 61,
+      "linkName": "Family Ties",
+      "description": "Ki +2"
+    },
+    {
+      "value": 62,
+      "linkName": "Team Bardock",
+      "description": "Ki +1"
+    },
+    {
+      "value": 63,
+      "linkName": "Saiyan Pride",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 64,
+      "linkName": "Battlefield Diva",
+      "description": "Ki +2"
+    },
+    {
+      "value": 65,
+      "linkName": "Revival",
+      "description": "Ki +2"
+    },
+    {
+      "value": 66,
       "linkName": "Dismal Future",
       "description": "Ki +1"
     },
     {
+      "value": 67,
+      "linkName": "Organic Upgrade",
+      "description": "Ki +2"
+    },
+    {
+      "value": 68,
+      "linkName": "Resurrection 'F'",
+      "description": "ATK +10%"
+    },
+    {
+      "value": 69,
+      "linkName": "Patrol",
+      "description": "Ki +2"
+    },
+    {
+      "value": 70,
+      "linkName": "Warrior Gods",
+      "description": "ATK +10%"
+    },
+    {
+      "value": 71,
+      "linkName": "Super-God Combat",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 72,
+      "linkName": "New Frieza Army",
+      "description": "ATK & DEF +20%"
+    },
+    {
+      "value": 73,
+      "linkName": "Loyalty",
+      "description": "Ki +1"
+    },
+    {
+      "value": 74,
+      "linkName": "Unbreakable Bond",
+      "description": "Ki +2"
+    },
+    {
+      "value": 75,
+      "linkName": "Galactic Visitor",
+      "description": "Ki +1"
+    },
+    {
+      "value": 76,
+      "linkName": "Master of Magic",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 77,
+      "linkName": "Majin Resurrection Plan",
+      "description": "Ki +2"
+    },
+    {
+      "value": 79,
+      "linkName": "Connoisseur",
+      "description": "Recover 5% HP"
+    },
+    {
+      "value": 80,
+      "linkName": "Godly Power",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 81,
+      "linkName": "Energy Absorption",
+      "description": "Ki +2"
+    },
+    {
+      "value": 82,
+      "linkName": "Budding Warrior",
+      "description": "ATK +10%"
+    },
+    {
+      "value": 83,
+      "linkName": "Majin",
+      "description": "ATK & DEF +10%"
+    },
+    {
+      "value": 84,
+      "linkName": "Strength in Unity",
+      "description": "Ki +1"
+    },
+    {
+      "value": 85,
+      "linkName": "Strongest Clan in Space",
+      "description": "Ki +2"
+    },
+    {
+      "value": 86,
+      "linkName": "Thirst for Conquest",
+      "description": "ATK +15%"
+    },
+    {
       "value": 87,
+      "linkName": "The Hera Clan",
+      "description": "Ki +2"
+    },
+    {
+      "value": 88,
+      "linkName": "Galactic Warriors",
+      "description": "ATK +20%"
+    },
+    {
+      "value": 89,
+      "linkName": "Over in a Flash",
+      "description": "Ki +3"
+    },
+    {
+      "value": 90,
+      "linkName": "The Incredible Adventure",
+      "description": "Ki +2"
+    },
+    {
+      "value": 91,
+      "linkName": "Cooler's Underling",
+      "description": "Ki +1"
+    },
+    {
+      "value": 92,
+      "linkName": "Cooler's Armored Squad",
+      "description": "ATK +25%"
+    },
+    {
+      "value": 93,
+      "linkName": "Hero of Justice",
+      "description": "ATK +25%"
+    },
+    {
+      "value": 94,
+      "linkName": "Signature Pose",
+      "description": "Ki +2"
+    },
+    {
+      "value": 95,
+      "linkName": "GT",
+      "description": "Ki +2"
+    },
+    {
+      "value": 96,
+      "linkName": "Infinite Regeneration",
+      "description": "Recover 3% HP"
+    },
+    {
+      "value": 97,
+      "linkName": "Prepared for Battle",
+      "description": "Ki +2"
+    },
+    {
+      "value": 98,
+      "linkName": "Destroyer of the Universe",
+      "description": "ATK +25%"
+    },
+    {
+      "value": 100,
+      "linkName": "Team Turles",
+      "description": "Ki +1"
+    },
+    {
+      "value": 101,
+      "linkName": "Fortuneteller Baba’s Fighter",
+      "description": "Ki +2"
+    },
+    {
+      "value": 102,
+      "linkName": "Guidance of the Dragon Balls",
+      "description": "ATK +20%"
+    },
+    {
+      "value": 103,
+      "linkName": "Power Bestowed by God",
+      "description": "ATK +5% when performing a Super Attack"
+    },
+    {
+      "value": 104,
+      "linkName": "Hardened Grudge",
+      "description": "Ki +1"
+    },
+    {
+      "value": 105,
+      "linkName": "Auto Regeneration",
+      "description": "Recover 3% HP"
+    },
+    {
+      "value": 106,
+      "linkName": "Fusion",
+      "description": "Ki +2"
+    },
+    {
+      "value": 107,
+      "linkName": "Deficit Boost",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 108,
+      "linkName": "Ultimate Lifeform",
+      "description": "Ki +2"
+    },
+    {
+      "value": 109,
       "linkName": "Fierce Battle",
       "description": "ATK +15%"
     },
     {
-      "value": 88,
-      "linkName": "Champion Strength",
-      "description": "Ki +1"
+      "value": 110,
+      "linkName": "Infinite Energy",
+      "description": "Ki +2"
     },
     {
-      "value": 89,
-      "linkName": "Power Bestowed by God",
+      "value": 111,
+      "linkName": "Formidable Enemy",
+      "description": "ATK +10%"
+    },
+    {
+      "value": 112,
+      "linkName": "Fused Fighter",
+      "description": "Ki +2"
+    },
+    {
+      "value": 113,
+      "linkName": "Fusion Failure",
+      "description": "Recover 3% HP"
+    },
+    {
+      "value": 114,
+      "linkName": "Scientist",
+      "description": "Ki +2"
+    },
+    {
+      "value": 115,
+      "linkName": "Hatred of Saiyans",
+      "description": "Ki +2"
+    },
+    {
+      "value": 116,
+      "linkName": "Limit-Breaking Form",
       "description": "ATK +5% when performing a Super Attack"
+    },
+    {
+      "value": 117,
+      "linkName": "The First Awakened",
+      "description": "ATK +25%"
+    },
+    {
+      "value": 118,
+      "linkName": "Shattering the Limit",
+      "description": "Ki +2"
+    },
+    {
+      "value": 119,
+      "linkName": "Nightmare",
+      "description": "ATK +10%"
+    },
+    {
+      "value": 120,
+      "linkName": "Fear and Faith",
+      "description": "Ki +2"
+    },
+    {
+      "value": 121,
+      "linkName": "Xenoverse",
+      "description": "ATK +20%"
+    },
+    {
+      "value": 122,
+      "linkName": "Super Strike",
+      "description": "ATK +20%"
+    },
+    {
+      "value": 123,
+      "linkName": "Transform",
+      "description": "Ki +2"
+    },
+    {
+      "value": 124,
+      "linkName": "Saiyan Roar",
+      "description": "ATK +25%"
+    },
+    {
+      "value": 125,
+      "linkName": "Legendary Power",
+      "description": "ATK +10% when performing a Super Attack"
+    },
+    {
+      "value": 126,
+      "linkName": "Warriors of Universe 6 ",
+      "description": "Ki +2"
+    },
+    {
+      "value": 127,
+      "linkName": "Shadow Dragons",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 128,
+      "linkName": "Penguin Village Adventure",
+      "description": "ATK +15%"
+    },
+    {
+      "value": 129,
+      "linkName": "Otherworld Warriors",
+      "description": "ATK +20%"
+    },
+    {
+      "value": 130,
+      "linkName": "Tournament of Power",
+      "description": "Ki +3"
+    },
+    {
+      "value": 1000,
+      "linkName": "Blazing Battle",
+      "description": "Disables enemy's Rampage, and ATK +15%"
+    },
+    {
+      "value": 1001,
+      "linkName": "Soul vs Soul",
+      "description": "Weakens Regeneration and Ki +1"
+    },
+    {
+      "value": 1002,
+      "linkName": "Golden Z-Fighter",
+      "description": "Ki +2"
+    },
+    {
+      "value": 1003,
+      "linkName": "Supreme Power",
+      "description": "ATK & DEF +5% and activates Penetration"
+    },
+    {
+      "value": 1004,
+      "linkName": "The Wall Standing Tall",
+      "description": "Foils enemy's \"True Power\" and boosts ATK \nby 15%"
     }
   ]
 }

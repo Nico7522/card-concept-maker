@@ -9,3 +9,5 @@ export * from './passive-interface';
 export * from './super-attack-form-group-interface';
 export * from './super-attack-interface';
 export * from './validators';
+export * from './link-interface';
+export * from './category-interface';

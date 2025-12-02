@@ -10,7 +10,12 @@ import {
 import { catchError, EMPTY, map, of, switchMap, take } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService, ErrorToastService } from '~/src/shared/api';
+import {
+  AuthService,
+  ErrorToastService,
+  GameDataService,
+  ArtworkService,
+} from '~/src/shared/api';
 import { LoaderComponent } from '~/src/shared/ui';
 import patchCardForm from '~/src/app/helpers/patch-card-form';
 import generateCard from '~/src/app/helpers/generate-card';
@@ -19,7 +24,6 @@ import { Card } from '~/src/shared/model';
 import { AsyncPipe } from '@angular/common';
 import { UpdateCardService } from '../api/update-card.service';
 import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
-import { ArtworkService } from '~/src/shared/api';
 
 @Component({
   selector: 'app-update-card-form',
@@ -42,6 +46,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   readonly #authService = inject(AuthService);
   readonly #errorToastService = inject(ErrorToastService);
   readonly #artworkService = inject(ArtworkService);
+  readonly #gameDataService = inject(GameDataService);
   isLoading = signal(true);
   isError = signal(false);
   card = signal<Card | null>(null);
@@ -66,8 +71,11 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       return;
     }
     if (nestedCardForm.valid) {
-      const { characterInfo, passiveDetails, superAttackInfo } =
-        generateCard(nestedCardForm);
+      const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
+        nestedCardForm,
+        this.#gameDataService.categories(),
+        this.#gameDataService.links()
+      );
 
       if (this.#authService.user() !== null) {
         this.isLoading.set(true);
@@ -124,7 +132,12 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       'cardForm'
     ) as FormGroup<CardForm> | null;
     if (nestedCardForm && this.card()) {
-      patchCardForm(nestedCardForm, this.card() as Card);
+      patchCardForm(
+        nestedCardForm,
+        this.card() as Card,
+        this.#gameDataService.categories(),
+        this.#gameDataService.links()
+      );
     }
   }
 

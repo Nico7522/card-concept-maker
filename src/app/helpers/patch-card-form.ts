@@ -1,17 +1,20 @@
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Card } from '~/src/shared/model/card-interface';
 import { CardForm } from '~/src/widgets/card-form/model/card-form-interface';
-
-import { categories } from '~/src/app/select-options/categories';
-import { Links } from '~/src/app/select-options/links';
 import { effectDuration } from '~/src/app/select-options/effect-duration';
 import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
 import {
   EffectFormGroup,
   PassivePartFormGroup,
 } from '~/src/shared/model/passive-form-group-interface';
+import { Category, Link } from '~/src/shared/model';
 
-export default function patchCardForm(form: FormGroup<CardForm>, card: Card) {
+export default function patchCardForm(
+  form: FormGroup<CardForm>,
+  card: Card,
+  categories: Category[],
+  links: Link[]
+) {
   if (card.characterInfo) {
     form.patchValue(card);
     form.get('artwork.image')?.patchValue('card.artwork ?? ');
@@ -48,7 +51,7 @@ export default function patchCardForm(form: FormGroup<CardForm>, card: Card) {
       );
     });
 
-    const selectedLinks = Links.filter((link) => {
+    const selectedLinks = links.filter((link) => {
       return card.characterInfo?.links.includes(link.linkName);
     });
 

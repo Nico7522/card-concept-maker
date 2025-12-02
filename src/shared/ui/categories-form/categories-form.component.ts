@@ -11,7 +11,6 @@ import { NgIconComponent } from '@ng-icons/core';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { CategoriesFormGroup } from '../../model';
 import { GameDataService } from '../../api';
-import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-categories-form',
   imports: [
@@ -19,7 +18,6 @@ import { AsyncPipe } from '@angular/common';
     NgSelectComponent,
     NgOptionComponent,
     NgIconComponent,
-    AsyncPipe,
   ],
   templateUrl: './categories-form.component.html',
   styleUrl: './categories-form.component.css',
@@ -32,8 +30,8 @@ import { AsyncPipe } from '@angular/common';
 })
 export class CategoriesFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
-  readonly #gameDataService = inject(GameDataService);
-  categoryList$ = this.#gameDataService.categories$;
+  readonly gameDataService = inject(GameDataService);
+  categoryList$ = this.gameDataService.categories$;
   controlKey = input.required<string>();
   label = input.required<string>();
 

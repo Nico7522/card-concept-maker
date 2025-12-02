@@ -11,17 +11,10 @@ import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { NgIcon } from '@ng-icons/core';
 import { LinksFormGroup } from '../../model';
 import { GameDataService } from '../../api';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-links-form',
-  imports: [
-    NgSelectComponent,
-    NgOptionComponent,
-    NgIcon,
-    ReactiveFormsModule,
-    AsyncPipe,
-  ],
+  imports: [NgSelectComponent, NgOptionComponent, NgIcon, ReactiveFormsModule],
   templateUrl: './links-form.component.html',
   styleUrl: './links-form.component.css',
   viewProviders: [
@@ -33,10 +26,10 @@ import { AsyncPipe } from '@angular/common';
 })
 export class LinksFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
-  readonly #gameDataService = inject(GameDataService);
+  readonly gameDataService = inject(GameDataService);
   controlKey = input.required<string>();
   label = input.required<string>();
-  linkSkill$ = this.#gameDataService.links$;
+  linkSkill$ = this.gameDataService.links$;
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }

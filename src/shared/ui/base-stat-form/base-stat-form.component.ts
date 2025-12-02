@@ -37,15 +37,15 @@ export class BaseStatFormComponent implements OnDestroy, OnInit {
       new FormGroup<BaseStatFormGroup>({
         attack: new FormControl(null, {
           nonNullable: true,
-          validators: [Validators.required, Validators.max(9999)],
+          validators: [Validators.required, Validators.max(99999)],
         }),
         defense: new FormControl(null, {
           nonNullable: true,
-          validators: [Validators.required, Validators.max(9999)],
+          validators: [Validators.required, Validators.max(99999)],
         }),
         hp: new FormControl(null, {
           nonNullable: true,
-          validators: [Validators.required, Validators.max(9999)],
+          validators: [Validators.required, Validators.max(99999)],
         }),
       })
     );

@@ -26,10 +26,10 @@
                 <label class="text-sm font-semibold text-gray-400 uppercase">Activation Condition</label>
                 <ng-select (change)="onOptionChange($event, index)" class="custom-select" [searchable]="false"
                     [clearable]="false" formControlName="passiveConditionActivation">
-                    @for (effect of passiveConditionActivation; track $index) {
-                    <ng-option [value]="effect.value">{{effect.effect}}</ng-option>
-                    }
                     <ng-option value="custom">--- Custom condition ---</ng-option>
+                    @for (condition of passiveConditionActivation(); track $index) {
+                    <ng-option [value]="condition.value">{{condition.effect}}</ng-option>
+                    }
                 </ng-select>
 
                 @if (isCustomConditionSelected(index)) {
@@ -55,9 +55,9 @@
                     </div>
 
                     <div class="w-full sm:w-24">
-                        <ng-select [clearable]="false" [searchable]="false"
-                            class="custom-select small-select" formControlName="effectDuration">
-                            @for (duration of effectDuration; track $index) {
+                        <ng-select [clearable]="false" [searchable]="false" class="custom-select small-select"
+                            formControlName="effectDuration">
+                            @for (duration of effectDuration() ; track $index) {
                             <ng-option [value]="duration.value">
                                 @if (duration.icon === "None") {
                                 None

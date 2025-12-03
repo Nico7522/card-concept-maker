@@ -7,16 +7,15 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { ErrorComponent } from '../../ui';
-import { effectDuration } from '~/src/app/select-options/effect-duration';
 import { NgIcon } from '@ng-icons/core';
 import {
   EffectFormGroup,
   PassiveFormGroup,
   PassivePartFormGroup,
 } from '../../model';
+import { GameDataService } from '../../api';
 
 @Component({
   selector: 'app-passive-form',
@@ -38,10 +37,11 @@ import {
 })
 export class PassiveFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
+  readonly #gameDataService = inject(GameDataService);
   controlKey = input.required<string>();
   label = input.required<string>();
-  passiveConditionActivation = passiveConditionActivation;
-  effectDuration = effectDuration;
+  passiveConditionActivation = this.#gameDataService.passiveConditionActivation;
+  effectDuration = this.#gameDataService.effectDuration;
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }

@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { GameDataService } from './game-data.service';
-import { Category, Link } from '../../model';
 
 describe('GameDataService', () => {
   let service: GameDataService;

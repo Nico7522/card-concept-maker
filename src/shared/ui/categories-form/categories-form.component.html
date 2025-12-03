@@ -5,7 +5,7 @@
             <div class="flex-1">
                 <ng-select class="custom-select" [searchable]="true" [clearable]="true" [formControlName]="index"
                     placeholder="Select Category">
-                    @for (category of gameDataService.categories(); track $index) {
+                    @for (category of categoryList(); track $index) {
                     <ng-option [value]="category.value">{{category.categoryName}}</ng-option>
                     }
                 </ng-select>

@@ -11,3 +11,5 @@ export * from './super-attack-interface';
 export * from './validators';
 export * from './link-interface';
 export * from './category-interface';
+export * from './passive-condition-activation-interface';
+export * from './effect-duration-interface';

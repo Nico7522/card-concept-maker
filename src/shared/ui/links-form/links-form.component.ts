@@ -29,7 +29,7 @@ export class LinksFormComponent implements OnInit, OnDestroy {
   readonly gameDataService = inject(GameDataService);
   controlKey = input.required<string>();
   label = input.required<string>();
-  linkSkill$ = this.gameDataService.links$;
+  linkSkill = this.gameDataService.links;
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }

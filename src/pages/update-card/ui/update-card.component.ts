@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, inject, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
 import {
@@ -7,7 +13,16 @@ import {
   heroArrowLongRight,
   heroPlus,
 } from '@ng-icons/heroicons/outline';
-import { catchError, EMPTY, map, of, switchMap, take } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  EMPTY,
+  map,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -47,6 +62,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   readonly #errorToastService = inject(ErrorToastService);
   readonly #artworkService = inject(ArtworkService);
   readonly #gameDataService = inject(GameDataService);
+  readonly #destroyRef = inject(DestroyRef);
   isLoading = signal(true);
   isError = signal(false);
   card = signal<Card | null>(null);
@@ -74,7 +90,8 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
         nestedCardForm,
         this.#gameDataService.categories(),
-        this.#gameDataService.links()
+        this.#gameDataService.links(),
+        this.#gameDataService.passiveConditionActivation()
       );
 
       if (this.#authService.user() !== null) {
@@ -131,13 +148,28 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
     const nestedCardForm = this.cardForm.get(
       'cardForm'
     ) as FormGroup<CardForm> | null;
+
     if (nestedCardForm && this.card()) {
-      patchCardForm(
-        nestedCardForm,
-        this.card() as Card,
-        this.#gameDataService.categories(),
-        this.#gameDataService.links()
-      );
+      // Attendre que toutes les données soient chargées avant de patcher le formulaire
+      combineLatest([
+        this.#gameDataService.categories$,
+        this.#gameDataService.links$,
+        this.#gameDataService.passiveConditionActivation$,
+        this.#gameDataService.effectDuration$,
+      ])
+        .pipe(takeUntilDestroyed(this.#destroyRef))
+        .subscribe(
+          ([categories, links, passiveConditionActivation, effectDuration]) => {
+            patchCardForm(
+              nestedCardForm,
+              this.card() as Card,
+              categories,
+              links,
+              passiveConditionActivation,
+              effectDuration
+            );
+          }
+        );
     }
   }
 

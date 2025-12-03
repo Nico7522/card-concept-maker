@@ -1,19 +1,24 @@
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Card } from '~/src/shared/model/card-interface';
 import { CardForm } from '~/src/widgets/card-form/model/card-form-interface';
-import { effectDuration } from '~/src/app/select-options/effect-duration';
-import { passiveConditionActivation } from '~/src/app/select-options/passive-condition-activation';
 import {
   EffectFormGroup,
   PassivePartFormGroup,
 } from '~/src/shared/model/passive-form-group-interface';
-import { Category, Link } from '~/src/shared/model';
+import {
+  Category,
+  EffectDuration,
+  Link,
+  PassiveConditionActivation,
+} from '~/src/shared/model';
 
 export default function patchCardForm(
   form: FormGroup<CardForm>,
   card: Card,
   categories: Category[],
-  links: Link[]
+  links: Link[],
+  passiveConditionActivation: PassiveConditionActivation[],
+  effectDuration: EffectDuration[]
 ) {
   if (card.characterInfo) {
     form.patchValue(card);

@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { defer, from, shareReplay } from 'rxjs';
-import { Category, Link } from '../../model';
+import {
+  Category,
+  EffectDuration,
+  Link,
+  PassiveConditionActivation,
+} from '../../model';
 
 @Injectable({ providedIn: 'root' })
 export class GameDataService {
@@ -23,4 +28,33 @@ export class GameDataService {
     )
   ).pipe(shareReplay(1));
   readonly links = toSignal(this.links$, { initialValue: [] });
+
+  readonly passiveConditionActivation$ = defer(() =>
+    from(
+      import('~/public/data/passive-condittion-activation.json').then(
+        (m) =>
+          (
+            m.default as {
+              passiveConditionActivation: PassiveConditionActivation[];
+            }
+          ).passiveConditionActivation
+      )
+    )
+  ).pipe(shareReplay(1));
+  readonly passiveConditionActivation = toSignal(
+    this.passiveConditionActivation$,
+    { initialValue: [] }
+  );
+
+  readonly effectDuration$ = defer(() =>
+    from(
+      import('~/public/data/effect-duration.json').then(
+        (m) =>
+          (m.default as { effectDuration: EffectDuration[] }).effectDuration
+      )
+    )
+  ).pipe(shareReplay(1));
+  readonly effectDuration = toSignal(this.effectDuration$, {
+    initialValue: [],
+  });
 }

@@ -1,18 +1,18 @@
 import { signal } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
-import { passiveConditionActivation } from '../select-options/passive-condition-activation';
 import getDurationLogo from './get-duration-logo';
 import { CardForm } from '~/src/widgets/card-form/model/card-form-interface';
 import { Character } from '~/src/shared/model/character-interface';
 import { Passive } from '~/src/shared/model/passive-interface';
 import { SuperAttack } from '~/src/shared/model/super-attack-interface';
-import { Category, Link } from '~/src/shared/model';
+import { Category, Link, PassiveConditionActivation } from '~/src/shared/model';
 
 export default function generateCard(
   form: FormGroup<CardForm>,
   categories: Category[],
-  links: Link[]
+  links: Link[],
+  passiveConditionActivation: PassiveConditionActivation[]
 ) {
   let characterInfo = signal<Character | null>(null);
   let passiveDetails = signal<Passive | null>(null);

@@ -79,7 +79,8 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
       const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
         nestedCardForm,
         this.#gameDataService.categories(),
-        this.#gameDataService.links()
+        this.#gameDataService.links(),
+        this.#gameDataService.passiveConditionActivation()
       );
       if (this.componentRefs) {
         this.componentRefs.destroy();

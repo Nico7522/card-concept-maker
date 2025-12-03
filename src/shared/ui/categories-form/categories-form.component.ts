@@ -31,7 +31,7 @@ import { GameDataService } from '../../api';
 export class CategoriesFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
   readonly gameDataService = inject(GameDataService);
-  categoryList$ = this.gameDataService.categories$;
+  categoryList = this.gameDataService.categories;
   controlKey = input.required<string>();
   label = input.required<string>();
 

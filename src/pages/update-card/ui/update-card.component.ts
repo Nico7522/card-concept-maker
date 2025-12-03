@@ -17,6 +17,7 @@ import {
   catchError,
   combineLatest,
   EMPTY,
+  filter,
   map,
   of,
   switchMap,
@@ -149,28 +150,35 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       'cardForm'
     ) as FormGroup<CardForm> | null;
 
-    if (nestedCardForm && this.card()) {
-      // Attendre que toutes les données soient chargées avant de patcher le formulaire
-      combineLatest([
-        this.#gameDataService.categories$,
-        this.#gameDataService.links$,
-        this.#gameDataService.passiveConditionActivation$,
-        this.#gameDataService.effectDuration$,
-      ])
-        .pipe(takeUntilDestroyed(this.#destroyRef))
-        .subscribe(
-          ([categories, links, passiveConditionActivation, effectDuration]) => {
+    // Attendre que toutes les données soient chargées avant de patcher le formulaire
+    combineLatest([
+      this.card$.pipe(filter((card) => !!card)),
+      this.#gameDataService.categories$,
+      this.#gameDataService.links$,
+      this.#gameDataService.passiveConditionActivation$,
+      this.#gameDataService.effectDuration$,
+    ])
+      .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
+      .subscribe(
+        ([
+          card,
+          categories,
+          links,
+          passiveConditionActivation,
+          effectDuration,
+        ]) => {
+          if (nestedCardForm) {
             patchCardForm(
               nestedCardForm,
-              this.card() as Card,
+              card,
               categories,
               links,
               passiveConditionActivation,
               effectDuration
             );
           }
-        );
-    }
+        }
+      );
   }
 
   hasUnsavedChanges(): boolean {

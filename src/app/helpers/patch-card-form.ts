@@ -22,7 +22,7 @@ export default function patchCardForm(
 ) {
   if (card.characterInfo) {
     form.patchValue(card);
-    form.get('artwork.image')?.patchValue(card.artwork ?? '');
+    form.get('artwork')?.patchValue(card.artwork ?? null);
     form.get('type')?.patchValue(card.characterInfo.type);
     form.get('class')?.patchValue(card.characterInfo.class);
     form

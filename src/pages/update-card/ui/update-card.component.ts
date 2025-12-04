@@ -134,12 +134,14 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
     ) as FormGroup<CardForm> | null;
 
     // Attendre que toutes les données soient chargées avant de patcher le formulaire
+    // user$ est inclus pour s'assurer que le composant artwork est monté (et son contrôle créé)
     combineLatest([
       this.card$.pipe(filter((card) => !!card)),
       this.#gameDataService.categories$,
       this.#gameDataService.links$,
       this.#gameDataService.passiveConditionActivation$,
       this.#gameDataService.effectDuration$,
+      this.#authService.user$.pipe(filter((user) => !!user)),
     ])
       .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
       .subscribe(

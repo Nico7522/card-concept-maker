@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardFormComponent } from './card-form.component';
+import { describe, expect, beforeEach, it } from 'vitest';
 
 describe('CardFormComponent', () => {
   let component: CardFormComponent;
@@ -8,9 +9,8 @@ describe('CardFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardFormComponent]
-    })
-    .compileComponents();
+      imports: [CardFormComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CardFormComponent);
     component = fixture.componentInstance;

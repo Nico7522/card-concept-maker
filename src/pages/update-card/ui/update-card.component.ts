@@ -18,6 +18,7 @@ import {
   combineLatest,
   EMPTY,
   filter,
+  finalize,
   map,
   of,
   switchMap,
@@ -80,69 +81,51 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   );
   onSubmit() {
     this.isFormSubmitted.set(true);
+
     const nestedCardForm = this.cardForm.get(
       'cardForm'
     ) as FormGroup<CardForm> | null;
+    if (!nestedCardForm?.valid) return;
 
-    if (!nestedCardForm) {
-      return;
-    }
-    if (nestedCardForm.valid) {
-      const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
-        nestedCardForm,
-        this.#gameDataService.categories(),
-        this.#gameDataService.links(),
-        this.#gameDataService.passiveConditionActivation()
-      );
+    const user = this.#authService.user();
+    if (!user) return;
 
-      if (this.#authService.user() !== null) {
-        this.isLoading.set(true);
-        this.#updateCardService
-          .patchCard(this.#activatedRoute.snapshot.params['id'], {
-            creatorName: this.#authService.user()?.displayName ?? '',
-            creatorId: this.#authService.user()?.uid ?? '',
-            cardName: nestedCardForm.get('cardName')?.value ?? '',
-            artwork: nestedCardForm.get('artwork')?.value ?? null,
-            characterInfo: characterInfo(),
-            passiveDetails: passiveDetails(),
-            superAttackInfo: superAttackInfo(),
-          })
-          .pipe(
-            take(1),
-            switchMap((data) => {
-              if (this.artwork()) {
-                return this.#artworkService
-                  .patchArtworkImage(this.artwork() as FormData)
-                  .pipe(
-                    switchMap((response) => {
-                      return this.#artworkService.patchArtworkName(
-                        this.card()?.id ?? '',
-                        response.filename
-                      );
-                    })
-                  );
-              }
-              return of(data);
-            }),
-            catchError((err) => {
-              console.log(err);
-              this.isLoading.set(false);
-              this.#errorToastService.showToast(
-                'An error occurred while updating the card'
-              );
-              return EMPTY;
-            })
-          )
-          .subscribe(() => {
-            this.isLoading.set(false);
+    const cardId = this.#activatedRoute.snapshot.params['id'];
+    const card = this.card();
+    const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
+      nestedCardForm,
+      this.#gameDataService.categories(),
+      this.#gameDataService.links(),
+      this.#gameDataService.passiveConditionActivation()
+    );
 
-            this.#router.navigate([
-              '/card',
-              this.#activatedRoute.snapshot.params['id'],
-            ]);
-          });
-      }
-    }
+    this.isLoading.set(true);
+
+    this.#updateCardService
+      .patchCard(cardId, {
+        creatorName: user.displayName ?? '',
+        creatorId: user.uid ?? '',
+        cardName: nestedCardForm.get('cardName')?.value ?? '',
+        artwork: nestedCardForm.get('artwork')?.value ?? null,
+        characterInfo: characterInfo(),
+        passiveDetails: passiveDetails(),
+        superAttackInfo: superAttackInfo(),
+      })
+      .pipe(
+        switchMap(() =>
+          this.handleArtworkUpload(card?.id ?? '', card?.artwork ?? null)
+        ),
+        catchError(() => {
+          this.#errorToastService.showToast(
+            'An error occurred while updating the card'
+          );
+          return EMPTY;
+        }),
+        finalize(() => this.isLoading.set(false))
+      )
+      .subscribe(() => {
+        this.#router.navigate(['/card', cardId]);
+      });
   }
 
   ngAfterViewInit(): void {
@@ -187,5 +170,21 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
 
   handleArtwork(formData: FormData) {
     this.artwork.set(formData);
+  }
+
+  private handleArtworkUpload(cardId: string, currentArtwork: string | null) {
+    const artwork = this.artwork();
+    if (!artwork) return of(null);
+
+    return this.#artworkService.patchArtworkImage(artwork).pipe(
+      switchMap((response) =>
+        this.#artworkService.patchArtworkName(cardId, response.filename)
+      ),
+      switchMap(() =>
+        currentArtwork
+          ? this.#artworkService.deleteArtwork(currentArtwork)
+          : of(null)
+      )
+    );
   }
 }

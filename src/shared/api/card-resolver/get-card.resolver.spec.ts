@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 import { getCardResolver } from './get-card.resolver';
 import { Card } from '../../model';

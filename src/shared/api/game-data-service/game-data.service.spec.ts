@@ -1,6 +1,7 @@
-import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
+import { expect, describe, beforeEach, it } from 'vitest';
 import { GameDataService } from './game-data.service';
+import { TestBed } from '@angular/core/testing';
 
 describe('GameDataService', () => {
   let service: GameDataService;

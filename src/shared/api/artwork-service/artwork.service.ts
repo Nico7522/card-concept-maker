@@ -21,7 +21,7 @@ export class ArtworkService {
   /**
    * Uploads an artwork image to the server.
    * @param artwork - The artwork image to upload.
-   * @returns An observable of the uploaded artwork.
+   * @returns An observable of the filename.
    */
   patchArtworkImage(artwork: FormData) {
     return this.#httpClient.post<{ filename: string }>(
@@ -34,7 +34,7 @@ export class ArtworkService {
    * Updates the artwork name in the database.
    * @param cardId - The ID of the card to update.
    * @param artworkName - The new artwork name.
-   * @returns An observable of the updated artwork.
+   * @returns An observable of void.
    */
   patchArtworkName(cardId: string, artworkName: string) {
     return from(
@@ -44,5 +44,18 @@ export class ArtworkService {
         });
       })
     );
+  }
+
+  /**
+   * Deletes an artwork from the server.
+   * @param artwork - The filename of the artwork to delete.
+   * @returns An observable of void.
+   */
+  deleteArtwork(artwork: string) {
+    return this.#httpClient.delete(`${environment.apiUrl}/delete`, {
+      body: {
+        filename: artwork,
+      },
+    });
   }
 }

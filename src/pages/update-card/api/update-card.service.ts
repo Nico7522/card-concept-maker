@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { from } from 'rxjs';
+import { ArtworkService } from '~/src/shared/api';
 import { Card } from '~/src/shared/model';
 
 @Injectable({
@@ -14,6 +15,7 @@ import { Card } from '~/src/shared/model';
 export class UpdateCardService {
   readonly #injector = inject(Injector);
   readonly #firestore = inject(Firestore);
+  readonly #artworkService = inject(ArtworkService);
   patchCard(id: string, data: Partial<Card>) {
     return from(
       runInInjectionContext(this.#injector, () => {

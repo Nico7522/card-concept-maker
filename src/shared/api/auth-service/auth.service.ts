@@ -1,16 +1,19 @@
 // auth.service.ts
-import { inject, Injectable, Injector } from '@angular/core';
+import {
+  inject,
+  Injectable,
+  Injector,
+  runInInjectionContext,
+} from '@angular/core';
 import {
   Auth,
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
   user,
-  User,
 } from '@angular/fire/auth';
 import { from } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
-import runAsyncInInjectionContext from '../../../app/helpers/firebase-helper';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +33,7 @@ export class AuthService {
    * @returns The user after login
    */
   private async loginWithGoogle() {
-    return await runAsyncInInjectionContext(this.injector, async () => {
+    return await runInInjectionContext(this.injector, async () => {
       try {
         const result = await signInWithPopup(this.auth, this.googleProvider);
         return result.user;

@@ -1,4 +1,5 @@
 import {
+  APP_INITIALIZER,
   ApplicationConfig,
   inject as angularInject,
   isDevMode,
@@ -37,7 +38,7 @@ export const appConfig: ApplicationConfig = {
       })
     ),
     {
-      provide: provideAppInitializer(() => {}),
+      provide: APP_INITIALIZER,
       useFactory: () => {
         inject({ mode: isDevMode() ? 'development' : 'production' });
       },

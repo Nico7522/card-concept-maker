@@ -1,6 +1,6 @@
 {
   "name": "card-concept-maker",
-  "version": "2.0",
+  "version": "1.0",
   "scripts": {
     "ng": "ng",
     "start": "node -r dotenv/config mynode.js && ng serve",

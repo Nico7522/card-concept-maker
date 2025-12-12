@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnDestroy,
+  signal,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -26,7 +32,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './report.component.html',
   styleUrl: './report.component.css',
 })
-export class ReportComponent {
+export class ReportComponent implements OnDestroy {
   readonly #destroyRef = inject(DestroyRef);
   readonly #reportService = inject(ReportService);
   readonly #errorToastService = inject(ErrorToastService);
@@ -64,5 +70,11 @@ export class ReportComponent {
           },
         });
     }
+  }
+
+  ngOnDestroy() {
+    this.isLoading.set(false);
+    this.isSubmittedSuccessfully.set(false);
+    this.reportForm.reset({ type: 'issue', message: '' });
   }
 }

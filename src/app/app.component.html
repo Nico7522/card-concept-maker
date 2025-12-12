@@ -1,5 +1,10 @@
-<app-header />
-<router-outlet />
+<div class="min-h-screen flex flex-col">
+    <app-header />
+    <main class="flex-1">
+        <router-outlet />
+    </main>
+    <app-footer />
+</div>
 @if (isLoading()) {
 <app-loader [isVisible]="isLoading() ?? false" />
 }

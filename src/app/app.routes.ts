@@ -38,4 +38,11 @@ export const routes: Routes = [
     canDeactivate: [hasUnsavedChangesGuard],
     resolve: { card: getCardResolver },
   },
+  {
+    path: 'report',
+    loadComponent: () =>
+      import('../pages/report/ui/report.component').then(
+        (m) => m.ReportComponent
+      ),
+  },
 ];

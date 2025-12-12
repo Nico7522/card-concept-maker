@@ -7,4 +7,5 @@ export const environment = {
   appId: '',
   measurementId: '',
   apiUrl: '',
+  reportUrl: '',
 };

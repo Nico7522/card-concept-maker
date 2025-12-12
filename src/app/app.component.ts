@@ -1,15 +1,19 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
-import { HeaderComponent } from '~/src/shared/ui/header/header.component';
-import { ErrorToastComponent } from '~/src/shared/ui/error-toast/error-toast.component';
-import { LoaderComponent } from '../shared/ui/loader/loader.component';
+import {
+  HeaderComponent,
+  FooterComponent,
+  ErrorToastComponent,
+  LoaderComponent,
+} from '~/src/shared/ui';
 import { RouterService } from '../shared/api/router-service/router.service';
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
     HeaderComponent,
+    FooterComponent,
     ErrorToastComponent,
     LoaderComponent,
   ],

@@ -1,0 +1,27 @@
+/* Animation subtle pour le coeur */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* Override pour l'animation pulse si besoin */
+.animate-pulse {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+/* Responsive très petit écran */
+@media (max-width: 480px) {
+  nav {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  nav .h-4 {
+    display: none;
+  }
+}
+

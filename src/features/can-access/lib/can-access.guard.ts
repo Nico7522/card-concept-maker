@@ -8,10 +8,7 @@ export const canAccessGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   return authService.user$.pipe(
     map((user) => {
-      if (!user) {
-        return false;
-      }
-      if (user.uid !== route.params['id']) {
+      if (user?.uid !== route.params['id']) {
         router.navigate(['/']);
         return false;
       }

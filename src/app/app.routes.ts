@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 import { CreateCardComponent } from '../pages/create-card/ui/create-card.component';
-import { canAccessGuard } from '../features/can-access';
+import { canUpdateGuard } from '../features/can-update';
 import { hasUnsavedChangesGuard } from '../features/unsaved-changes';
 import { getCardsResolver } from '../pages/my-cards/api/get-cards.resolver';
 import { getCardResolver } from '../shared/api/card-resolver/get-card.resolver';
+import { canAccessGuard } from '../features/can-access';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,7 @@ export const routes: Routes = [
       import('../pages/my-cards/ui/my-cards.component').then(
         (m) => m.MyCardsComponent
       ),
+    canActivate: [canAccessGuard],
     resolve: { cards: getCardsResolver },
   },
 
@@ -34,7 +36,7 @@ export const routes: Routes = [
       import('../pages/update-card/ui/update-card.component').then(
         (m) => m.UpdateCardComponent
       ),
-    canActivate: [canAccessGuard],
+    canActivate: [canUpdateGuard],
     canDeactivate: [hasUnsavedChangesGuard],
     resolve: { card: getCardResolver },
   },

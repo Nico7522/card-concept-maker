@@ -15,6 +15,10 @@ export type Character = {
     activeSkillCondition: string;
     activeSkillEffect: string;
   } | null;
+  domain: {
+    domainName: string;
+    domainEffect: string;
+  } | null;
 } | null;
 
 type CharacterType = 'teq' | 'str' | 'agl' | 'int' | 'phy';

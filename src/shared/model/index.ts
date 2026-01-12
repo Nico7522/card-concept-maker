@@ -13,3 +13,4 @@ export * from './link-interface';
 export * from './category-interface';
 export * from './passive-condition-activation-interface';
 export * from './effect-duration-interface';
+export * from './domain-form-group-interface';

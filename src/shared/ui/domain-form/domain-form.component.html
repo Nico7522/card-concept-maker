@@ -1,0 +1,43 @@
+<div [formGroupName]="controlKey()" class="flex flex-col gap-4">
+    <!-- Domain Toggle -->
+    <div class="flex flex-col gap-2">
+        <label class="text-sm font-semibold text-gray-400 uppercase" for="hasDomain">Has Domain?</label>
+        <ng-select [searchable]="false" [clearable]="false" class="custom-select" formControlName="hasDomain"
+            id="hasDomain">
+            <ng-option [value]="false">No</ng-option>
+            <ng-option [value]="true">Yes</ng-option>
+        </ng-select>
+    </div>
+
+    <!-- Domain Details -->
+    @if (domain) {
+    <div class="p-4 bg-orange-900/20 rounded border border-orange-500/30 mt-2 flex flex-col gap-4">
+        <h4 class="text-orange-400 font-bold mb-2 text-sm uppercase tracking-wider">Domain Details</h4>
+
+        <!-- Name -->
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-gray-400 uppercase" for="domainName">Name</label>
+            <input placeholder="e.g. Ultimate Transformation"
+                class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
+                id="domainName" formControlName="domainName" type="text">
+            @if (parentFormGroup.get('domain')?.get('domainName')?.dirty &&
+            parentFormGroup.get('domain')?.hasError('domainNameRequired')) {
+            <app-error errorMessage="Domain name is required" />
+            }
+        </div>
+
+
+        <!-- Effect -->
+        <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-gray-400 uppercase" for="domainEffect">Effect</label>
+            <textarea rows="2" placeholder="e.g. Increases the damage of your next attack by 10%..."
+                class="w-full placeholder:text-gray-400 bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
+                id="domainEffect" formControlName="domainEffect"></textarea>
+            @if (parentFormGroup.get('domain')?.get('domainEffect')?.dirty &&
+            parentFormGroup.get('domain')?.hasError('domainEffectRequired')) {
+            <app-error errorMessage="Domain effect is required" />
+            }
+        </div>
+    </div>
+    }
+</div>

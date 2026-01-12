@@ -69,3 +69,25 @@ export const artworkFormat: ValidatorFn = (
     ? null
     : { invalidArtworkFormat: true };
 };
+
+export const domainNameRequired: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const hasDomain = control.get('hasDomain') as AbstractControl<boolean>;
+  const domainName = control.get('domainName') as FormControl;
+  if (hasDomain.value && domainName.value === '') {
+    return { domainNameRequired: true };
+  }
+  return null;
+};
+
+export const domainEffectRequired: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const hasDomain = control.get('hasDomain') as AbstractControl<boolean>;
+  const domainEffect = control.get('domainEffect') as FormControl;
+  if (hasDomain.value && domainEffect.value === '') {
+    return { domainEffectRequired: true };
+  }
+  return null;
+};

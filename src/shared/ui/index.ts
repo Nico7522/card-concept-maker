@@ -14,3 +14,4 @@ export * from './loader/loader.component';
 export * from './passive-form/passive-form.component';
 export * from './super-attack-details/super-attack-details.component';
 export * from './super-attack-form/super-attack-form.component';
+export * from './domain-form/domain-form.component';

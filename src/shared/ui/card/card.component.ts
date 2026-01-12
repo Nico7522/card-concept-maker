@@ -52,6 +52,7 @@ export class CardComponent {
     'Card Details',
     'Categories',
     'Passive Skill Details',
+    'Domain Details',
     'Artwork',
   ];
 

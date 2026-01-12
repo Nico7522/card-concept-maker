@@ -2,8 +2,7 @@
     <!-- Active Skill Toggle -->
     <div class="flex flex-col gap-2">
         <label class="text-sm font-semibold text-gray-400 uppercase" for="hasActiveSkill">Has Active Skill?</label>
-        <ng-select [searchable]="false" [clearable]="false"
-            class="custom-select" formControlName="hasActiveSkill"
+        <ng-select [searchable]="false" [clearable]="false" class="custom-select" formControlName="hasActiveSkill"
             id="hasActiveSkill">
             <ng-option [value]="false">No</ng-option>
             <ng-option [value]="true">Yes</ng-option>
@@ -14,46 +13,41 @@
     @if (activeSkill) {
     <div class="p-4 bg-orange-900/20 rounded border border-orange-500/30 mt-2 flex flex-col gap-4">
         <h4 class="text-orange-400 font-bold mb-2 text-sm uppercase tracking-wider">Active Skill Details</h4>
-        
+
         <!-- Name -->
         <div class="flex flex-col gap-2">
             <label class="text-sm font-semibold text-gray-400 uppercase" for="activeSkillName">Name</label>
-            <input 
-                placeholder="e.g. Ultimate Transformation" 
-                class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors" 
-                id="activeSkillName" 
-                formControlName="activeSkillName"
-                type="text">
-            @if (parentFormGroup.get('activeSkill')?.get('activeSkillName')?.dirty && parentFormGroup.get('activeSkill')?.hasError('activeSkillNameRequired')) {
-                <app-error errorMessage="Active skill name is required" />
+            <input placeholder="e.g. Ultimate Transformation"
+                class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
+                id="activeSkillName" formControlName="activeSkillName" type="text">
+            @if (parentFormGroup.get('activeSkill')?.get('activeSkillName')?.dirty &&
+            parentFormGroup.get('activeSkill')?.hasError('activeSkillNameRequired')) {
+            <app-error errorMessage="Active skill name is required" />
             }
         </div>
 
         <!-- Condition -->
         <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-gray-400 uppercase" for="activeSkillCondition">Activation Condition</label>
-            <textarea
-                rows="2"
-                placeholder="e.g. Can be activated starting from the 4th turn..." 
-                class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none" 
-                id="activeSkillCondition" 
-                formControlName="activeSkillCondition"></textarea>
-            @if (parentFormGroup.get('activeSkill')?.get('activeSkillCondition')?.dirty && parentFormGroup.get('activeSkill')?.hasError('activeSkillConditionRequired')) {
-                <app-error errorMessage="Condition is required" />
+            <label class="text-sm font-semibold text-gray-400 uppercase" for="activeSkillCondition">Activation
+                Condition</label>
+            <textarea rows="2" placeholder="e.g. Can be activated starting from the 4th turn..."
+                class="w-full placeholder:text-gray-400 bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
+                id="activeSkillCondition" formControlName="activeSkillCondition"></textarea>
+            @if (parentFormGroup.get('activeSkill')?.get('activeSkillCondition')?.dirty &&
+            parentFormGroup.get('activeSkill')?.hasError('activeSkillConditionRequired')) {
+            <app-error errorMessage="Condition is required" />
             }
         </div>
 
         <!-- Effect -->
         <div class="flex flex-col gap-2">
             <label class="text-sm font-semibold text-gray-400 uppercase" for="activeSkillEffect">Effect</label>
-            <textarea
-                rows="2"
-                placeholder="e.g. Causes ultimate damage to enemy and..." 
-                class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none" 
-                id="activeSkillEffect" 
-                formControlName="activeSkillEffect"></textarea>
-            @if (parentFormGroup.get('activeSkill')?.get('activeSkillEffect')?.dirty && parentFormGroup.get('activeSkill')?.hasError('activeSkillEffectRequired')) {
-                <app-error errorMessage="Effect is required" />
+            <textarea rows="2" placeholder="e.g. Causes ultimate damage to enemy and..."
+                class="w-full placeholder:text-gray-400 bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
+                id="activeSkillEffect" formControlName="activeSkillEffect"></textarea>
+            @if (parentFormGroup.get('activeSkill')?.get('activeSkillEffect')?.dirty &&
+            parentFormGroup.get('activeSkill')?.hasError('activeSkillEffectRequired')) {
+            <app-error errorMessage="Effect is required" />
             }
         </div>
     </div>

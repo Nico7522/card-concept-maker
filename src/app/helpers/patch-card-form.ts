@@ -162,4 +162,10 @@ export default function patchCardForm(
       card.characterInfo?.activeSkill?.activeSkillCondition ?? '',
     activeSkillEffect: card.characterInfo?.activeSkill?.activeSkillEffect ?? '',
   });
+
+  form.get('domain')?.patchValue({
+    hasDomain: card.characterInfo?.domain ? true : false,
+    domainName: card.characterInfo?.domain?.domainName ?? '',
+    domainEffect: card.characterInfo?.domain?.domainEffect ?? '',
+  });
 }

@@ -26,6 +26,7 @@ import {
   ArtworkFormComponent,
   SuperAttackFormComponent,
   CategoriesFormComponent,
+  DomainFormComponent,
 } from '~/src/shared/ui';
 import { AsyncPipe } from '@angular/common';
 import { AuthService } from '~/src/shared/api';
@@ -39,6 +40,7 @@ import { CardForm } from '..';
     LinksFormComponent,
     PassiveFormComponent,
     ActiveSkillFormComponent,
+    DomainFormComponent,
     ErrorComponent,
     NgSelectComponent,
     NgOptionComponent,

@@ -39,6 +39,12 @@ export default function generateCard(
           activeSkillEffect: data.activeSkill.activeSkillEffect ?? '',
         }
       : null,
+    domain: data.domain.hasDomain
+      ? {
+          domainName: data.domain.domainName ?? '',
+          domainEffect: data.domain.domainEffect ?? '',
+        }
+      : null,
   });
   let passiveInfo: Passive = {
     name: data.passive.passiveName ?? '',

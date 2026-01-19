@@ -47,6 +47,9 @@ export default function patchCardForm(
     let cateForm = form.get('categories')?.get('categories') as FormArray<
       FormControl<number>
     >;
+
+    cateForm.clear();
+    
     selectedCategories.forEach((category) => {
       return cateForm.push(
         new FormControl(category.value, {
@@ -60,9 +63,14 @@ export default function patchCardForm(
       return card.characterInfo?.links.includes(link.linkName);
     });
 
+
+
     let linkForm = form.get('links')?.get('links') as FormArray<
       FormControl<number>
     >;
+
+    linkForm.clear();
+
     selectedLinks.forEach((link) => {
       return linkForm.push(
         new FormControl(link.value, {
@@ -71,7 +79,7 @@ export default function patchCardForm(
         })
       );
     });
-
+    
     form
       .get('passive.passiveName')
       ?.patchValue(card.passiveDetails?.name ?? '');

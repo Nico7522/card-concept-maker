@@ -1,5 +1,26 @@
 <div class="min-h-screen flex flex-col">
-
+    @if (showBanner()) {
+    <div class="bg-gradient-to-r from-amber-600/90 to-orange-600/90 text-white px-4 py-3 relative shadow-lg">
+        <div class="max-w-4xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="text-xl">⚠️</span>
+                <p class="text-sm md:text-base">
+                    <strong>Important:</strong> Emails sent via "Report Issue", "Feedback" and "Suggestion" were not
+                    being received.
+                    The issue has been fixed. If you sent a message recently, please resend it.
+                </p>
+            </div>
+            <button (click)="dismissBanner()" class="shrink-0 p-1 hover:bg-white/20 rounded transition-colors"
+                aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    }
     <app-header />
     <main class="flex-1">
         <router-outlet />

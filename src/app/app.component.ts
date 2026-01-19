@@ -9,7 +9,7 @@ import {
 } from '~/src/shared/ui';
 import { RouterService } from '../shared/api/router-service/router.service';
 
-const BANNER_DISMISSED_KEY = 'email-issue-banner-dismissed-v1';
+const BANNER_DISMISSED_KEY = 'high-compatibility-link-issue-banner-dismissed-v1';
 
 @Component({
   selector: 'app-root',

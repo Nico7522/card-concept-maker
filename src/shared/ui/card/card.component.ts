@@ -43,16 +43,13 @@ import { environment } from '~/src/environments/environment';
   },
 })
 export class CardComponent {
-  // characterInfo = input.required<Character>();
-  // passiveDetails = input.required<Passive>();
-  // superAttackInfo = input.required<SuperAttack>();
+
   card = input.required<Card>();
   readonly apiUrl = environment.apiUrl + '/';
   private readonly titles = [
     'Card Details',
     'Categories',
     'Passive Skill Details',
-    'Domain Details',
     'Artwork',
   ];
 

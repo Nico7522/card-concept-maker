@@ -14,10 +14,11 @@ import {
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { ReportService } from '../api/report.service';
 import { LoaderComponent } from '~/src/shared/ui';
-import { ErrorToastService } from '~/src/shared/api';
+import { AuthService, ErrorToastService } from '~/src/shared/api';
 import { catchError, EMPTY } from 'rxjs';
 import { SuccessfullySubmittedComponent } from './successfully-submitted/successfully-submitted.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Email } from '../models/email-interfaces';
 
 @Component({
   selector: 'app-report',
@@ -36,6 +37,7 @@ export class ReportComponent implements OnDestroy {
   readonly #destroyRef = inject(DestroyRef);
   readonly #reportService = inject(ReportService);
   readonly #errorToastService = inject(ErrorToastService);
+  readonly #authService = inject(AuthService);
   isLoading = signal(false);
   isSubmittedSuccessfully = signal(false);
   reportForm = new FormGroup({
@@ -52,8 +54,14 @@ export class ReportComponent implements OnDestroy {
   onSubmit() {
     if (this.reportForm.valid) {
       this.isLoading.set(true);
+      const data = this.reportForm.getRawValue()
+      const email: Email = {
+        from: this.#authService.user()?.email || '',
+        subject: data.type,
+        text: data.message,
+      }
       this.#reportService
-        .report(this.reportForm.getRawValue())
+        .report(email)
         .pipe(
           takeUntilDestroyed(this.#destroyRef),
           catchError(() => {

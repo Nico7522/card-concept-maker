@@ -1,17 +1,8 @@
-export * from './active-skill-form/active-skill-form.component';
-export * from './artwork-form/artwork-form.component';
-export * from './base-stat-form/base-stat-form.component';
-export * from './card/card.component';
-export * from './card-modal/card-modal.component';
-export * from './categories-form/categories-form.component';
+
+
 export * from './error/error.component';
 export * from './error-fetching/error-fetching.component';
 export * from './error-toast/error-toast.component';
 export * from './footer/footer.component';
 export * from './header/header.component';
-export * from './links-form/links-form.component';
 export * from './loader/loader.component';
-export * from './passive-form/passive-form.component';
-export * from './super-attack-details/super-attack-details.component';
-export * from './super-attack-form/super-attack-form.component';
-export * from './domain-form/domain-form.component';

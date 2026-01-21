@@ -18,10 +18,7 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { catchError, EMPTY, map, of, switchMap, take } from 'rxjs';
 import { Router } from '@angular/router';
-import { LoaderComponent, CardComponent } from '~/src/shared/ui';
-import { CardFormComponent } from '~/src/widgets/card-form';
-import generateCard from '~/src/app/helpers/generate-card';
-import { CardForm } from '~/src/widgets/card-form';
+import { LoaderComponent} from '~/src/shared/ui';
 import {
   AuthService,
   ErrorToastService,
@@ -30,6 +27,9 @@ import {
 } from '~/src/shared/api';
 import { CreateCardService } from '../api/create-card.service';
 import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
+import { CardForm, CardFormComponent } from '~/src/features/card-form';
+import { CardComponent } from '~/src/entities/card';
+import generateCard from '~/src/features/card-form/lib/generate-card';
 
 @Component({
   selector: 'app-create-card-form',

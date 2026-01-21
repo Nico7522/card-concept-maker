@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { defer, from, shareReplay } from 'rxjs';
-import {
-  Category,
-  EffectDuration,
-  Link,
-  PassiveConditionActivation,
-} from '../../model';
+import { Category, Link, PassiveConditionActivation, EffectDuration } from '~/src/shared/model';
+
 
 @Injectable({ providedIn: 'root' })
 export class GameDataService {

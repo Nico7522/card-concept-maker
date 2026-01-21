@@ -8,7 +8,7 @@ import {
 } from '@angular/fire/firestore';
 import { ResolveFn } from '@angular/router';
 import { catchError, map, take, throwError } from 'rxjs';
-import { Card } from '~/src/shared/model';
+import { Card } from '~/src/entities/card';
 
 export const getCardsResolver: ResolveFn<Card[]> = (route, state) => {
   const firestore = inject(Firestore);

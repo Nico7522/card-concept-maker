@@ -30,12 +30,11 @@ import {
 import { AsyncPipe } from '@angular/common';
 import { LoaderComponent } from '~/src/shared/ui';
 import { AuthService, ErrorToastService } from '~/src/shared/api';
-import { Card } from '~/src/shared/model';
 import { UbButtonDirective } from '~/components/ui/button';
 import { DeleteConfirmationModalComponent } from './delete-confirmation-modal/delete-confirmation-modal.component';
 import { DeleteCardService } from '../api/delete-card.service';
 import { environment } from '~/src/environments/environment';
-import { CardComponent } from '~/src/shared/ui/card/card.component';
+import { Card, CardComponent } from '~/src/entities/card';
 
 @Component({
   selector: 'app-card-details',

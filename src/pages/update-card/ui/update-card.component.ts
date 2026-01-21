@@ -34,13 +34,13 @@ import {
   ArtworkService,
 } from '~/src/shared/api';
 import { LoaderComponent } from '~/src/shared/ui';
-import patchCardForm from '~/src/app/helpers/patch-card-form';
-import generateCard from '~/src/app/helpers/generate-card';
-import { CardFormComponent, CardForm } from '~/src/widgets/card-form';
-import { Card } from '~/src/shared/model';
+import { CardFormComponent, CardForm } from '~/src/features/card-form';
+import { Card } from '~/src/entities/card';
 import { AsyncPipe } from '@angular/common';
 import { UpdateCardService } from '../api/update-card.service';
 import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
+import generateCard from '~/src/features/card-form/lib/generate-card';
+import patchCardForm from '~/src/features/card-form/lib/patch-card-form';
 
 @Component({
   selector: 'app-update-card-form',
@@ -133,8 +133,6 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       'cardForm'
     ) as FormGroup<CardForm> | null;
 
-    // Attendre que toutes les données soient chargées avant de patcher le formulaire
-    // user$ est inclus pour s'assurer que le composant artwork est monté (et son contrôle créé)
     combineLatest([
       this.card$.pipe(filter((card) => !!card)),
       this.#gameDataService.categories$,

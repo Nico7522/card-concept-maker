@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { from } from 'rxjs';
-import { Card } from '~/src/shared/model/card-interface';
+import { Card } from '~/src/entities/card/model/card-interface';
 
 @Injectable({
   providedIn: 'root',

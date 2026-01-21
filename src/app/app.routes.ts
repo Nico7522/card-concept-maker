@@ -3,7 +3,7 @@ import { CreateCardComponent } from '../pages/create-card/ui/create-card.compone
 import { canUpdateGuard } from '../features/can-update';
 import { hasUnsavedChangesGuard } from '../features/unsaved-changes';
 import { getCardsResolver } from '../pages/my-cards/api/get-cards.resolver';
-import { getCardResolver } from '../shared/api/card-resolver/get-card.resolver';
+import { getCardResolver } from '../entities/card/api/card-resolver/get-card.resolver';
 import { canAccessGuard } from '../features/can-access';
 
 export const routes: Routes = [

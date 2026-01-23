@@ -1,24 +1,11 @@
 <header class="top-0 z-50 border-b border-gray-800 bg-black/80 backdrop-blur-sm py-2 sticky">
     <div class="container mx-auto px-3 sm:px-4 lg:px-6">
         <div class="flex items-center justify-between h-14 sm:h-16">
-            <!-- Logo/Titre -->
+            <!-- Logo/Title -->
             <div class="flex items-center gap-3 sm:gap-4">
-                <a routerLink="/"
-                    class="group relative flex items-center justify-center p-2 rounded-full bg-gray-900 border border-gray-700 hover:border-orange-500 transition-all duration-300">
-                    <div
-                        class="absolute inset-0 rounded-full bg-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    </div>
-                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-300 group-hover:text-orange-500 transition-colors duration-300"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                        </path>
-                    </svg>
-                </a>
-
                 <div class="flex flex-col">
                     <h1 class="dokkan-header text-lg sm:text-2xl leading-none">
-                        Card Concept Maker
+                        Dokkan Card Maker
                     </h1>
                     <span class="text-[10px] sm:text-xs text-gray-500 font-mono tracking-wider uppercase">
                         v{{ version }}
@@ -26,57 +13,78 @@
                 </div>
             </div>
 
-            <!-- Section utilisateur -->
+            <!-- User Section -->
             <div class="flex items-center gap-3">
                 @if(user$ | async; as user) {
-                <!-- Utilisateur connecté -->
-                <div class="flex items-center gap-2 sm:gap-3">
-                    <!-- Avatar et nom -->
-                    <div
-                        class="flex items-center shrink-0 gap-2 sm:gap-3 bg-gray-900/50 p-1 sm:py-1.5 sm:px-3 rounded-full border border-gray-800 transition-colors duration-200">
-                        <img [src]="user?.photoURL" [alt]="user?.displayName || 'User'"
-                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover ring-2 ring-gray-900 shrink-0" />
-                        <span
-                            class="hidden sm:block text-sm font-semibold text-gray-300 truncate max-w-[100px] md:max-w-[150px]">
-                            {{ user?.displayName }}
-                        </span>
-                    </div>
+                <!-- Connected User - Desktop -->
+                <div class="hidden sm:flex items-center gap-2 sm:gap-3">
 
-                    <!-- Boutons -->
-                    <div class="flex items-center gap-2">
-                        <!-- Bouton My Cards -->
-                        <a [routerLink]="['/user', user?.uid, 'cards']"
-                            class="flex items-center gap-2 px-3 py-2 bg-blue-900/30 hover:bg-blue-900/50 text-blue-400 border border-blue-800/50 hover:border-blue-500 rounded font-bold text-xs sm:text-sm uppercase tracking-wide transition-all duration-200">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
-                                </path>
-                            </svg>
-                            <span class="hidden sm:inline text-nowrap">My Cards</span>
-                        </a>
+                    <!-- Buttons Desktop -->
+                    <div class="flex items-center gap-3">
+                        <!-- Add a card -->
+                        <app-dokkan-style-button [text]="'Add a card'" [icon]="'add_card.png'" [alt]="'Add a card'"
+                            [isMobileVersion]="false" [routerLink]="['/']" />
+                        <!-- Button My Cards -->
+                        <app-dokkan-style-button [text]="'My Cards'" [icon]="'menu_icon_list.png'" [alt]="'My Cards'"
+                            [routerLink]="['/user', user.uid, 'cards']" [isMobileVersion]="false" />
 
-                        <!-- Bouton Logout -->
-                        <button (click)="logout()"
-                            class="flex items-center gap-2 px-3 py-2 bg-red-900/30 hover:bg-red-900/50 text-red-400 border border-red-800/50 hover:border-red-500 rounded font-bold text-xs sm:text-sm uppercase tracking-wide transition-all duration-200"
-                            title="Logout">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                </path>
-                            </svg>
-                            <span class="hidden sm:inline">Logout</span>
-                        </button>
+                        <!-- Logout Button (style Dokkan) -->
+                        <app-dokkan-style-button [text]="'Logout'" [icon]="'logout.png'" [alt]="'Logout'"
+                            (click)="logout()" [isMobileVersion]="false" [routerLink]="['/']" />
                     </div>
                 </div>
+
+                <!-- Hamburger Button - Mobile -->
+                <div class="sm:hidden relative cursor-pointer">
+                    <button (click)="toggleMenu()"
+                        class="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-b  border-2 border-gray-500 shadow-md">
+                        @if(menuOpen()) {
+                        <!-- X Icon -->
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        } @else {
+                        <!-- Hamburger Icon -->
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        }
+                    </button>
+
+                    <!-- Mobile Menu Dropdown -->
+                    @if(menuOpen()) {
+                    <div
+                        class="absolute right-0 top-12 w-56 bg-black border-2 border-gray-600 rounded-xl shadow-xl z-50 overflow-hidden">
+                        <!-- Avatar and name -->
+
+
+                        <!-- Buttons of the menu -->
+                        <div class="flex flex-col p-2 gap-4">
+                            <!-- Add a card -->
+                            <app-dokkan-style-button [text]="'Add a card'" [icon]="'add_card.png'" [alt]="'Add a card'"
+                                (click)="closeMenu()" [isMobileVersion]="true" [routerLink]="['/']" />
+                            <!-- Button My Cards -->
+                            <app-dokkan-style-button [text]="'My Cards'" [icon]="'menu_icon_list.png'"
+                                [alt]="'My Cards'" [routerLink]="['/user', user.uid, 'cards']" [isMobileVersion]="true"
+                                (click)="closeMenu()" />
+                            <!-- Bouton Logout -->
+                            <app-dokkan-style-button [text]="'Logout'" [icon]="'logout.png'" [alt]="'Logout'"
+                                (click)="logout(); closeMenu()" [isMobileVersion]="true" [routerLink]="['/']" />
+                        </div>
+                    </div>
+                    }
+                </div>
                 } @else {
-                <!-- Utilisateur non connecté -->
+                <!-- Unconnected User -->
                 <div class="flex items-center gap-4">
-                    <!-- Message d'information -->
+                    <!-- Information Message -->
                     <div class="hidden lg:block text-xs text-gray-400 italic">
                         Log in to save your creations
                     </div>
 
-                    <!-- Bouton de connexion -->
+                    <!-- Login Button -->
                     <button (click)="loginWithGoogle()"
                         class="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white border border-gray-600 hover:border-gray-400 rounded font-bold text-xs sm:text-sm uppercase tracking-wide transition-all duration-200 shadow-lg hover:shadow-xl">
                         <svg class="w-4 h-4" viewBox="0 0 24 24">

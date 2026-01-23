@@ -1,0 +1,29 @@
+@if(isMobileVersion()) {
+<a [routerLink]="routerLink()"
+    class="relative cursor-pointer flex items-center justify-center bg-gradient-to-r border-2 border-gray-500 text-white rounded-full pl-10 pr-4 py-1 hover:border-gray-500">
+    <!-- Circle left -->
+    <div class="absolute -left-2 flex items-center justify-center overflow-hidden w-12 h-12 rounded-full  shadow-md">
+        <img [src]="icon()" alt="icon" class="w-14 h-14 object-cover bg-black" />
+    </div>
+
+    <!-- Text -->
+    <span
+        class="font-bold text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-400 drop-shadow-sm text-nowrap">
+        {{ text() }}
+    </span>
+</a>
+} @else {
+<a [routerLink]="routerLink()"
+    class="relative flex items-center bg-gradient-to-r border-2 border-gray-400  text-white rounded-full pl-12 pr-6 py-1 hover:border-gray-500">
+    <!-- Circle left -->
+    <div class="absolute -left-2 flex items-center justify-center overflow-hidden w-12 h-12 rounded-full  shadow-md">
+        <img [src]="icon()" alt="icon" class="w-14 h-14 object-cover bg-black" />
+    </div>
+
+    <!-- Text -->
+    <span
+        class="ml-2 font-bold text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-400 drop-shadow-sm text-nowrap">
+        {{ text() }}
+    </span>
+</a>
+}

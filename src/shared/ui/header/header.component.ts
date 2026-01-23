@@ -1,13 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { catchError, EMPTY, take } from 'rxjs';
 import { version } from '../../../../package.json';
 import { ErrorToastService, AuthService } from '../../api';
+import { DokkanStyleButtonComponent } from './dokkan-style-button/dokkan-style-button.component';
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [RouterModule, AsyncPipe],
+  imports: [RouterModule, AsyncPipe, DokkanStyleButtonComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
@@ -16,6 +16,15 @@ export class HeaderComponent {
   readonly #errorToastService = inject(ErrorToastService);
   user$ = this.#authService.user$;
   version = version;
+  menuOpen = signal(false);
+
+  toggleMenu() {
+    this.menuOpen.update((v) => !v);
+  }
+
+  closeMenu() {
+    this.menuOpen.set(false);
+  }
 
   async loginWithGoogle() {
     this.#authService

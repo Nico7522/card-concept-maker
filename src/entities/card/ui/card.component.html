@@ -1,9 +1,6 @@
-<!-- <button type="button" (click)="openModal()"
-    class="flex items-center w-20 m-auto bg-gray-900 text-center z-40 top-1/2 left-1 transform -translate-y-1/2 bg-transparent cursor-pointer"
-    ubButton size="icon">
-    <ng-icon size="2em" name="heroMagnifyingGlassPlus" class="h-20 w-20" />
-</button> -->
 <div class="relative w-full mb-5 lg:mb-5 lg:w-[50%] xl:w-[30%] lg:m-auto">
+    <ng-container #domainModal />
+
     <div class="absolute -top-5 right-0 z-50 flex gap-1">
         <!-- Logo de rareté (LR/UR) -->
         <img [ngSrc]="'/' + (card().characterInfo?.isLegendaryCharacter ? 'cha_rare_sm_lr.png' : 'cha_rare_sm_ur.png')"
@@ -33,7 +30,7 @@
 
             <!-- Title -->
             <h2
-                class="text-center relative mt-5 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl  mx-5 rounded-lg">
+                class="text-center relative mt-5 scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl mx-5 rounded-lg">
                 {{title()}}</h2>
 
             @switch (showedPart()) {
@@ -49,7 +46,7 @@
 
                 <!-- Lvl - XP - Cost -->
                 <div class="flex items-center relative z-10 ">
-                    <span class="px-6 text-3xl text-orange-500">Lv</span>
+                    <span class="px-6 text-3xl text-orange-500 font-bold">Lv</span>
                     <span class="text-3xl">{{card().characterInfo?.isLegendaryCharacter ? '150/150' : '120/120'}}</span>
                     <div class="w-72 h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);"></div>
                     <div class="flex flex-col items-center text-sm mr-2">
@@ -61,7 +58,7 @@
                 <!-- Leader -->
 
                 <div class="z-10 relative flex items-center justify-center">
-                    <span class="pl-6 italic text-orange-500 w-20">
+                    <span class="pl-6 font-bold text-orange-500 w-20">
                         Leader<span class="block -mt-2">skill</span>
                     </span>
                     <div class="w-full p-2 mx-7 bg-black flex items-center justify-center"
@@ -72,10 +69,11 @@
                     </div>
                 </div>
 
+
                 <!-- Super ATK -->
                 <div class="z-10 relative flex items-center justify-center my-5">
                     <div class="pl-6 w-20">
-                        <span class="italic text-orange-500">
+                        <span class="font-bold text-orange-500">
                             Super ATK Lv
                         </span>
                         <div class="bg-black w-11" style="transform: skewX(-10deg);">
@@ -131,7 +129,7 @@
             } -->
                 <!-- Linkset -->
                 <div class="z-10 relative mt-5 ">
-                    <span class="pl-6 italic text-orange-500">Link skill</span>
+                    <span class="pl-6 text-orange-500 font-bold">Link skill</span>
                     <div class="h-full mx-6 mt-2 grid grid-cols-2 gap-4 gap-1">
                         @for (link of card().characterInfo?.links; track $index) {
                         <div
@@ -153,7 +151,7 @@
 
             <section>
                 <div class="z-10 relative mt-5">
-                    <span class="pl-6 italic text-orange-500">Category</span>
+                    <span class="pl-6 text-orange-500 font-bold">Category</span>
                     <div class="h-full mx-6 mt-2 grid grid-cols-2 gap-4 gap-1">
                         @for (category of card().characterInfo?.categories; track $index) {
                         <div
@@ -173,14 +171,17 @@
             <!-- Passive -->
             @if (card().passiveDetails?.name) {
             <div class="z-10 mt-2 relative flex items-center pl-7 pt-7">
-                <span class="italic text-orange-500">
+                <span class="font-bold text-orange-500">
                     Name
                 </span>
                 <h4 style="transform: skewX(-10deg);" class="text-center text-xl bg-black px-10 py-1 m-auto">
                     {{card().passiveDetails?.name}}</h4>
+
             </div>
+
             }
             <div class="relative z-10 flex flex-col w-full p-7">
+
                 @for (part of card().passiveDetails?.passive; track $index) {
                 <div class="flex flex-col">
                     <h3 class="text-orange-500 text-lg mt-2">{{part.passiveConditionActivation}}</h3>
@@ -201,7 +202,7 @@
                 <!-- Active skill -->
                 @if (card().characterInfo?.activeSkill) {
                 <div class="z-10 mt-10 relative flex justify-center">
-                    <span class="italic text-orange-500 w-20">
+                    <span class="font-bold text-orange-500 w-20">
                         Active<span class="block -mt-2">skill</span>
                     </span>
                     <div class="w-full p-2 mx-10 bg-black flex flex-col justify-center min-h-[120px]"
@@ -209,11 +210,11 @@
                         <div class="border-b text-center italic">{{card().characterInfo?.activeSkill?.activeSkillName}}
                         </div>
                         <div class="flex">
-                            <span class="italic text-orange-500 mr-1">Condition(s)</span>
+                            <span class="font-bold text-orange-500 mr-1">Condition(s)</span>
                             <span>{{card().characterInfo?.activeSkill?.activeSkillCondition}}</span>
                         </div>
                         <div>
-                            <span class="italic text-orange-500 mr-1">Effect(s)</span>
+                            <span class="font-bold text-orange-500 mr-1">Effect(s)</span>
                             <span>{{card().characterInfo?.activeSkill?.activeSkillEffect}}</span>
                         </div>
 
@@ -224,11 +225,15 @@
                 }
 
                 @if (card().characterInfo?.domain) {
-                <div class="z-10 mt-10 relative flex justify-center">
-                    <span class="italic text-orange-500 w-20">
+                <div class="z-10 mt-10 relative flex items-center">
+                    <span class="font-bold text-orange-500 w-20">
                         Domain
                     </span>
-                    <div class="w-full p-2 mx-10 bg-black flex flex-col justify-center min-h-[120px]"
+                    <div class="w-full flex justify-center items-center min-h-[120px]">
+                        <img src="/com_btn_dokkan_field.png" alt="Leader skill" class="w-20 h-20"
+                            (click)="openDomainModal()">
+                    </div>
+                    <!-- <div class="w-full p-2 mx-10 bg-black flex flex-col justify-center min-h-[120px]"
                         style="transform: skewX(-10deg);">
                         <div class="border-b text-center italic">{{card().characterInfo?.domain?.domainName}}
                         </div>
@@ -239,7 +244,7 @@
                         </div>
 
 
-                    </div>
+                    </div> -->
                 </div>
 
                 }

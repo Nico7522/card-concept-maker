@@ -24,6 +24,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { environment } from '~/src/environments/environment';
 import { SuperAttackDetailsComponent } from './super-attack-details/super-attack-details.component';
 import { Card } from '..';
+import { DomainModalComponent } from './domain-modal/domain-modal.component';
 @Component({
   selector: 'app-card',
   imports: [NgIconComponent, UbButtonDirective, NgOptimizedImage],
@@ -57,8 +58,10 @@ export class CardComponent {
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   modal = viewChild.required('modal', { read: ViewContainerRef });
   modalRef: ComponentRef<CardModalComponent> | null = null;
-  saDetails = viewChild.required('sadetails', { read: ViewContainerRef });
-  saDetailsRef: ComponentRef<SuperAttackDetailsComponent> | null = null;
+    saDetails = viewChild.required('sadetails', { read: ViewContainerRef });
+    saDetailsRef: ComponentRef<SuperAttackDetailsComponent> | null = null;
+    domainDetails = viewChild.required('domainModal', { read: ViewContainerRef });
+    domainDetailsRef: ComponentRef<DomainModalComponent> | null = null;
   showNextPart() {
     this.showedPart.update((val) => val + 1);
   }
@@ -104,6 +107,23 @@ export class CardComponent {
       }
     );
     this.saDetailsRef = componentRef;
+  }
+
+  openDomainModal() {
+    const componentRef = this.domainDetails().createComponent(
+      DomainModalComponent,
+      {
+        bindings: [
+          inputBinding('domain', () => this.card().characterInfo?.domain),
+          outputBinding('close', () => {
+            if (this.domainDetailsRef) {
+              this.domainDetailsRef.destroy();
+            }
+          }),
+        ],
+      }
+    );
+    this.domainDetailsRef = componentRef;
   }
 
   ngOnDestroy() {

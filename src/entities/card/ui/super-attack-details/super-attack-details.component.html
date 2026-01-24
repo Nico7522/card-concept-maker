@@ -34,31 +34,16 @@
                 </div>
 
                 <div class="flex items-end -skew-x-10 ">
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-green-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-green-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-orange-300"></div>
+                    <app-ki-meter [nbKi]="2" [bgColorClassName]="'bg-green-300'"
+                        [heightClassName]="'h-3'"></app-ki-meter>
+                    <app-ki-meter [nbKi]="9" [bgColorClassName]="'bg-yellow-300'"
+                        [heightClassName]="'h-3'"></app-ki-meter>
+                    <app-ki-meter [nbKi]="1" [bgColorClassName]="'bg-orange-300'"
+                        [heightClassName]="'h-3'"></app-ki-meter>
                     @if (characterInfo()?.isLegendaryCharacter) {
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
+                    <app-ki-meter [nbKi]="5" [bgColorClassName]="'bg-orange-300'"
+                        [heightClassName]="'h-5'"></app-ki-meter>
+                    <app-ki-meter [nbKi]="7" [bgColorClassName]="'bg-red-300'" [heightClassName]="'h-5'"></app-ki-meter>
                     }
 
 
@@ -119,32 +104,15 @@
                 </div>
 
                 <div class="flex items-end -skew-x-10 ">
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-green-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-green-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-yellow-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-3 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-orange-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-                    <div class="border border-black w-2 xl:w-3 h-5 bg-red-300"></div>
-
-
+                    <app-ki-meter [nbKi]="2" [bgColorClassName]="'bg-green-300'"
+                        [heightClassName]="'h-3'"></app-ki-meter>
+                    <app-ki-meter [nbKi]="9" [bgColorClassName]="'bg-yellow-300'"
+                        [heightClassName]="'h-3'"></app-ki-meter>
+                    <app-ki-meter [nbKi]="1" [bgColorClassName]="'bg-orange-300'"
+                        [heightClassName]="'h-3'"></app-ki-meter>
+                    <app-ki-meter [nbKi]="5" [bgColorClassName]="'bg-orange-300'"
+                        [heightClassName]="'h-5'"></app-ki-meter>
+                    <app-ki-meter [nbKi]="7" [bgColorClassName]="'bg-red-300'" [heightClassName]="'h-5'"></app-ki-meter>
                 </div>
             </div>
 
@@ -173,6 +141,9 @@
         }
 
     </div>
-    <button (click)="onClose()"
-        class="relative w-52 m-auto flex items-center text-center justify-center font-extrabold tracking-tight border-4 mb-1 text-center -skew-x-10 bg-orange-600 cursor-pointer">OK</button>
+    <!-- <button (click)="onClose()"
+        class="relative w-52 m-auto flex items-center text-center justify-center font-extrabold tracking-tight border-4 mb-1 text-center -skew-x-10 bg-orange-600 cursor-pointer">OK</button> -->
+    <button class="relative w-full flex justify-center items-center my-2 cursor-pointer" (click)="onClose()">
+        <img src="./btn_ok.png" alt="OK" class="w-32">
+    </button>
 </div>

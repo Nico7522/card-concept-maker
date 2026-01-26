@@ -303,9 +303,12 @@
             <!-- Lv - Cost -->
             <div class="flex items-center gap-2">
                 <h5 class="text-orange-500 text-lg font-bold">Lv</h5>
-                <div class="flex items-center justify-center w-full mx-5">
+                <div class="flex items-center justify-center w-full mx-5 relative">
+                    <span class="absolute left-0 -top-2 left-1/2 -translate-x-1/2 text-yellow-300">Next Lv
+                        <span class="text-white">0</span></span>
                     <span>120</span>/120
-                    <div class="w-full h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);"></div>
+                    <div class=" w-full h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);">
+                    </div>
                     <div class="flex flex-col items-center text-sm mr-2">
                         <span class="italic text-yellow-300 font-extrabold">COST</span>
                         <span class="font-extrabold">77</span>
@@ -313,7 +316,7 @@
                 </div>
             </div>
             <div class="flex items-center w-full">
-                <h5 class="text-orange-500 text-md font-bold mr-5">Leader <span
+                <h5 class="text-orange-500 text-sm font-bold mr-5">Leader <span
                         class="block -mt-2 text-center">skill</span>
                 </h5>
                 <div class="w-full ml-5 mr-10 h-7 bg-black italic overflow-hidden flex items-center justify-center"

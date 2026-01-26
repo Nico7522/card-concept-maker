@@ -271,3 +271,61 @@
 </div>
 
 <ng-container #modal />
+
+<!-- New UI for card  -->
+
+<!-- Global card container  -->
+<main
+    class="relative w-full mb-5 lg:mb-5 md:w-[50%] xl:w-[30%] md:m-auto h-[700px] border rounded-lg flex flex-col justify-end">
+    <!-- Background -->
+    <div class="w-full h-full bg-black/50 absolute top-0 left-0 z-0"></div>
+
+    <!-- Stats section -->
+    <section
+        class="h-[300px] border border-green-500 m-2 rounded-lg relative z-10 flex justify-center pt-5 gap-4 px-2 flex flex-col justify-start">
+        <!-- Stats values -->
+        <div class="flex justify-center gap-4">
+            <div class="w-25 h-10 xl:w-32 xl:h-12 flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-green-500 to-green-600"
+                style="transform: skewX(-10deg);">19485<br>
+                <span class="text-orange-400 border-t border-black w-full text-center">PV</span>
+            </div>
+            <div class="w-25 h-10 xl:w-32 xl:h-12  flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-orange-500 to-red-600"
+                style="transform: skewX(-10deg);">19485<br>
+                <span class="text-orange-400 border-t border-black w-full text-center">ATK</span>
+            </div>
+            <div class="w-25 h-10 xl:w-32 xl:h-12 flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-blue-500 to-blue-600"
+                style="transform: skewX(-10deg);">19485<br>
+                <span class="text-orange-400 border-t border-black w-full text-center">DEF</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <!-- Lv - Cost -->
+            <div class="flex items-center gap-2">
+                <h5 class="text-orange-500 text-lg font-bold">Lv</h5>
+                <div class="flex items-center justify-center w-full mx-5">
+                    <span>120</span>/120
+                    <div class="w-full h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);"></div>
+                    <div class="flex flex-col items-center text-sm mr-2">
+                        <span class="italic text-yellow-300 font-extrabold">COST</span>
+                        <span class="font-extrabold">77</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center w-full">
+                <h5 class="text-orange-500 text-md font-bold mr-5">Leader <span
+                        class="block -mt-2 text-center">skill</span>
+                </h5>
+                <div class="w-full ml-5 mr-10 h-7 bg-black italic overflow-hidden flex items-center justify-center"
+                    style="transform: skewX(-10deg);">
+                    <p>Tournament Participants or Worldwide Chaos ...
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+</main>

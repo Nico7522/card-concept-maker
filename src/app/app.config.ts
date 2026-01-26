@@ -2,6 +2,7 @@ import {
   APP_INITIALIZER,
   ApplicationConfig,
   inject as angularInject,
+  inject,
   isDevMode,
   provideAppInitializer,
   provideZoneChangeDetection,
@@ -14,7 +15,7 @@ import {
 } from '@angular/router';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirebaseApp, initializeApp, FirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { ErrorToastService } from '../shared/api/error-toast-service/error-toast.service';
@@ -24,6 +25,7 @@ import {
   getAnalytics,
   ScreenTrackingService,
   UserTrackingService,
+  Analytics,
 } from '@angular/fire/analytics';
 
 export const appConfig: ApplicationConfig = {
@@ -48,7 +50,7 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
     provideHttpClient(),
-    ScreenTrackingService, // Automatically track screen views
+    ScreenTrackingService, 
     UserTrackingService,
   ],
 };

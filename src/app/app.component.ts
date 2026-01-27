@@ -27,7 +27,7 @@ import { Analytics } from '@angular/fire/analytics';
 export class AppComponent {
   readonly #errorToastService = inject(ErrorToastService);
   readonly #routerService = inject(RouterService);
-  readonly #analytics = inject(Analytics);
+  // readonly #analytics = inject(Analytics);
   isVisible = this.#errorToastService.isVisible;
   isLoading = this.#routerService.loading;
 

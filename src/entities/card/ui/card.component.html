@@ -279,183 +279,98 @@
     class="relative w-full mb-5 lg:mb-5 md:w-[50%] xl:w-[30%] md:m-auto h-[700px] border rounded-lg flex flex-col justify-end">
     <!-- Background -->
     <div class="w-full h-full bg-black/50 absolute top-0 left-0 z-0"></div>
+    <!-- Card rarity and type icons -->
+    <section class="absolute top-0 left-0 right-0 z-10 p-2 h-[380px]">
+        <app-card-header [card]="card()" />
+    </section>
 
     <!-- Stats section -->
     <section
-        class="h-[300px] border border-green-500 m-2 rounded-lg relative z-10 flex justify-center pt-5 gap-4 px-2 flex flex-col justify-start">
-        @switch (displayedParts()) {
-        @case ('stats') {
-        <!-- Stats values -->
-        <div class="flex justify-center gap-4">
-            <div class="w-25 h-10 xl:w-32 xl:h-12 flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-green-500 to-green-600"
-                style="transform: skewX(-10deg);">19485<br>
-                <span class="text-orange-400 border-t border-black w-full text-center">PV</span>
-            </div>
-            <div class="w-25 h-10 xl:w-32 xl:h-12  flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-orange-500 to-red-600"
-                style="transform: skewX(-10deg);">19485<br>
-                <span class="text-orange-400 border-t border-black w-full text-center">ATK</span>
-            </div>
-            <div class="w-25 h-10 xl:w-32 xl:h-12 flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-blue-500 to-blue-600"
-                style="transform: skewX(-10deg);">19485<br>
-                <span class="text-orange-400 border-t border-black w-full text-center">DEF</span>
-            </div>
-        </div>
-
-        <div class="flex flex-col gap-2">
-            <!-- Lv - Cost -->
-            <div class="flex items-center gap-2">
-                <h5 class="text-orange-500 text-lg font-bold">Lv</h5>
-                <div class="flex items-center justify-center w-full mx-5 relative">
-                    <span class="absolute left-0 -top-2 left-1/2 -translate-x-1/2 text-yellow-300">Next Lv
-                        <span class="text-white">0</span></span>
-                    <span>120</span>/120
-                    <div class=" w-full h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);">
-                    </div>
-                    <div class="flex flex-col items-center text-sm mr-2">
-                        <span class="italic text-yellow-300 font-extrabold">COST</span>
-                        <span class="font-extrabold">77</span>
-                    </div>
+        class="h-[300px] border border-green-500 m-2 rounded-lg relative z-10 flex flex-col justify-start pt-5 gap-4 px-2">
+        <div class="flex-1 overflow-hidden">
+            @switch (displayedParts()) {
+            @case ('stats') {
+            <!-- Stats values -->
+            <div class="flex justify-center gap-2">
+                <div class="w-25 h-10 xl:w-32 xl:h-12 flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-green-500 to-green-600"
+                    style="transform: skewX(-10deg);">19485<br>
+                    <span class="text-orange-400 border-t border-black w-full text-center">PV</span>
+                </div>
+                <div class="w-25 h-10 xl:w-32 xl:h-12  flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-orange-500 to-red-600"
+                    style="transform: skewX(-10deg);">19485<br>
+                    <span class="text-orange-400 border-t border-black w-full text-center">ATK</span>
+                </div>
+                <div class="w-25 h-10 xl:w-32 xl:h-12 flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-blue-500 to-blue-600"
+                    style="transform: skewX(-10deg);">19485<br>
+                    <span class="text-orange-400 border-t border-black w-full text-center">DEF</span>
                 </div>
             </div>
-            <!-- Leader skill -->
-            <div class="flex items-center w-full">
-                <h5 class="text-orange-500 text-sm font-bold mr-5">Leader <span
-                        class="block -mt-2 text-center">skill</span>
-                </h5>
-                <div class="w-full ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex "
-                    style="transform: skewX(-10deg);">
-                    <p>Tournament Participants or Worldwide Chaos ...
-                    </p>
-                </div>
 
-            </div>
-
-            <!-- Special attack -->
-            <div class="flex items-center w-full">
-                <!-- Attack Sp Lv  -->
-                <div>
-                    <h5 class="text-orange-500 text-sm font-bold">ATT Spe LV</h5>
-                    <div class="w-11 bg-black" style="transform: skewX(-10deg);">
-                        <span class="text-yellow-300">15</span>/15
+            <div class="flex flex-col gap-2 mt-2">
+                <!-- Lv - Cost -->
+                <div class="flex items-center gap-2">
+                    <h5 class="text-orange-500 text-lg font-bold">Lv</h5>
+                    <div class="flex items-center justify-center w-full mx-5 relative">
+                        <span class="absolute left-0 -top-2 left-1/2 -translate-x-1/2 text-yellow-300">Next Lv
+                            <span class="text-white">0</span></span>
+                        <span>120</span>/120
+                        <div class=" w-full h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);">
+                        </div>
+                        <div class="flex flex-col items-center text-sm mr-2">
+                            <span class="italic text-yellow-300 font-extrabold">COST</span>
+                            <span class="font-extrabold">77</span>
+                        </div>
                     </div>
                 </div>
-                <!-- Special attack name and details -->
-                <div class="flex flex-col w-full">
-                    <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex justify-between"
+                <!-- Leader skill -->
+                <div class="flex items-center w-full">
+                    <h5 class="text-orange-500 text-sm font-bold mr-5">Leader <span
+                            class="block -mt-2 text-center">skill</span>
+                    </h5>
+                    <div class="w-full ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex "
                         style="transform: skewX(-10deg);">
-                        <p class="text-sm">Onde de choc Gamma suprême
-                        </p>
-                        <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm">More</button>
-                    </div>
-                    <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex"
-                        style=" transform: skewX(-10deg);">
-                        <p>Augmente fortement l'attaque et la déf ...
+                        <p>Tournament Participants or Worldwide Chaos ...
                         </p>
                     </div>
+
                 </div>
+
+                <!-- Special attack -->
+                <div class="flex items-center w-full">
+                    <!-- Attack Sp Lv  -->
+                    <div>
+                        <h5 class="text-orange-500 text-sm font-bold">ATT Spe LV</h5>
+                        <div class="w-11 bg-black" style="transform: skewX(-10deg);">
+                            <span class="text-yellow-300">15</span>/15
+                        </div>
+                    </div>
+                    <!-- Special attack name and details -->
+                    <div class="flex flex-col w-full">
+                        <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex justify-between"
+                            style="transform: skewX(-10deg);">
+                            <p class="text-sm">Onde de choc Gamma suprême
+                            </p>
+                            <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm">More</button>
+                        </div>
+                        <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex"
+                            style=" transform: skewX(-10deg);">
+                            <p>Augmente fortement l'attaque et la déf ...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
 
-
+            }
+            @case ('passive') {
+            <app-card-passive-part />
+            }
+            }
         </div>
-
-        }
-        @case ('passive') {
-
-        <!-- Passive skill -->
-        <div class="flex items-center w-full">
-            <!-- Title  -->
-            <div>
-                <h5 class="text-orange-500 text-sm font-bold">Passive skill</h5>
-            </div>
-            <!-- Passive skill name and details -->
-            <div class="flex flex-col w-full">
-                <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex justify-between"
-                    style="transform: skewX(-10deg);">
-                    <p class="text-sm">Esprit et technique affutée
-                    </p>
-                    <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm">Details</button>
-                </div>
-                <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex"
-                    style=" transform: skewX(-10deg);">
-                    <p>Passive skill
-                    </p>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Active skill -->
-        <div class="flex items-center w-full">
-            <!-- Title  -->
-            <div>
-                <h5 class="text-orange-500 text-sm font-bold">Active skill</h5>
-            </div>
-            <!-- Passive skill name and details -->
-            <div class="flex flex-col w-full">
-                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex justify-between">
-                    <p class="text-sm">Défense et attaque augmentées
-                    </p>
-                    <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm mr-2"
-                        style="transform: skewX(-10deg);">Details</button>
-                </div>
-                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex">
-                    <span class="text-orange-500 mr-1 text-sm">Condition</span>
-                    <p>Augmente fortement la défense et l'attaque ...
-                    </p>
-                </div>
-                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex">
-                    <span class="text-orange-500 mr-1 text-sm">Effect</span>
-                    <p>Augmente fortement la défense et l'attaque ...
-                    </p>
-                </div>
-            </div>
-        </div>
-        <!-- Standby skill -->
-        <div class="flex items-center w-full">
-            <!-- Title  -->
-            <div>
-                <h5 class="text-orange-500 text-sm font-bold">Standby skill</h5>
-            </div>
-            <!-- Passive skill name and details -->
-            <div class="flex flex-col w-full">
-                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex justify-between">
-                    <p class="text-sm">Armure et santé augmentées
-                    </p>
-                    <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm mr-2"
-                        style="transform: skewX(-10deg);">Details</button>
-                </div>
-                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex">
-                    <span class="text-orange-500 mr-1 text-sm">Condition</span>
-                    <p>Augmente fortement la santé et l'armure ...
-                    </p>
-                </div>
-                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex">
-                    <span class="text-orange-500 mr-1 text-sm">Effect</span>
-                    <p>Augmente fortement la défense et l'attaque ...
-                    </p>
-                </div>
-            </div>
-        </div>
-        }
-        }
         <!-- buttons -->
-        <div class="flex justify-between items-center">
-            <button>
-                <img src="./com_btn_03_green.png" alt="button" class="w-22">
-            </button>
-            <div class="flex flex-row gap-2 items-center">
-                <div class="w-4 h-4 rounded-full bg-orange-500"></div>
-                <div class="w-4 h-4 rounded-full bg-gray-500"></div>
-                <div class="w-4 h-4 rounded-full bg-gray-500"></div>
-                <div class="w-4 h-4 rounded-full bg-gray-500"></div>
-                <div class="w-4 h-4 rounded-full bg-gray-500"></div>
-                <img src="./com_ui_arrow_01_right.png" alt="Arrow right" class="w-8 h-8">
-            </div>
-            <button>
-
-                <img src="./com_btn_02_yellow.png" alt="button" class="w-22">
-            </button>
-        </div>
+        <app-card-footer [(showedParts)]="showedParts" [(displayedPartsIndex)]="displayedPartsIndex" />
     </section>
 
 

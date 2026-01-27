@@ -1,0 +1,15 @@
+<div class="flex justify-between items-start w-full h-full">
+    <div class="flex flex-col items-center justify-center">
+        <img [ngSrc]="cardRarityIcon()" alt="Card Rarity Icon" width="70" height="70" class="object-contain">
+        <img [ngSrc]="cardTypeIcon()" alt="Card Type Icon" width="40" height="40" class="object-contain">
+    </div>
+    <div class="flex flex-col items-end h-full">
+        <div class="flex items-center justify-center mt-5">
+            <img [ngSrc]="'com_btn_02_orange.png'" alt="Growth button" width="70" height="70" class="object-contain">
+            <img [ngSrc]="'com_btn_lock.png'" alt="Lock button" width="30" height="30" class="object-contain">
+        </div>
+        <h2 class="text-white font-bold overflow-hidden flex-1" style="writing-mode: vertical-rl; rotate: 180deg;">
+            {{card().cardName}}
+        </h2>
+    </div>
+</div>

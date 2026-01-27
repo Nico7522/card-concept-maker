@@ -1,0 +1,17 @@
+<div class="flex justify-between items-center mt-auto pb-2">
+    <button>
+        <img src="./com_btn_03_green.png" alt="button" class="w-22">
+    </button>
+    <div class="flex flex-row gap-2 items-center">
+        @for (part of showedParts(); track $index) {
+        <div appActiveIndex [index]="$index" [activeIndex]="displayedPartsIndex()">
+        </div>
+        }
+        <button class="cursor-pointer" (click)="switchDisplayedParts()">
+            <img src="./com_ui_arrow_01_right.png" alt="Arrow right" class="w-8 h-8">
+        </button>
+    </div>
+    <button>
+        <img src="./com_btn_02_yellow.png" alt="button" class="w-22">
+    </button>
+</div>

@@ -1,9 +1,12 @@
 import {
   Component,
   ComponentRef,
+  computed,
+  effect,
   input,
   inputBinding,
   linkedSignal,
+  model,
   outputBinding,
   signal,
   twoWayBinding,
@@ -25,9 +28,12 @@ import { environment } from '~/src/environments/environment';
 import { SuperAttackDetailsComponent } from './super-attack-details/super-attack-details.component';
 import { Card } from '..';
 import { DomainModalComponent } from './domain-modal/domain-modal.component';
+import { CardHeaderComponent } from './card-header/card-header.component';
+import { CardFooterComponent } from './card-footer/card-footer.component';
+import { CardPassivePartComponent } from './card-passive-part/card-passive-part.component';
 @Component({
   selector: 'app-card',
-  imports: [NgIconComponent, UbButtonDirective, NgOptimizedImage],
+  imports: [NgIconComponent, UbButtonDirective, NgOptimizedImage,CardHeaderComponent, CardFooterComponent, CardPassivePartComponent],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   viewProviders: [
@@ -53,7 +59,7 @@ export class CardComponent {
     'Passive Skill Details',
     'Artwork',
   ];
-  displayedParts = signal<'stats' | 'passive'>('passive');
+  
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   modal = viewChild.required('modal', { read: ViewContainerRef });
@@ -135,4 +141,11 @@ export class CardComponent {
       this.saDetailsRef.destroy();
     }
   }
+
+  
+  showedParts = signal<('stats' | 'passive')[]>(['stats', 'passive']);
+  displayedPartsIndex = signal<number>(0);
+  displayedParts = computed(() => this.showedParts()[this.displayedPartsIndex()]);
+
+
 }

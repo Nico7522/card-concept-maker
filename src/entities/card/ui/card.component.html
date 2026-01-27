@@ -283,6 +283,8 @@
     <!-- Stats section -->
     <section
         class="h-[300px] border border-green-500 m-2 rounded-lg relative z-10 flex justify-center pt-5 gap-4 px-2 flex flex-col justify-start">
+        @switch (displayedParts()) {
+        @case ('stats') {
         <!-- Stats values -->
         <div class="flex justify-center gap-4">
             <div class="w-25 h-10 xl:w-32 xl:h-12 flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-green-500 to-green-600"
@@ -353,27 +355,112 @@
                 </div>
             </div>
 
-            <!-- buttons -->
-            <div class="flex justify-between items-center">
-                <button>
-                    <img src="./com_btn_03_green.png" alt="button" class="w-22">
-                </button>
-                <div class="flex flex-row gap-2 items-center">
-                    <div class="w-4 h-4 rounded-full bg-orange-500"></div>
-                    <div class="w-4 h-4 rounded-full bg-gray-500"></div>
-                    <div class="w-4 h-4 rounded-full bg-gray-500"></div>
-                    <div class="w-4 h-4 rounded-full bg-gray-500"></div>
-                    <div class="w-4 h-4 rounded-full bg-gray-500"></div>
-                    <img src="./com_ui_arrow_01_right.png" alt="Arrow right" class="w-8 h-8">
-                </div>
-                <button>
-
-                    <img src="./com_btn_02_yellow.png" alt="button" class="w-22">
-                </button>
-            </div>
 
         </div>
+
+        }
+        @case ('passive') {
+
+        <!-- Passive skill -->
+        <div class="flex items-center w-full">
+            <!-- Title  -->
+            <div>
+                <h5 class="text-orange-500 text-sm font-bold">Passive skill</h5>
+            </div>
+            <!-- Passive skill name and details -->
+            <div class="flex flex-col w-full">
+                <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex justify-between"
+                    style="transform: skewX(-10deg);">
+                    <p class="text-sm">Esprit et technique affutée
+                    </p>
+                    <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm">Details</button>
+                </div>
+                <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex"
+                    style=" transform: skewX(-10deg);">
+                    <p>Passive skill
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Active skill -->
+        <div class="flex items-center w-full">
+            <!-- Title  -->
+            <div>
+                <h5 class="text-orange-500 text-sm font-bold">Active skill</h5>
+            </div>
+            <!-- Passive skill name and details -->
+            <div class="flex flex-col w-full">
+                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex justify-between">
+                    <p class="text-sm">Défense et attaque augmentées
+                    </p>
+                    <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm mr-2"
+                        style="transform: skewX(-10deg);">Details</button>
+                </div>
+                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex">
+                    <span class="text-orange-500 mr-1 text-sm">Condition</span>
+                    <p>Augmente fortement la défense et l'attaque ...
+                    </p>
+                </div>
+                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex">
+                    <span class="text-orange-500 mr-1 text-sm">Effect</span>
+                    <p>Augmente fortement la défense et l'attaque ...
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Standby skill -->
+        <div class="flex items-center w-full">
+            <!-- Title  -->
+            <div>
+                <h5 class="text-orange-500 text-sm font-bold">Standby skill</h5>
+            </div>
+            <!-- Passive skill name and details -->
+            <div class="flex flex-col w-full">
+                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex justify-between">
+                    <p class="text-sm">Armure et santé augmentées
+                    </p>
+                    <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm mr-2"
+                        style="transform: skewX(-10deg);">Details</button>
+                </div>
+                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex">
+                    <span class="text-orange-500 mr-1 text-sm">Condition</span>
+                    <p>Augmente fortement la santé et l'armure ...
+                    </p>
+                </div>
+                <div class="ml-5 mr-10 md:h-5 h-4 bg-black italic overflow-hidden flex">
+                    <span class="text-orange-500 mr-1 text-sm">Effect</span>
+                    <p>Augmente fortement la défense et l'attaque ...
+                    </p>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        <!-- buttons -->
+        <div class="flex justify-between items-center">
+            <button>
+                <img src="./com_btn_03_green.png" alt="button" class="w-22">
+            </button>
+            <div class="flex flex-row gap-2 items-center">
+                <div class="w-4 h-4 rounded-full bg-orange-500"></div>
+                <div class="w-4 h-4 rounded-full bg-gray-500"></div>
+                <div class="w-4 h-4 rounded-full bg-gray-500"></div>
+                <div class="w-4 h-4 rounded-full bg-gray-500"></div>
+                <div class="w-4 h-4 rounded-full bg-gray-500"></div>
+                <img src="./com_ui_arrow_01_right.png" alt="Arrow right" class="w-8 h-8">
+            </div>
+            <button>
+
+                <img src="./com_btn_02_yellow.png" alt="button" class="w-22">
+            </button>
+        </div>
     </section>
+
+
+
+
 
 
 </main>

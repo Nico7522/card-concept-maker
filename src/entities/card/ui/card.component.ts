@@ -53,7 +53,7 @@ export class CardComponent {
     'Passive Skill Details',
     'Artwork',
   ];
-
+  displayedParts = signal<'stats' | 'passive'>('passive');
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   modal = viewChild.required('modal', { read: ViewContainerRef });

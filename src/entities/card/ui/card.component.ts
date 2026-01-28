@@ -31,9 +31,18 @@ import { DomainModalComponent } from './domain-modal/domain-modal.component';
 import { CardHeaderComponent } from './card-header/card-header.component';
 import { CardFooterComponent } from './card-footer/card-footer.component';
 import { CardPassivePartComponent } from './card-passive-part/card-passive-part.component';
+import { CardStatsPartComponent } from '../../../app/card-stats-part/card-stats-part.component';
 @Component({
   selector: 'app-card',
-  imports: [NgIconComponent, UbButtonDirective, NgOptimizedImage,CardHeaderComponent, CardFooterComponent, CardPassivePartComponent],
+  imports: [
+    NgIconComponent,
+    UbButtonDirective,
+    NgOptimizedImage,
+    CardHeaderComponent,
+    CardFooterComponent,
+    CardPassivePartComponent,
+    CardStatsPartComponent,
+  ],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   viewProviders: [
@@ -50,7 +59,6 @@ import { CardPassivePartComponent } from './card-passive-part/card-passive-part.
   },
 })
 export class CardComponent {
-
   card = input.required<Card>();
   readonly apiUrl = environment.apiUrl + '/';
   private readonly titles = [
@@ -59,15 +67,15 @@ export class CardComponent {
     'Passive Skill Details',
     'Artwork',
   ];
-  
+
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   modal = viewChild.required('modal', { read: ViewContainerRef });
   modalRef: ComponentRef<CardModalComponent> | null = null;
-    saDetails = viewChild.required('sadetails', { read: ViewContainerRef });
-    saDetailsRef: ComponentRef<SuperAttackDetailsComponent> | null = null;
-    domainDetails = viewChild.required('domainModal', { read: ViewContainerRef });
-    domainDetailsRef: ComponentRef<DomainModalComponent> | null = null;
+  saDetails = viewChild.required('sadetails', { read: ViewContainerRef });
+  saDetailsRef: ComponentRef<SuperAttackDetailsComponent> | null = null;
+  domainDetails = viewChild.required('domainModal', { read: ViewContainerRef });
+  domainDetailsRef: ComponentRef<DomainModalComponent> | null = null;
   showNextPart() {
     this.showedPart.update((val) => val + 1);
   }
@@ -110,7 +118,7 @@ export class CardComponent {
             }
           }),
         ],
-      }
+      },
     );
     this.saDetailsRef = componentRef;
   }
@@ -127,7 +135,7 @@ export class CardComponent {
             }
           }),
         ],
-      }
+      },
     );
     this.domainDetailsRef = componentRef;
   }
@@ -142,10 +150,9 @@ export class CardComponent {
     }
   }
 
-  
   showedParts = signal<('stats' | 'passive')[]>(['stats', 'passive']);
   displayedPartsIndex = signal<number>(0);
-  displayedParts = computed(() => this.showedParts()[this.displayedPartsIndex()]);
-
-
+  displayedParts = computed(
+    () => this.showedParts()[this.displayedPartsIndex()],
+  );
 }

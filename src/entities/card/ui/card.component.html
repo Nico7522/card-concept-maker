@@ -307,6 +307,13 @@
             <!-- Passive - Active skill - Domain -->
             <app-card-passive-part />
             }
+
+            @case ('links') {
+            <app-card-links-part [links]="card().characterInfo?.links ?? []" />
+            }
+            @case ('categories') {
+            <div>Categories</div>
+            }
             }
         </div>
         <!-- buttons -->

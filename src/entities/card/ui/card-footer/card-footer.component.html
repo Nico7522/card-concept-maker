@@ -3,11 +3,14 @@
         <img src="./com_btn_03_green.png" alt="button" class="w-22">
     </button>
     <div class="flex flex-row gap-2 items-center">
+        <button class="cursor-pointer" (click)="switchDisplayedParts('left')">
+            <img src="./com_ui_arrow_01_left.png" alt="Arrow left" class="w-8 h-8">
+        </button>
         @for (part of showedParts(); track $index) {
         <div appActiveIndex [index]="$index" [activeIndex]="displayedPartsIndex()">
         </div>
         }
-        <button class="cursor-pointer" (click)="switchDisplayedParts()">
+        <button class="cursor-pointer" (click)="switchDisplayedParts('right')">
             <img src="./com_ui_arrow_01_right.png" alt="Arrow right" class="w-8 h-8">
         </button>
     </div>

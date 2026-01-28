@@ -1,5 +1,6 @@
 import { Component, model } from '@angular/core';
 import { ActiveIndexDirective } from '../active-index.directive';
+import { DisplayedPart } from '../../model/displayed-part-type';
 
 @Component({
   selector: 'app-card-footer',
@@ -8,12 +9,18 @@ import { ActiveIndexDirective } from '../active-index.directive';
   styleUrl: './card-footer.component.css',
 })
 export class CardFooterComponent {
-  showedParts = model.required<('stats' | 'passive')[]>();
+  showedParts = model.required<DisplayedPart[]>();
   displayedPartsIndex = model.required<number>();
 
-  switchDisplayedParts() {
-    this.displayedPartsIndex.update((val) => val === this.showedParts().length - 1 ? 0 : val + 1);
+  switchDisplayedParts(direction: 'left' | 'right') {
+    this.displayedPartsIndex.update((val) =>
+      direction === 'left'
+        ? val === 0
+          ? this.showedParts().length - 1
+          : val - 1
+        : val === this.showedParts().length - 1
+          ? 0
+          : val + 1,
+    );
   }
-
-
 }

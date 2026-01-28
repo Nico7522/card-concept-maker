@@ -32,6 +32,8 @@ import { CardHeaderComponent } from './card-header/card-header.component';
 import { CardFooterComponent } from './card-footer/card-footer.component';
 import { CardPassivePartComponent } from './card-passive-part/card-passive-part.component';
 import { CardStatsPartComponent } from '../../../app/card-stats-part/card-stats-part.component';
+import { DisplayedPart } from '../model/displayed-part-type';
+import { CardLinksPartComponent } from './card-links-part/card-links-part.component';
 @Component({
   selector: 'app-card',
   imports: [
@@ -42,6 +44,7 @@ import { CardStatsPartComponent } from '../../../app/card-stats-part/card-stats-
     CardFooterComponent,
     CardPassivePartComponent,
     CardStatsPartComponent,
+    CardLinksPartComponent,
   ],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
@@ -150,7 +153,12 @@ export class CardComponent {
     }
   }
 
-  showedParts = signal<('stats' | 'passive')[]>(['stats', 'passive']);
+  showedParts = signal<DisplayedPart[]>([
+    'stats',
+    'passive',
+    'links',
+    'categories',
+  ]);
   displayedPartsIndex = signal<number>(0);
   displayedParts = computed(
     () => this.showedParts()[this.displayedPartsIndex()],

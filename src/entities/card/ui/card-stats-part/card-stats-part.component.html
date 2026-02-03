@@ -1,15 +1,15 @@
 <!-- Stats values -->
 <div class="flex justify-center gap-2">
     <div class="w-25 h-10 xl:w-32 xl:h-12 flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-green-500 to-green-600"
-        style="transform: skewX(-10deg);">19485<br>
+        style="transform: skewX(-10deg);">{{stats()?.hp}}<br>
         <span class="text-orange-400 border-t border-black w-full text-center">PV</span>
     </div>
     <div class="w-25 h-10 xl:w-32 xl:h-12  flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-orange-500 to-red-600"
-        style="transform: skewX(-10deg);">19485<br>
+        style="transform: skewX(-10deg);">{{stats()?.attack}}<br>
         <span class="text-orange-400 border-t border-black w-full text-center">ATK</span>
     </div>
     <div class="w-25 h-10 xl:w-32 xl:h-12 flex flex-col items-center justify-center text-white font-bold xl:text-lg text-sm bg-gradient-to-r from-blue-500 to-blue-600"
-        style="transform: skewX(-10deg);">19485<br>
+        style="transform: skewX(-10deg);">{{stats()?.defense}}<br>
         <span class="text-orange-400 border-t border-black w-full text-center">DEF</span>
     </div>
 </div>
@@ -21,7 +21,11 @@
         <div class="flex items-center justify-center w-full mx-5 relative">
             <span class="absolute left-0 -top-2 left-1/2 -translate-x-1/2 text-yellow-300">Next Lv
                 <span class="text-white">0</span></span>
-            <span>120</span>/120
+            @if (isLegendaryCharacter()) {
+            <span>1</span>/150
+            } @else {
+            <span>1</span>/120
+            }
             <div class=" w-full h-3 mx-2 bg-yellow-300 italic" style="transform: skewX(-10deg);">
             </div>
             <div class="flex flex-col items-center text-sm mr-2">
@@ -31,12 +35,16 @@
         </div>
     </div>
     <!-- Leader skill -->
-    <div class="flex items-center w-full">
+    <div class="flex w-full relative cursor-pointer" (mousedown)="showFullLeaderSkill()"
+        (mouseup)="hideFullLeaderSkill()" (mouseleave)="hideFullLeaderSkill()" (touchstart)="showFullLeaderSkill()"
+        (touchend)="hideFullLeaderSkill()">
+        @if (isLeaderSkillDetailsShown()) {
+        <app-leader-skill-details [leaderSkill]="leaderSkill()" />
+        }
         <h5 class="text-orange-500 text-sm font-bold mr-5">Leader <span class="block -mt-2 text-center">skill</span>
         </h5>
-        <div class="w-full ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex "
-            style="transform: skewX(-10deg);">
-            <p>Tournament Participants or Worldwide Chaos ...
+        <div class="w-full ml-4 mr-8 h-7 bg-black italic flex truncate  max-w-[90%]" style="transform: skewX(-10deg);">
+            <p class="truncate min-w-0 flex-1">{{leaderSkill()}}
             </p>
         </div>
 
@@ -47,20 +55,23 @@
         <!-- Attack Sp Lv  -->
         <div>
             <h5 class="text-orange-500 text-sm font-bold">ATT Spe LV</h5>
-            <div class="w-11 bg-black" style="transform: skewX(-10deg);">
-                <span class="text-yellow-300">15</span>/15
+            <div class="w-11 bg-black text-center" style="transform: skewX(-10deg);">
+                @if (isLegendaryCharacter()) {
+                <span class="text-yellow-300">1</span>/20
+                } @else {
+                <span class="text-yellow-300">1</span>/10
+                }
             </div>
         </div>
         <!-- Special attack name and details -->
-        <div class="flex flex-col w-full">
-            <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex justify-between"
+        <div class="flex flex-col w-full max-w-[90%]">
+            <div class="ml-6 mr-9 h-7 bg-black italic overflow-hidden flex items-center justify-between gap-2"
                 style="transform: skewX(-10deg);">
-                <p class="text-sm">Onde de choc Gamma suprême
-                </p>
-                <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm">More</button>
+                <p class="text-sm truncate min-w-0 flex-1">{{superAttackInfo()?.superAttackName}}</p>
+                <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm shrink-0 px-2">More</button>
             </div>
-            <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex" style=" transform: skewX(-10deg);">
-                <p>Augmente fortement l'attaque et la déf ...
+            <div class="ml-5 mr-10 h-7 bg-black italic overflow-hidden flex" style=" transform: skewX(-10deg);">
+                <p class="truncate min-w-0 flex-1">{{superAttackInfo()?.superAttackEffect}}
                 </p>
             </div>
         </div>

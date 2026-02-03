@@ -274,6 +274,7 @@
 
 <!-- New UI for card  -->
 
+
 <!-- Global card container  -->
 <main
     class="relative w-full mb-5 lg:mb-5 md:w-[50%] xl:w-[30%] md:m-auto h-[700px] border rounded-lg flex flex-col justify-end overflow-hidden">
@@ -296,12 +297,15 @@
     <!-- Stats section -->
     <section
         class="h-[300px] border border-green-500 bg-green-700/50 m-2 rounded-lg relative z-10 flex flex-col justify-start pt-5 gap-4 px-2">
-        <div class="flex-1 overflow-hidden">
+        <div class="flex-1 ">
             @switch (displayedParts()) {
             @case ('stats') {
             <!-- Stats - Lv - Leader skill - Special attack -->
-            <app-card-stats-part />
-
+            @if (card().characterInfo?.stats) {
+            <app-card-stats-part [stats]="card().characterInfo?.stats"
+                [isLegendaryCharacter]="card().characterInfo?.isLegendaryCharacter ?? false"
+                [superAttackInfo]="card().superAttackInfo" [leaderSkill]="card().characterInfo?.leaderSkill ?? ''" />
+            }
             }
             @case ('passive') {
             <!-- Passive - Active skill - Domain -->
@@ -312,7 +316,7 @@
             <app-card-links-part [links]="card().characterInfo?.links ?? []" />
             }
             @case ('categories') {
-            <div>Categories</div>
+            <app-card-categories-part [categories]="card().characterInfo?.categories ?? []" />
             }
             }
         </div>

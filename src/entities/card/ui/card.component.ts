@@ -31,9 +31,10 @@ import { DomainModalComponent } from './domain-modal/domain-modal.component';
 import { CardHeaderComponent } from './card-header/card-header.component';
 import { CardFooterComponent } from './card-footer/card-footer.component';
 import { CardPassivePartComponent } from './card-passive-part/card-passive-part.component';
-import { CardStatsPartComponent } from '../../../app/card-stats-part/card-stats-part.component';
+import { CardStatsPartComponent } from './card-stats-part/card-stats-part.component';
 import { DisplayedPart } from '../model/displayed-part-type';
 import { CardLinksPartComponent } from './card-links-part/card-links-part.component';
+import { CardCategoriesPartComponent } from './card-categories-part/card-categories-part.component';
 @Component({
   selector: 'app-card',
   imports: [
@@ -45,6 +46,7 @@ import { CardLinksPartComponent } from './card-links-part/card-links-part.compon
     CardPassivePartComponent,
     CardStatsPartComponent,
     CardLinksPartComponent,
+    CardCategoriesPartComponent,
   ],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
@@ -121,7 +123,7 @@ export class CardComponent {
             }
           }),
         ],
-      },
+      }
     );
     this.saDetailsRef = componentRef;
   }
@@ -138,7 +140,7 @@ export class CardComponent {
             }
           }),
         ],
-      },
+      }
     );
     this.domainDetailsRef = componentRef;
   }
@@ -161,6 +163,6 @@ export class CardComponent {
   ]);
   displayedPartsIndex = signal<number>(0);
   displayedParts = computed(
-    () => this.showedParts()[this.displayedPartsIndex()],
+    () => this.showedParts()[this.displayedPartsIndex()]
   );
 }

@@ -1,14 +1,18 @@
 <div class="flex flex-col h-full">
     <!-- Links -->
-    <div class="flex items-center justify-between gap-4">
-        <h5 class="text-orange-500 text-sm font-bold -mt-12 flex flex-col items-center">
+    <div class="flex items-start justify-between gap-4">
+        <h5 class="text-orange-500 text-sm font-bold flex flex-col items-center">
             <span>Link</span>
             <span class="-mt-2">skills</span>
         </h5>
         <div class="mt-2 grid grid-cols-2 gap-2 flex-1">
-            @for (link of links(); track $index) {
-            <div class="rounded-md text-xs sm:text-md text-center border border-green-600 px-3 py-1 sm:w-auto bg-black">
-                {{link}}
+            @for (link of fullLinksArray(); track $index) {
+            <div
+                class="relative flex items-center rounded-md text-xs sm:text-md border border-green-600 px-3 py-1 sm:w-auto bg-black">
+                <span
+                    class="absolute text-center left-1 size-5 rounded-full bg-gray-800 text-[9px] font-bold flex items-center justify-center">
+                    Lv. <br> 1</span>
+                <span class="flex-1 text-center">{{link}}</span>
             </div>
             }
         </div>
@@ -19,21 +23,15 @@
         <h5 class="text-orange-500 text-sm font-bold">
             Labels
         </h5>
-        <div class="ml-3 md:h-7 h-5 flex-1 bg-black flex items-center justify-between overflow-hidden px-2">
-            <img [ngSrc]="'com_btn_menu_chara_gray.png'" alt="label 1" class="max-w-[13%] object-contain" width="50"
-                height="28">
-            <img [ngSrc]="'com_btn_menu_chara_gray.png'" alt="label 2" class="max-w-[13%] object-contain" width="50"
-                height="28">
-            <img [ngSrc]="'com_btn_menu_chara_gray.png'" alt="label 3" class="max-w-[13%] object-contain" width="50"
-                height="28">
-            <img [ngSrc]="'com_btn_menu_chara_gray.png'" alt="label 4" class="max-w-[13%] object-contain" width="50"
-                height="28">
-            <img [ngSrc]="'com_btn_menu_chara_gray.png'" alt="label 5" class="max-w-[13%] object-contain" width="50"
-                height="28">
-            <img [ngSrc]="'com_btn_menu_chara_gray.png'" alt="label 6" class="max-w-[13%] object-contain" width="50"
-                height="28">
-            <img [ngSrc]="'com_btn_menu_chara_gray.png'" alt="label 7" class="max-w-[13%] object-contain" width="50"
-                height="28">
+        <div class="ml-3  md:h-7 h-5 flex-1 bg-black flex items-center justify-between overflow-hidden px-2">
+            @for (item of labels(); track $index) {
+
+            <div class="relative max-w-[13%]">
+                <img [ngSrc]="'com_btn_menu_chara_gray.png'" alt="label 1" class="object-contain" width="50"
+                    height="28">
+                <span class="absolute inset-0 flex items-center justify-center text-[10px]">{{$index}}</span>
+            </div>
+            }
             <img [ngSrc]="'settings_labels.png'" alt="settings labels" class="max-w-[13%] object-contain" width="50"
                 height="28">
         </div>

@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 
 @Component({
   selector: 'app-card-links-part',
@@ -9,4 +9,10 @@ import { Component, input } from '@angular/core';
 })
 export class CardLinksPartComponent {
   links = input.required<string[]>();
+  labels = signal<number[]>(Array(8).fill(0));
+
+  fullLinksArray = computed(() => {
+    const links = this.links();
+    return Array.from({ length: 7 }, (_, i) => links[i] ?? ' - ');
+  });
 }

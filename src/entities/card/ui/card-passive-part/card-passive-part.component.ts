@@ -7,10 +7,10 @@ import { Component, model, output } from '@angular/core';
   styleUrl: './card-passive-part.component.css',
 })
 export class CardPassivePartComponent {
-  isPassiveDetailsShown = model(false);
+  isPassiveDetailsModalOpen = model(false);
   openPassiveDetailsModal = output<void>();
   showFullPassiveDetails() {
-    this.isPassiveDetailsShown.set(true);
+    this.isPassiveDetailsModalOpen.set(true);
     this.openPassiveDetailsModal.emit();
   }
 }

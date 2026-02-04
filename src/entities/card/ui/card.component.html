@@ -292,7 +292,7 @@
     <!-- Card rarity and type icons -->
     <section class="absolute top-0 left-0 right-0 z-10 p-2 h-[380px]">
         <app-card-header [card]="card()" (openDomainDetailsModal)="onDomainDetailsModalOpen()"
-            [(isDomainDetailsModalShown)]="isDomainDetailsModalShown" />
+            [(isDomainDetailsModalOpen)]="isDomainDetailsModalOpen" />
     </section>
 
     <!-- Stats section -->
@@ -306,13 +306,13 @@
             <app-card-stats-part [stats]="card().characterInfo?.stats"
                 [isLegendaryCharacter]="card().characterInfo?.isLegendaryCharacter ?? false"
                 [superAttackInfo]="card().superAttackInfo" [leaderSkill]="card().characterInfo?.leaderSkill ?? ''"
-                [characterInfo]="card().characterInfo" [(isSuperAttackDetailsShown)]="isSuperAttackDetailsShown"
+                [characterInfo]="card().characterInfo" [(isSuperAttackDetailsModalOpen)]="isSuperAttackDetailsModalOpen"
                 (openSuperAttackDetails)="onSuperAttackDetailsModalOpen()" />
             }
             }
             @case ('passive') {
             <!-- Passive - Active skill - Domain -->
-            <app-card-passive-part [(isPassiveDetailsShown)]="isPassiveDetailsShown"
+            <app-card-passive-part [(isPassiveDetailsModalOpen)]="isPassiveDetailsModalOpen"
                 (openPassiveDetailsModal)="onPassiveDetailsModalOpen()" />
             }
 

@@ -79,9 +79,9 @@ export class CardComponent {
     'Passive Skill Details',
     'Artwork',
   ];
-  isDomainDetailsModalShown = signal(false);
-  isSuperAttackDetailsShown = signal(false);
-  isPassiveDetailsShown = signal(false);
+  isDomainDetailsModalOpen = signal(false);
+  isSuperAttackDetailsModalOpen = signal(false);
+  isPassiveDetailsModalOpen = signal(false);
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   modal = viewChild.required('modal', { read: ViewContainerRef });
@@ -129,7 +129,7 @@ export class CardComponent {
           inputBinding('characterInfo', () => this.card().characterInfo),
           inputBinding('superAttackInfo', () => this.card().superAttackInfo),
           outputBinding('close', () => {
-            this.isSuperAttackDetailsShown.set(false);
+            this.isSuperAttackDetailsModalOpen.set(false);
 
             if (this.globalModalRef) {
               this.globalModalRef.destroy();
@@ -148,7 +148,7 @@ export class CardComponent {
         bindings: [
           inputBinding('domain', () => this.card().characterInfo?.domain),
           outputBinding('close', () => {
-            this.isDomainDetailsModalShown.set(false);
+            this.isDomainDetailsModalOpen.set(false);
             if (this.globalModalRef) {
               this.globalModalRef.destroy();
             }
@@ -173,7 +173,7 @@ export class CardComponent {
             () => this.card().characterInfo?.stats?.defense
           ),
           outputBinding('close', () => {
-            this.isPassiveDetailsShown.set(false);
+            this.isPassiveDetailsModalOpen.set(false);
             if (this.globalModalRef) {
               this.globalModalRef.destroy();
             }

@@ -18,7 +18,7 @@ import { Character } from '../../model/character-type';
 })
 export class CardStatsPartComponent {
   isLeaderSkillDetailsShown = signal(false);
-  isSuperAttackDetailsShown = model<boolean>(false);
+  isSuperAttackDetailsModalOpen = model<boolean>(false);
   stats = input<{
     attack: number;
     defense: number;
@@ -41,7 +41,7 @@ export class CardStatsPartComponent {
   }
 
   showFullSuperAttackDetails() {
-    this.isSuperAttackDetailsShown.set(true);
+    this.isSuperAttackDetailsModalOpen.set(true);
     this.openSuperAttackDetails.emit();
   }
 }

@@ -1,6 +1,14 @@
-import { Component, input, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  input,
+  model,
+  output,
+  signal,
+} from '@angular/core';
 import { SuperAttack } from '../../model/super-attack-type';
 import { LeaderSkillDetailsComponent } from '../leader-skill-details/leader-skill-details.component';
+import { Character } from '../../model/character-type';
 
 @Component({
   selector: 'app-card-stats-part',
@@ -10,6 +18,7 @@ import { LeaderSkillDetailsComponent } from '../leader-skill-details/leader-skil
 })
 export class CardStatsPartComponent {
   isLeaderSkillDetailsShown = signal(false);
+  isSuperAttackDetailsShown = model<boolean>(false);
   stats = input<{
     attack: number;
     defense: number;
@@ -19,6 +28,9 @@ export class CardStatsPartComponent {
   isLegendaryCharacter = input.required<boolean>();
   superAttackInfo = input.required<SuperAttack>();
   leaderSkill = input.required<string>();
+  characterInfo = input.required<Character>();
+
+  openSuperAttackDetails = output<void>();
 
   showFullLeaderSkill() {
     this.isLeaderSkillDetailsShown.set(true);
@@ -26,5 +38,10 @@ export class CardStatsPartComponent {
 
   hideFullLeaderSkill() {
     this.isLeaderSkillDetailsShown.set(false);
+  }
+
+  showFullSuperAttackDetails() {
+    this.isSuperAttackDetailsShown.set(true);
+    this.openSuperAttackDetails.emit();
   }
 }

@@ -72,12 +72,13 @@ export class CardComponent {
     'Passive Skill Details',
     'Artwork',
   ];
-
+  isSuperAttackDetailsShown = signal(false);
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   modal = viewChild.required('modal', { read: ViewContainerRef });
   modalRef: ComponentRef<CardModalComponent> | null = null;
   saDetails = viewChild.required('sadetails', { read: ViewContainerRef });
+  saDetailsMain = viewChild('sadetailsMain', { read: ViewContainerRef });
   saDetailsRef: ComponentRef<SuperAttackDetailsComponent> | null = null;
   domainDetails = viewChild.required('domainModal', { read: ViewContainerRef });
   domainDetailsRef: ComponentRef<DomainModalComponent> | null = null;
@@ -111,13 +112,18 @@ export class CardComponent {
   }
 
   openSuperAttackDetails() {
-    const componentRef = this.saDetails().createComponent(
+    this.isSuperAttackDetailsShown.set(true);
+    // Use sadetailsMain (new UI) if available, otherwise fallback to saDetails (old UI)
+    const container = this.saDetailsMain() ?? this.saDetails();
+    const componentRef = container.createComponent(
       SuperAttackDetailsComponent,
       {
         bindings: [
           inputBinding('characterInfo', () => this.card().characterInfo),
           inputBinding('superAttackInfo', () => this.card().superAttackInfo),
           outputBinding('close', () => {
+            this.isSuperAttackDetailsShown.set(false);
+
             if (this.saDetailsRef) {
               this.saDetailsRef.destroy();
             }

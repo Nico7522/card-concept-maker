@@ -304,7 +304,9 @@
             @if (card().characterInfo?.stats) {
             <app-card-stats-part [stats]="card().characterInfo?.stats"
                 [isLegendaryCharacter]="card().characterInfo?.isLegendaryCharacter ?? false"
-                [superAttackInfo]="card().superAttackInfo" [leaderSkill]="card().characterInfo?.leaderSkill ?? ''" />
+                [superAttackInfo]="card().superAttackInfo" [leaderSkill]="card().characterInfo?.leaderSkill ?? ''"
+                [characterInfo]="card().characterInfo" [isSuperAttackDetailsShown]="isSuperAttackDetailsShown()"
+                (openSuperAttackDetails)="openSuperAttackDetails()" />
             }
             }
             @case ('passive') {
@@ -329,4 +331,6 @@
 
 
 
+    <!-- Super attack details modal -->
+    <ng-container #sadetailsMain />
 </main>

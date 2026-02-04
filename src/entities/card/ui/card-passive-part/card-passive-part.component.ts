@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, model, output } from '@angular/core';
 
 @Component({
   selector: 'app-card-passive-part',
@@ -7,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './card-passive-part.component.css',
 })
 export class CardPassivePartComponent {
-
+  isPassiveDetailsShown = model(false);
+  openPassiveDetailsModal = output<void>();
+  showFullPassiveDetails() {
+    this.isPassiveDetailsShown.set(true);
+    this.openPassiveDetailsModal.emit();
+  }
 }

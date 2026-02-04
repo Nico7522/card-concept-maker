@@ -11,7 +11,8 @@
                 style="transform: skewX(-10deg);">
                 <p class="text-sm">Esprit et technique affutée
                 </p>
-                <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm">Details</button>
+                <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm"
+                    (click)="showFullPassiveDetails()" [disabled]="isPassiveDetailsShown()">Details</button>
             </div>
             <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex" style=" transform: skewX(-10deg);">
                 <p>Passive skill
@@ -19,6 +20,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Passive details modal -->
+    <ng-container #passiveDetailsModal />
 
     <!-- Active skill -->
     <div class="flex items-center w-full">

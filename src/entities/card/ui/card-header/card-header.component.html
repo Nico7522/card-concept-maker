@@ -1,7 +1,14 @@
 <div class="flex justify-between items-start w-full h-full">
     <div class="flex flex-col items-center justify-center">
-        <img [ngSrc]="cardRarityIcon()" alt="Card Rarity Icon" width="70" height="70" class="object-contain">
+        <img [ngSrc]="cardRarityIcon()" alt="Card Rarity Icon" width="50" height="50" class="object-contain">
         <img [ngSrc]="cardTypeIcon()" alt="Card Type Icon" width="40" height="40" class="object-contain">
+        @if (card().characterInfo?.domain) {
+        <button (click)="showDomainDetailsModal()" [disabled]="isDomainDetailsModalShown()">
+            <img src="/com_btn_dokkan_field.png" alt="Domain" width="40" height="40"
+                class="object-contain mt-3 cursor-pointer">
+
+        </button>
+        }
     </div>
     <div class="flex flex-col items-end h-full">
         <div class="flex items-center justify-center mt-5">

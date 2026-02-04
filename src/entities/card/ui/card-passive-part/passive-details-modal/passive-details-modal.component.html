@@ -1,0 +1,47 @@
+<div
+    class="rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] w-full h-[95%] max-w-md border-2 text-sm xl:text-md flex flex-col">
+    <!-- Background -->
+    <div class="absolute details top-0 left-0 w-full h-full bg-black/90 -z-10"></div>
+
+    <!-- Scrollable content -->
+    <div class="flex-1 overflow-y-auto overflow-x-hidden">
+        <h2
+            class="text-center relative mt-5 scroll-m-20 font-extrabold tracking-tight text-2xl mx-5 border-r-12 border-l-12 rounded-lg">
+            Passive Details
+        </h2>
+        <div class="flex justify-between items-center mt-5 mx-2 gap-2">
+            <div class="flex justify-between items-center bg-red-900/90 w-full px-2" style="transform: skewX(-10deg);">
+                <span>ATT</span>
+                <span class="text-white">{{attack()}}</span>
+            </div>
+            <div class="flex justify-between items-center bg-blue-900/90 w-full px-2" style="transform: skewX(-10deg);">
+                <span>DEF</span>
+                <span class="text-white">{{defense()}}</span>
+            </div>
+        </div>
+        <div class="relative z-10 flex flex-col w-full p-3">
+            @for (part of passiveDetails()?.passive; track $index) {
+            <div class="flex flex-col">
+                <h3 class="text-orange-500 text-lg mt-2">{{part.passiveConditionActivation}}</h3>
+                <ul class="ml-5 flex flex-col list-disc w-full">
+                    @for (effect of part.effect; track $index) {
+                    <li class="break-all mr-2">
+                        {{effect.description}}
+                        @if (effect.imageSrc) {
+                        <img class="inline-block" [ngSrc]="effect.imageSrc" [alt]="effect.description" [width]="30"
+                            [height]="30">
+                        }
+                    </li>
+                    }
+                </ul>
+            </div>
+            }
+        </div>
+    </div>
+
+    <!-- Button fixed at bottom -->
+    <button class="shrink-0 w-full flex justify-center items-center py-2 cursor-pointer bg-black/90"
+        (click)="onClose()">
+        <img src="./btn_ok.png" alt="OK" class="w-32">
+    </button>
+</div>

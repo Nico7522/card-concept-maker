@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, model, output } from '@angular/core';
 import { Card } from '../..';
 import { NgOptimizedImage } from '@angular/common';
 
@@ -10,6 +10,25 @@ import { NgOptimizedImage } from '@angular/common';
 })
 export class CardHeaderComponent {
   card = input.required<Card>();
-  cardRarityIcon = computed(() => this.card().characterInfo?.isLegendaryCharacter ? 'cha_rare_sm_lr.png' : 'cha_rare_sm_ur.png');
-  cardTypeIcon = computed(() => this.card().characterInfo?.type && this.card().characterInfo?.class ? ('/' + this.card().characterInfo?.class + this.card().characterInfo?.type) + '.png' : '');
+  cardRarityIcon = computed(() =>
+    this.card().characterInfo?.isLegendaryCharacter
+      ? 'cha_rare_sm_lr.png'
+      : 'cha_rare_sm_ur.png'
+  );
+  cardTypeIcon = computed(() =>
+    this.card().characterInfo?.type && this.card().characterInfo?.class
+      ? '/' +
+        this.card().characterInfo?.class +
+        this.card().characterInfo?.type +
+        '.png'
+      : ''
+  );
+
+  isDomainDetailsModalShown = model(false);
+  openDomainDetailsModal = output<void>();
+
+  showDomainDetailsModal() {
+    this.isDomainDetailsModalShown.set(true);
+    this.openDomainDetailsModal.emit();
+  }
 }

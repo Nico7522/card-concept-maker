@@ -93,14 +93,14 @@
                             }@else {
                             <span class="text-sm lg:text-md text-red-500">No Super Attack Name</span>
                             }
-                            <button (click)="openSuperAttackDetails()"
+                            <button (click)="onSuperAttackDetailsModalOpen()"
                                 class="bg-green-600 px-1 mb-1 cursor-pointer font-extrabold tracking-tight border-2">Details</button>
                         </div>
                         {{card().superAttackInfo?.superAttackEffect}}
                     </div>
 
                 </div>
-                <ng-container #sadetails />
+                <!-- <ng-container #sadetails /> -->
 
                 <!-- Ultra super attack -->
 
@@ -231,7 +231,7 @@
                     </span>
                     <div class="w-full flex justify-center items-center min-h-[120px]">
                         <img src="/com_btn_dokkan_field.png" alt="Leader skill" class="w-20 h-20"
-                            (click)="openDomainModal()">
+                            (click)="onDomainDetailsModalOpen()">
                     </div>
                     <!-- <div class="w-full p-2 mx-10 bg-black flex flex-col justify-center min-h-[120px]"
                         style="transform: skewX(-10deg);">
@@ -291,7 +291,8 @@
 
     <!-- Card rarity and type icons -->
     <section class="absolute top-0 left-0 right-0 z-10 p-2 h-[380px]">
-        <app-card-header [card]="card()" />
+        <app-card-header [card]="card()" (openDomainDetailsModal)="onDomainDetailsModalOpen()"
+            [(isDomainDetailsModalShown)]="isDomainDetailsModalShown" />
     </section>
 
     <!-- Stats section -->
@@ -305,13 +306,14 @@
             <app-card-stats-part [stats]="card().characterInfo?.stats"
                 [isLegendaryCharacter]="card().characterInfo?.isLegendaryCharacter ?? false"
                 [superAttackInfo]="card().superAttackInfo" [leaderSkill]="card().characterInfo?.leaderSkill ?? ''"
-                [characterInfo]="card().characterInfo" [isSuperAttackDetailsShown]="isSuperAttackDetailsShown()"
-                (openSuperAttackDetails)="openSuperAttackDetails()" />
+                [characterInfo]="card().characterInfo" [(isSuperAttackDetailsShown)]="isSuperAttackDetailsShown"
+                (openSuperAttackDetails)="onSuperAttackDetailsModalOpen()" />
             }
             }
             @case ('passive') {
             <!-- Passive - Active skill - Domain -->
-            <app-card-passive-part />
+            <app-card-passive-part [(isPassiveDetailsShown)]="isPassiveDetailsShown"
+                (openPassiveDetailsModal)="onPassiveDetailsModalOpen()" />
             }
 
             @case ('links') {
@@ -332,5 +334,6 @@
 
 
     <!-- Super attack details modal -->
-    <ng-container #sadetailsMain />
+    <ng-container #globalModal />
+
 </main>

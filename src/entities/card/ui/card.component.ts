@@ -35,6 +35,13 @@ import { CardStatsPartComponent } from './card-stats-part/card-stats-part.compon
 import { DisplayedPart } from '../model/displayed-part-type';
 import { CardLinksPartComponent } from './card-links-part/card-links-part.component';
 import { CardCategoriesPartComponent } from './card-categories-part/card-categories-part.component';
+import { PassiveDetailsModalComponent } from './card-passive-part/passive-details-modal/passive-details-modal.component';
+
+type GlobalModal =
+  | PassiveDetailsModalComponent
+  | SuperAttackDetailsComponent
+  | DomainModalComponent;
+
 @Component({
   selector: 'app-card',
   imports: [
@@ -72,16 +79,19 @@ export class CardComponent {
     'Passive Skill Details',
     'Artwork',
   ];
+  isDomainDetailsModalShown = signal(false);
   isSuperAttackDetailsShown = signal(false);
+  isPassiveDetailsShown = signal(false);
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   modal = viewChild.required('modal', { read: ViewContainerRef });
   modalRef: ComponentRef<CardModalComponent> | null = null;
   saDetails = viewChild.required('sadetails', { read: ViewContainerRef });
-  saDetailsMain = viewChild('sadetailsMain', { read: ViewContainerRef });
-  saDetailsRef: ComponentRef<SuperAttackDetailsComponent> | null = null;
-  domainDetails = viewChild.required('domainModal', { read: ViewContainerRef });
-  domainDetailsRef: ComponentRef<DomainModalComponent> | null = null;
+
+  globalModal = viewChild.required('globalModal', {
+    read: ViewContainerRef,
+  });
+  globalModalRef: ComponentRef<GlobalModal> | null = null;
   showNextPart() {
     this.showedPart.update((val) => val + 1);
   }
@@ -111,11 +121,8 @@ export class CardComponent {
     this.modalRef = componentRef;
   }
 
-  openSuperAttackDetails() {
-    this.isSuperAttackDetailsShown.set(true);
-    // Use sadetailsMain (new UI) if available, otherwise fallback to saDetails (old UI)
-    const container = this.saDetailsMain() ?? this.saDetails();
-    const componentRef = container.createComponent(
+  onSuperAttackDetailsModalOpen() {
+    const componentRef = this.globalModal().createComponent(
       SuperAttackDetailsComponent,
       {
         bindings: [
@@ -124,40 +131,65 @@ export class CardComponent {
           outputBinding('close', () => {
             this.isSuperAttackDetailsShown.set(false);
 
-            if (this.saDetailsRef) {
-              this.saDetailsRef.destroy();
+            if (this.globalModalRef) {
+              this.globalModalRef.destroy();
             }
           }),
         ],
       }
     );
-    this.saDetailsRef = componentRef;
+    this.globalModalRef = componentRef;
   }
 
-  openDomainModal() {
-    const componentRef = this.domainDetails().createComponent(
+  onDomainDetailsModalOpen() {
+    const componentRef = this.globalModal().createComponent(
       DomainModalComponent,
       {
         bindings: [
           inputBinding('domain', () => this.card().characterInfo?.domain),
           outputBinding('close', () => {
-            if (this.domainDetailsRef) {
-              this.domainDetailsRef.destroy();
+            this.isDomainDetailsModalShown.set(false);
+            if (this.globalModalRef) {
+              this.globalModalRef.destroy();
             }
           }),
         ],
       }
     );
-    this.domainDetailsRef = componentRef;
+    this.globalModalRef = componentRef;
   }
-
+  onPassiveDetailsModalOpen() {
+    const componentRef = this.globalModal().createComponent(
+      PassiveDetailsModalComponent,
+      {
+        bindings: [
+          inputBinding('passiveDetails', () => this.card().passiveDetails),
+          inputBinding(
+            'attack',
+            () => this.card().characterInfo?.stats?.attack
+          ),
+          inputBinding(
+            'defense',
+            () => this.card().characterInfo?.stats?.defense
+          ),
+          outputBinding('close', () => {
+            this.isPassiveDetailsShown.set(false);
+            if (this.globalModalRef) {
+              this.globalModalRef.destroy();
+            }
+          }),
+        ],
+      }
+    );
+    this.globalModalRef = componentRef;
+  }
   ngOnDestroy() {
     if (this.modalRef) {
       this.modalRef.destroy();
     }
 
-    if (this.saDetailsRef) {
-      this.saDetailsRef.destroy();
+    if (this.globalModalRef) {
+      this.globalModalRef.destroy();
     }
   }
 

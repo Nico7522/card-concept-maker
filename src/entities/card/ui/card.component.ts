@@ -2,18 +2,14 @@ import {
   Component,
   ComponentRef,
   computed,
-  effect,
   input,
   inputBinding,
-  linkedSignal,
-  model,
   outputBinding,
   signal,
-  twoWayBinding,
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { provideIcons } from '@ng-icons/core';
 import {
   heroArrowLeft,
   heroArrowLongRight,
@@ -21,8 +17,7 @@ import {
   heroChevronDoubleRight,
   heroMagnifyingGlassPlus,
 } from '@ng-icons/heroicons/outline';
-import { UbButtonDirective } from '~/components/ui/button';
-import { CardModalComponent } from './card-modal/card-modal.component';
+
 import { NgOptimizedImage } from '@angular/common';
 import { environment } from '~/src/environments/environment';
 import { SuperAttackDetailsModalComponent } from './super-attack-details-modal/super-attack-details-modal.component';
@@ -88,7 +83,9 @@ export class CardComponent {
     () => this.imageSize().width >= 1400 && this.imageSize().height >= 1800
   );
   card = input.required<Card>();
-  readonly apiUrl = environment.apiUrl + '/';
+  readonly imgUrl = computed(
+    () => environment.apiUrl + '/' + this.card().artwork
+  );
 
   globalModal = viewChild.required('globalModal', {
     read: ViewContainerRef,
@@ -168,8 +165,6 @@ export class CardComponent {
 
   onImageLoad(img: Event) {
     const image = img.target as HTMLImageElement;
-    console.log('width:', image.naturalWidth);
-    console.log('height:', image.naturalHeight);
     this.imageSize.set({
       width: image.naturalWidth,
       height: image.naturalHeight,

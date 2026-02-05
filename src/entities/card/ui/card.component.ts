@@ -209,4 +209,20 @@ export class CardComponent {
   displayedParts = computed(
     () => this.showedParts()[this.displayedPartsIndex()]
   );
+  imageSize = signal<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
+  displayArtworkFullScreen = computed(
+    () => this.imageSize().width >= 1500 && this.imageSize().height >= 2000
+  );
+  onImageLoad(img: Event) {
+    const image = img.target as HTMLImageElement;
+    console.log('width:', image.naturalWidth);
+    console.log('height:', image.naturalHeight);
+    this.imageSize.set({
+      width: image.naturalWidth,
+      height: image.naturalHeight,
+    });
+  }
 }

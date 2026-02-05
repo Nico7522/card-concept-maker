@@ -7,12 +7,11 @@
         </h5>
         <div class="mt-2 grid grid-cols-2 gap-2 flex-1">
             @for (link of fullLinksArray(); track $index) {
-            <div
-                class="relative flex items-center rounded-md text-xs sm:text-md border border-green-600 px-3 py-1 sm:w-auto bg-black">
+            <div class="relative flex items-center rounded-md border border-green-600 px-3 py-1 sm:w-auto bg-black">
                 <span
                     class="absolute text-center left-1 size-5 rounded-full bg-gray-800 text-[9px] font-bold flex items-center justify-center">
                     Lv. <br> 1</span>
-                <span class="flex-1 text-center">{{link}}</span>
+                <span class="flex-1 text-center text-[10px] sm:text-xs">{{link}}</span>
             </div>
             }
         </div>

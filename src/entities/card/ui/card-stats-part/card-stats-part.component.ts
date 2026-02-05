@@ -1,13 +1,6 @@
-import {
-  Component,
-  computed,
-  input,
-  model,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { SuperAttack } from '../../model/super-attack-type';
-import { LeaderSkillDetailsComponent } from '../leader-skill-details/leader-skill-details.component';
+import { LeaderSkillDetailsComponent } from './leader-skill-details/leader-skill-details.component';
 import { Character } from '../../model/character-type';
 
 @Component({
@@ -18,7 +11,7 @@ import { Character } from '../../model/character-type';
 })
 export class CardStatsPartComponent {
   isLeaderSkillDetailsShown = signal(false);
-  isSuperAttackDetailsModalOpen = model<boolean>(false);
+  isAmodalOpen = input.required<boolean>();
   stats = input<{
     attack: number;
     defense: number;
@@ -41,7 +34,6 @@ export class CardStatsPartComponent {
   }
 
   showFullSuperAttackDetails() {
-    this.isSuperAttackDetailsModalOpen.set(true);
     this.openSuperAttackDetails.emit();
   }
 }

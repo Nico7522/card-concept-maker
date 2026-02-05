@@ -3,12 +3,12 @@ import { Character, SuperAttack } from '../..';
 import { KiMeterComponent } from '../ki-meter/ki-meter.component';
 
 @Component({
-  selector: 'app-super-attack-details',
+  selector: 'app-super-attack-details-modal',
   imports: [KiMeterComponent],
-  templateUrl: './super-attack-details.component.html',
-  styleUrl: './super-attack-details.component.css',
+  templateUrl: './super-attack-details-modal.component.html',
+  styleUrl: './super-attack-details-modal.component.css',
 })
-export class SuperAttackDetailsComponent {
+export class SuperAttackDetailsModalComponent {
   characterInfo = input.required<Character>();
   superAttackInfo = input.required<SuperAttack>();
 

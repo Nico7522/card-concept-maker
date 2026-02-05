@@ -10,16 +10,17 @@ export type Character = {
   isLegendaryCharacter: boolean;
   categories: string[];
   links: string[];
-  activeSkill: {
-    activeSkillName: string;
-    activeSkillCondition: string;
-    activeSkillEffect: string;
-  } | null;
+  activeSkill: ActiveSkill;
   domain: {
     domainName: string;
     domainEffect: string;
   } | null;
 } | null;
 
+export type ActiveSkill = {
+  activeSkillName: string;
+  activeSkillCondition: string;
+  activeSkillEffect: string;
+} | null;
 type CharacterType = 'teq' | 'str' | 'agl' | 'int' | 'phy';
 type ClassType = 'super' | 'extreme';

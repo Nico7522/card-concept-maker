@@ -280,19 +280,18 @@
     class="relative w-full mb-5 lg:mb-5 md:w-[50%] xl:w-[30%] md:m-auto h-[700px] border rounded-lg flex flex-col justify-end overflow-hidden">
     <!-- Background Artwork -->
     <div class="absolute inset-0 z-0">
-        @if (true) {
-        <img [ngSrc]="'/' + 'placeholder_bg.jpeg'" alt="Card Artwork" fill class="object-cover" priority>
+        @if (card().artwork) {
+        <img [ngSrc]="apiUrl + card().artwork" alt="Card Artwork" fill class="object-cover" priority>
         } @else {
-        <div class="w-full h-full bg-gray-900/50 flex justify-center items-center">
-            <span class="text-gray-400">No Artwork</span>
-        </div>
+        <img [ngSrc]="'/' + 'placeholder_bg.jpeg'" alt="Card Artwork" fill class="object-cover" priority>
+
         }
     </div>
 
     <!-- Card rarity and type icons -->
     <section class="absolute top-0 left-0 right-0 z-10 p-2 h-[380px]">
-        <app-card-header [card]="card()" (openDomainDetailsModal)="onDomainDetailsModalOpen()"
-            [(isDomainDetailsModalOpen)]="isDomainDetailsModalOpen" />
+        <app-card-header [card]="card()" [isAmodalOpen]="isAmodalOpen()"
+            (openDomainDetailsModal)="onDomainDetailsModalOpen()" />
     </section>
 
     <!-- Stats section -->
@@ -306,13 +305,13 @@
             <app-card-stats-part [stats]="card().characterInfo?.stats"
                 [isLegendaryCharacter]="card().characterInfo?.isLegendaryCharacter ?? false"
                 [superAttackInfo]="card().superAttackInfo" [leaderSkill]="card().characterInfo?.leaderSkill ?? ''"
-                [characterInfo]="card().characterInfo" [(isSuperAttackDetailsModalOpen)]="isSuperAttackDetailsModalOpen"
+                [characterInfo]="card().characterInfo" [isAmodalOpen]="isAmodalOpen()"
                 (openSuperAttackDetails)="onSuperAttackDetailsModalOpen()" />
             }
             }
             @case ('passive') {
             <!-- Passive - Active skill - Domain -->
-            <app-card-passive-part [(isPassiveDetailsModalOpen)]="isPassiveDetailsModalOpen"
+            <app-card-passive-part [activeSkill]="card().characterInfo?.activeSkill" [isAmodalOpen]="isAmodalOpen()"
                 (openPassiveDetailsModal)="onPassiveDetailsModalOpen()" />
             }
 

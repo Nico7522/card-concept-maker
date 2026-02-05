@@ -25,7 +25,7 @@ import { UbButtonDirective } from '~/components/ui/button';
 import { CardModalComponent } from './card-modal/card-modal.component';
 import { NgOptimizedImage } from '@angular/common';
 import { environment } from '~/src/environments/environment';
-import { SuperAttackDetailsComponent } from './super-attack-details/super-attack-details.component';
+import { SuperAttackDetailsModalComponent } from './super-attack-details-modal/super-attack-details-modal.component';
 import { Card } from '..';
 import { DomainModalComponent } from './domain-modal/domain-modal.component';
 import { CardHeaderComponent } from './card-header/card-header.component';
@@ -39,7 +39,7 @@ import { PassiveDetailsModalComponent } from './card-passive-part/passive-detail
 
 type GlobalModal =
   | PassiveDetailsModalComponent
-  | SuperAttackDetailsComponent
+  | SuperAttackDetailsModalComponent
   | DomainModalComponent;
 
 @Component({
@@ -82,6 +82,7 @@ export class CardComponent {
   isDomainDetailsModalOpen = signal(false);
   isSuperAttackDetailsModalOpen = signal(false);
   isPassiveDetailsModalOpen = signal(false);
+  isAmodalOpen = signal(false);
   showedPart = signal(1);
   title = linkedSignal(() => this.titles[this.showedPart() - 1]);
   modal = viewChild.required('modal', { read: ViewContainerRef });
@@ -101,6 +102,7 @@ export class CardComponent {
   }
 
   openModal() {
+    this.isAmodalOpen.set(true);
     const componentRef = this.modal().createComponent(CardModalComponent, {
       bindings: [
         inputBinding('characterInfo', () => this.card().characterInfo),
@@ -110,6 +112,7 @@ export class CardComponent {
         twoWayBinding('showedPart', this.showedPart),
         twoWayBinding('title', this.title),
         outputBinding('close', () => {
+          this.isAmodalOpen.set(false);
           if (this.modalRef) {
             this.modalRef.destroy();
           }
@@ -122,14 +125,15 @@ export class CardComponent {
   }
 
   onSuperAttackDetailsModalOpen() {
+    this.isAmodalOpen.set(true);
     const componentRef = this.globalModal().createComponent(
-      SuperAttackDetailsComponent,
+      SuperAttackDetailsModalComponent,
       {
         bindings: [
           inputBinding('characterInfo', () => this.card().characterInfo),
           inputBinding('superAttackInfo', () => this.card().superAttackInfo),
           outputBinding('close', () => {
-            this.isSuperAttackDetailsModalOpen.set(false);
+            this.isAmodalOpen.set(false);
 
             if (this.globalModalRef) {
               this.globalModalRef.destroy();
@@ -142,13 +146,14 @@ export class CardComponent {
   }
 
   onDomainDetailsModalOpen() {
+    this.isAmodalOpen.set(true);
     const componentRef = this.globalModal().createComponent(
       DomainModalComponent,
       {
         bindings: [
           inputBinding('domain', () => this.card().characterInfo?.domain),
           outputBinding('close', () => {
-            this.isDomainDetailsModalOpen.set(false);
+            this.isAmodalOpen.set(false);
             if (this.globalModalRef) {
               this.globalModalRef.destroy();
             }
@@ -159,6 +164,7 @@ export class CardComponent {
     this.globalModalRef = componentRef;
   }
   onPassiveDetailsModalOpen() {
+    this.isAmodalOpen.set(true);
     const componentRef = this.globalModal().createComponent(
       PassiveDetailsModalComponent,
       {
@@ -173,7 +179,7 @@ export class CardComponent {
             () => this.card().characterInfo?.stats?.defense
           ),
           outputBinding('close', () => {
-            this.isPassiveDetailsModalOpen.set(false);
+            this.isAmodalOpen.set(false);
             if (this.globalModalRef) {
               this.globalModalRef.destroy();
             }

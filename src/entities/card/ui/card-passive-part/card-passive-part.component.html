@@ -12,7 +12,7 @@
                 <p class="text-sm">Esprit et technique affutée
                 </p>
                 <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm"
-                    (click)="showFullPassiveDetails()" [disabled]="isPassiveDetailsModalOpen()">Details</button>
+                    (click)="showFullPassiveDetails()" [disabled]="isAmodalOpen()">Details</button>
             </div>
             <div class="ml-5 mr-10 md:h-7 h-5 bg-black italic overflow-hidden flex" style=" transform: skewX(-10deg);">
                 <p>Passive skill
@@ -25,27 +25,42 @@
     <ng-container #passiveDetailsModal />
 
     <!-- Active skill -->
-    <div class="flex items-center w-full">
+    <div class="flex items-center w-full cursor-pointer relative" (mouseup)="hideActiveSkillDetails()"
+        (mousedown)="showActiveSkillDetails()" (mouseleave)="hideActiveSkillDetails()"
+        (touchstart)="showActiveSkillDetails()" (touchend)="hideActiveSkillDetails()">
+        @if (isActiveSkillDetailsShown()) {
+        <app-active-skill-details [activeSkill]="activeSkill()" />
+        }
         <!-- Title  -->
         <div class="w-20">
             <h5 class="text-orange-500 text-sm font-bold">Active skill</h5>
         </div>
         <div class="flex flex-col w-full">
             <div class="ml-5 mr-10 h-5 bg-black italic overflow-hidden flex justify-between">
-                <p class="text-sm">Défense et attaque augmentées
+                @if (activeSkill()?.activeSkillName) {
+                <p class="text-sm ml-1">{{activeSkill()?.activeSkillName}}
                 </p>
-                <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm mr-2"
-                    style="transform: skewX(-10deg);">Details</button>
+                }@else {
+                -
+                }
             </div>
-            <div class="ml-5 mr-10 h-5 bg-black italic overflow-hidden flex">
-                <span class="text-orange-500 mr-1 text-sm">Condition</span>
-                <p>Augmente fortement la défense et l'attaque ...
+            <div class="ml-5 mr-10 h-5 bg-black italic overflow-hidden flex ml-2 ">
+                <span class="text-orange-500 mr-1 text-sm ml-1">Condition</span>
+                @if (activeSkill()?.activeSkillCondition) {
+                <p>{{activeSkill()?.activeSkillCondition}}
                 </p>
+                }@else {
+                -
+                }
             </div>
-            <div class="ml-5 mr-10 h-5 bg-black italic overflow-hidden flex">
-                <span class="text-orange-500 mr-1 text-sm">Effect</span>
-                <p>Augmente fortement la défense et l'attaque ...
+            <div class="ml-5 mr-10 h-5 bg-black italic overflow-hidden flex ml-2 flex">
+                <span class="text-orange-500 mr-1 text-sm ml-1">Effect</span>
+                @if (activeSkill()?.activeSkillEffect) {
+                <p class="break-all">{{activeSkill()?.activeSkillEffect}}
                 </p>
+                }@else {
+                -
+                }
             </div>
         </div>
     </div>
@@ -61,8 +76,7 @@
             <div class="ml-5 mr-10 h-5 bg-black italic overflow-hidden flex justify-between">
                 <p class="text-sm">Armure et santé augmentées
                 </p>
-                <button class="bg-green-600 cursor-pointer tracking-tight border-2 text-sm mr-2"
-                    style="transform: skewX(-10deg);">Details</button>
+
             </div>
             <div class="ml-5 mr-10 h-5 bg-black italic overflow-hidden flex">
                 <span class="text-orange-500 mr-1 text-sm">Condition</span>

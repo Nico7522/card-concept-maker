@@ -24,11 +24,10 @@ export class CardHeaderComponent {
       : ''
   );
 
-  isDomainDetailsModalOpen = model(false);
+  isAmodalOpen = input.required<boolean>();
   openDomainDetailsModal = output<void>();
 
   showDomainDetailsModal() {
-    this.isDomainDetailsModalOpen.set(true);
     this.openDomainDetailsModal.emit();
   }
 }

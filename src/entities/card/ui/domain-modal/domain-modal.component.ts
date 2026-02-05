@@ -7,12 +7,10 @@ import { Component, input, output } from '@angular/core';
   styleUrl: './domain-modal.component.css',
 })
 export class DomainModalComponent {
-
   domain = input<{
     domainName: string;
     domainEffect: string;
   }>();
-
   close = output();
   onClose() {
     this.close.emit();

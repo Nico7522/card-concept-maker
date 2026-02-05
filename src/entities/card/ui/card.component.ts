@@ -45,8 +45,6 @@ type GlobalModal =
 @Component({
   selector: 'app-card',
   imports: [
-    NgIconComponent,
-    UbButtonDirective,
     NgOptimizedImage,
     CardHeaderComponent,
     CardFooterComponent,
@@ -71,58 +69,31 @@ type GlobalModal =
   },
 })
 export class CardComponent {
+  showedParts = signal<DisplayedPart[]>([
+    'stats',
+    'passive',
+    'links',
+    'categories',
+  ]);
+  displayedPartsIndex = signal<number>(0);
+  isAmodalOpen = signal(false);
+  imageSize = signal<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
+  displayedParts = computed(
+    () => this.showedParts()[this.displayedPartsIndex()]
+  );
+  displayArtworkFullScreen = computed(
+    () => this.imageSize().width >= 1400 && this.imageSize().height >= 1800
+  );
   card = input.required<Card>();
   readonly apiUrl = environment.apiUrl + '/';
-  private readonly titles = [
-    'Card Details',
-    'Categories',
-    'Passive Skill Details',
-    'Artwork',
-  ];
-  isDomainDetailsModalOpen = signal(false);
-  isSuperAttackDetailsModalOpen = signal(false);
-  isPassiveDetailsModalOpen = signal(false);
-  isAmodalOpen = signal(false);
-  showedPart = signal(1);
-  title = linkedSignal(() => this.titles[this.showedPart() - 1]);
-  modal = viewChild.required('modal', { read: ViewContainerRef });
-  modalRef: ComponentRef<CardModalComponent> | null = null;
-  saDetails = viewChild.required('sadetails', { read: ViewContainerRef });
 
   globalModal = viewChild.required('globalModal', {
     read: ViewContainerRef,
   });
   globalModalRef: ComponentRef<GlobalModal> | null = null;
-  showNextPart() {
-    this.showedPart.update((val) => val + 1);
-  }
-
-  showPreviousPart() {
-    this.showedPart.update((val) => val - 1);
-  }
-
-  openModal() {
-    this.isAmodalOpen.set(true);
-    const componentRef = this.modal().createComponent(CardModalComponent, {
-      bindings: [
-        inputBinding('characterInfo', () => this.card().characterInfo),
-        inputBinding('passiveDetails', () => this.card().passiveDetails),
-        inputBinding('superAttackInfo', () => this.card().superAttackInfo),
-
-        twoWayBinding('showedPart', this.showedPart),
-        twoWayBinding('title', this.title),
-        outputBinding('close', () => {
-          this.isAmodalOpen.set(false);
-          if (this.modalRef) {
-            this.modalRef.destroy();
-          }
-          document.querySelector('body')?.classList.remove('overflow-y-hidden');
-        }),
-      ],
-    });
-    document.querySelector('body')?.classList.add('overflow-y-hidden');
-    this.modalRef = componentRef;
-  }
 
   onSuperAttackDetailsModalOpen() {
     this.isAmodalOpen.set(true);
@@ -190,32 +161,11 @@ export class CardComponent {
     this.globalModalRef = componentRef;
   }
   ngOnDestroy() {
-    if (this.modalRef) {
-      this.modalRef.destroy();
-    }
-
     if (this.globalModalRef) {
       this.globalModalRef.destroy();
     }
   }
 
-  showedParts = signal<DisplayedPart[]>([
-    'stats',
-    'passive',
-    'links',
-    'categories',
-  ]);
-  displayedPartsIndex = signal<number>(0);
-  displayedParts = computed(
-    () => this.showedParts()[this.displayedPartsIndex()]
-  );
-  imageSize = signal<{ width: number; height: number }>({
-    width: 0,
-    height: 0,
-  });
-  displayArtworkFullScreen = computed(
-    () => this.imageSize().width >= 1500 && this.imageSize().height >= 2000
-  );
   onImageLoad(img: Event) {
     const image = img.target as HTMLImageElement;
     console.log('width:', image.naturalWidth);

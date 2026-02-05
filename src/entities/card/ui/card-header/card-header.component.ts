@@ -10,6 +10,8 @@ import { NgOptimizedImage } from '@angular/common';
 })
 export class CardHeaderComponent {
   card = input.required<Card>();
+  isAmodalOpen = input.required<boolean>();
+  openDomainDetailsModal = output<void>();
   cardRarityIcon = computed(() =>
     this.card().characterInfo?.isLegendaryCharacter
       ? 'cha_rare_sm_lr.png'
@@ -23,10 +25,6 @@ export class CardHeaderComponent {
         '.png'
       : ''
   );
-
-  isAmodalOpen = input.required<boolean>();
-  openDomainDetailsModal = output<void>();
-
   showDomainDetailsModal() {
     this.openDomainDetailsModal.emit();
   }

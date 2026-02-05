@@ -9,10 +9,11 @@ import { ActiveSkillDetailsComponent } from './active-skill-details/active-skill
   styleUrl: './card-passive-part.component.css',
 })
 export class CardPassivePartComponent {
-  isActiveSkillDetailsShown = signal(false);
   isAmodalOpen = input.required<boolean>();
+  passiveName = input<string>();
   activeSkill = input<ActiveSkill>();
   openPassiveDetailsModal = output<void>();
+  isActiveSkillDetailsShown = signal(false);
 
   showFullPassiveDetails() {
     this.openPassiveDetailsModal.emit();

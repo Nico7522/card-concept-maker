@@ -10,7 +10,6 @@ import { Character } from '../../model/character-type';
   styleUrl: './card-stats-part.component.css',
 })
 export class CardStatsPartComponent {
-  isLeaderSkillDetailsShown = signal(false);
   isAmodalOpen = input.required<boolean>();
   stats = input<{
     attack: number;
@@ -22,8 +21,8 @@ export class CardStatsPartComponent {
   superAttackInfo = input.required<SuperAttack>();
   leaderSkill = input.required<string>();
   characterInfo = input.required<Character>();
-
   openSuperAttackDetails = output<void>();
+  isLeaderSkillDetailsShown = signal(false);
 
   showFullLeaderSkill() {
     this.isLeaderSkillDetailsShown.set(true);

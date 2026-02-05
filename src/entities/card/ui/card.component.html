@@ -1,18 +1,14 @@
-<ng-container #modal />
-
-<!-- New UI for card  -->
-
-
 <!-- Global card container  -->
 <main
     class="relative w-full mb-5 lg:mb-5 md:w-[50%] xl:w-[30%] md:m-auto h-[700px] border rounded-lg flex flex-col justify-end overflow-hidden">
     <!-- Background Artwork -->
     <div class="absolute inset-0 z-0 card-root">
         @if (displayArtworkFullScreen()) {
-        <img [ngSrc]="'/' + 'placeholder_bg2.jpg'" alt="Card Artwork" fill class="object-cover" priority>
+        <img [ngSrc]="'/' + '609032729_18330636034246789_8197998834243091367_n.jpg'" alt="Card Artwork" fill
+            class="object-cover" priority>
         } @else {
-        <img [ngSrc]="'/' + 'com_bg.png'" alt="Card Artwork" fill class="object-cover">
-        <img [src]="'/' + 'placeholder_bg2.jpg'" alt="Card Artwork"
+        <img [ngSrc]="'/' + 'com_bg.png'" alt="Card Artwork" fill class="object-cover" priority>
+        <img [src]="'/' + '609032729_18330636034246789_8197998834243091367_n.jpg'" alt="Card Artwork"
             class="z-10 absolute top-15 left-1/2 -translate-x-1/2  max-w-[350px] max-h-[350px] rounded-lg"
             (load)="onImageLoad($event)">
         }
@@ -42,7 +38,7 @@
             @case ('passive') {
             <!-- Passive - Active skill - Domain -->
             <app-card-passive-part [activeSkill]="card().characterInfo?.activeSkill" [isAmodalOpen]="isAmodalOpen()"
-                (openPassiveDetailsModal)="onPassiveDetailsModalOpen()" />
+                (openPassiveDetailsModal)="onPassiveDetailsModalOpen()" [passiveName]="card().passiveDetails?.name" />
             }
 
             @case ('links') {
@@ -56,13 +52,5 @@
         <!-- buttons -->
         <app-card-footer [(showedParts)]="showedParts" [(displayedPartsIndex)]="displayedPartsIndex" />
     </section>
-
-
-
-
-
-
-    <!-- Super attack details modal -->
     <ng-container #globalModal />
-
 </main>

@@ -1,9 +1,8 @@
-import { NgOptimizedImage } from '@angular/common';
 import { Component, computed, input, signal } from '@angular/core';
 
 @Component({
   selector: 'app-card-links-part',
-  imports: [NgOptimizedImage],
+  imports: [],
   templateUrl: './card-links-part.component.html',
   styleUrl: './card-links-part.component.css',
 })

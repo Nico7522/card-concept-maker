@@ -10,6 +10,9 @@ export class CardCategoriesPartComponent {
   categories = input.required<string[]>();
   fullCategoriesArray = computed(() => {
     const categories = this.categories();
-    return Array.from({ length: 9 }, (_, i) => categories[i] ?? ' - ');
+    if (categories.length < 10) {
+      return [...categories, ...Array(10 - categories.length).fill(' - ')];
+    }
+    return categories;
   });
 }

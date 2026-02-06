@@ -6,7 +6,11 @@ import {
   PassivePartFormGroup,
 } from '~/src/features/card-form/model/passive-form-group-interface';
 import { Category } from '~/src/shared/model';
-import { Link, EffectDuration, PassiveConditionActivation } from '~/src/shared/model';
+import {
+  Link,
+  EffectDuration,
+  PassiveConditionActivation,
+} from '~/src/shared/model';
 
 export default function patchCardForm(
   form: FormGroup<CardForm>,
@@ -14,7 +18,7 @@ export default function patchCardForm(
   categories: Category[],
   links: Link[],
   passiveConditionActivation: PassiveConditionActivation[],
-  effectDuration: EffectDuration[]
+  effectDuration: EffectDuration[],
 ) {
   if (card.characterInfo) {
     form.patchValue(card);
@@ -36,30 +40,30 @@ export default function patchCardForm(
         card.superAttackInfo?.ultraSuperAttackEffect ?? '',
     });
 
-    const selectedCategories = categories.filter((category) => {
-      return card.characterInfo?.categories.includes(category.categoryName);
-    });
+    const selectedCategories = card.characterInfo?.categories
+      .map((categoryName) =>
+        categories.find((cat) => cat.categoryName === categoryName),
+      )
+      .filter((cat): cat is Category => cat !== undefined);
 
     let cateForm = form.get('categories')?.get('categories') as FormArray<
       FormControl<number>
     >;
 
     cateForm.clear();
-    
+
     selectedCategories.forEach((category) => {
       return cateForm.push(
         new FormControl(category.value, {
           nonNullable: true,
           validators: [Validators.required],
-        })
+        }),
       );
     });
 
-    const selectedLinks = links.filter((link) => {
-      return card.characterInfo?.links.includes(link.linkName);
-    });
-
-
+    const selectedLinks = card.characterInfo?.links
+      .map((linkName) => links.find((link) => link.linkName === linkName))
+      .filter((link): link is Link => link !== undefined);
 
     let linkForm = form.get('links')?.get('links') as FormArray<
       FormControl<number>
@@ -72,10 +76,10 @@ export default function patchCardForm(
         new FormControl(link.value, {
           nonNullable: true,
           validators: [Validators.required],
-        })
+        }),
       );
     });
-    
+
     form
       .get('passive.passiveName')
       ?.patchValue(card.passiveDetails?.name ?? '');
@@ -93,7 +97,7 @@ export default function patchCardForm(
 
     const createEffectGroup = (
       description = '',
-      duration = effectDuration[0].value
+      duration = effectDuration[0].value,
     ) =>
       new FormGroup<EffectFormGroup>({
         effectDescription: new FormControl(description, {
@@ -112,7 +116,7 @@ export default function patchCardForm(
       }
 
       const match = effectDuration.find(
-        (durationOption) => durationOption.icon === icon
+        (durationOption) => durationOption.icon === icon,
       );
 
       return match?.value ?? effectDuration[0].value;
@@ -120,7 +124,7 @@ export default function patchCardForm(
 
     const resolveCondition = (condition: string) => {
       const match = passiveConditionActivation.find(
-        (activation) => activation.effect === condition
+        (activation) => activation.effect === condition,
       );
 
       return {
@@ -131,7 +135,7 @@ export default function patchCardForm(
 
     passiveData.forEach((passive) => {
       const { value, customValue } = resolveCondition(
-        passive.passiveConditionActivation
+        passive.passiveConditionActivation,
       );
 
       const effects =
@@ -139,8 +143,8 @@ export default function patchCardForm(
           ? passive.effect.map((effect) =>
               createEffectGroup(
                 effect.description,
-                resolveDuration(effect.imageSrc)
-              )
+                resolveDuration(effect.imageSrc),
+              ),
             )
           : [createEffectGroup()];
 
@@ -154,7 +158,7 @@ export default function patchCardForm(
             nonNullable: true,
           }),
           effect: new FormArray<FormGroup<EffectFormGroup>>(effects),
-        })
+        }),
       );
     });
   }

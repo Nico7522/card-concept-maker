@@ -1,10 +1,9 @@
 import { Component, input, output } from '@angular/core';
 import { Passive } from '../../../model/passive-type';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-passive-details-modal',
-  imports: [NgOptimizedImage],
+  imports: [],
 
   templateUrl: './passive-details-modal.component.html',
   styleUrl: './passive-details-modal.component.css',

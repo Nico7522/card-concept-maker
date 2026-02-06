@@ -77,13 +77,13 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       this.card.set(card);
       this.isLoading.set(false);
       return card;
-    })
+    }),
   );
   onSubmit() {
     this.isFormSubmitted.set(true);
 
     const nestedCardForm = this.cardForm.get(
-      'cardForm'
+      'cardForm',
     ) as FormGroup<CardForm> | null;
     if (!nestedCardForm?.valid) return;
 
@@ -96,7 +96,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       nestedCardForm,
       this.#gameDataService.categories(),
       this.#gameDataService.links(),
-      this.#gameDataService.passiveConditionActivation()
+      this.#gameDataService.passiveConditionActivation(),
     );
 
     this.isLoading.set(true);
@@ -113,15 +113,15 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       })
       .pipe(
         switchMap(() =>
-          this.handleArtworkUpload(card?.id ?? '', card?.artwork ?? null)
+          this.handleArtworkUpload(card?.id ?? '', card?.artwork ?? null),
         ),
         catchError(() => {
           this.#errorToastService.showToast(
-            'An error occurred while updating the card'
+            'An error occurred while updating the card',
           );
           return EMPTY;
         }),
-        finalize(() => this.isLoading.set(false))
+        finalize(() => this.isLoading.set(false)),
       )
       .subscribe(() => {
         this.#router.navigate(['/card', cardId]);
@@ -130,7 +130,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     const nestedCardForm = this.cardForm.get(
-      'cardForm'
+      'cardForm',
     ) as FormGroup<CardForm> | null;
 
     combineLatest([
@@ -157,10 +157,10 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
               categories,
               links,
               passiveConditionActivation,
-              effectDuration
+              effectDuration,
             );
           }
-        }
+        },
       );
   }
 
@@ -178,13 +178,13 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
 
     return this.#artworkService.patchArtworkImage(artwork).pipe(
       switchMap((response) =>
-        this.#artworkService.patchArtworkName(cardId, response.filename)
+        this.#artworkService.patchArtworkName(cardId, response.filename),
       ),
       switchMap(() =>
         currentArtwork
           ? this.#artworkService.deleteArtwork(currentArtwork)
-          : of(null)
-      )
+          : of(null),
+      ),
     );
   }
 }

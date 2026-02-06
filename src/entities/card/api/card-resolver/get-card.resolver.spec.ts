@@ -3,7 +3,7 @@ import { ResolveFn } from '@angular/router';
 import { describe, beforeEach, it, expect } from 'vitest';
 
 import { getCardResolver } from './get-card.resolver';
-import { Card } from '../../../../shared/model';
+import { Card } from '~/src/entities/card';
 
 describe('getCardResolver', () => {
   const executeResolver: ResolveFn<Card> = (...resolverParameters) => 

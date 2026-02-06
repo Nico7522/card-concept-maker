@@ -1,10 +1,10 @@
-import { Component, input, output } from '@angular/core';
-import { Passive } from '../../../model/passive-type';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Passive } from '~/src/entities/card/model/passive-type';
 
 @Component({
   selector: 'app-passive-details-modal',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
-
   templateUrl: './passive-details-modal.component.html',
   styleUrl: './passive-details-modal.component.css',
 })

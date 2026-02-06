@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   inject,
@@ -38,6 +39,7 @@ import { Card, CardComponent } from '~/src/entities/card';
 
 @Component({
   selector: 'app-card-details',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgIconComponent,
     UbButtonDirective,

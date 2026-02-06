@@ -1,9 +1,10 @@
-import { Component, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, model } from '@angular/core';
 import { ActiveIndexDirective } from '../active-index.directive';
 import { DisplayedPart } from '../../model/displayed-part-type';
 
 @Component({
   selector: 'app-card-footer',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ActiveIndexDirective],
   templateUrl: './card-footer.component.html',
   styleUrl: './card-footer.component.css',

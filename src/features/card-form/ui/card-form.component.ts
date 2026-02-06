@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   inject,
@@ -25,6 +26,7 @@ import { ActiveSkillFormComponent, ArtworkFormComponent, BaseStatFormComponent, 
 
 @Component({
   selector: 'app-card-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     BaseStatFormComponent,
     CategoriesFormComponent,

@@ -1,4 +1,4 @@
-import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -6,11 +6,12 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ErrorComponent } from '../../../../shared/ui';
+import { ErrorComponent } from '~/src/shared/ui';
 import { BaseStatFormGroup } from '../..';
 
 @Component({
   selector: 'app-base-stat-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, ErrorComponent],
   templateUrl: './base-stat-form.component.html',
   styleUrl: './base-stat-form.component.css',

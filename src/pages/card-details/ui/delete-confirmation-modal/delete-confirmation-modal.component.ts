@@ -1,8 +1,9 @@
-import { Component, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { UbButtonDirective } from '~/components/ui/button';
 
 @Component({
   selector: 'app-delete-confirmation-modal',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UbButtonDirective],
   templateUrl: './delete-confirmation-modal.component.html',
   styleUrl: './delete-confirmation-modal.component.css',

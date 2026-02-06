@@ -1,32 +1,38 @@
 import { inject } from '@angular/core';
 import { collection, doc, docData, Firestore } from '@angular/fire/firestore';
-import { CanActivateFn } from '@angular/router';
-import { map, switchMap } from 'rxjs';
+import { CanActivateFn, Router } from '@angular/router';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { Card } from '~/src/entities/card';
 import { AuthService } from '~/src/shared/api';
 
-export const canUpdateGuard: CanActivateFn = (route, state) => {
+export const canUpdateGuard: CanActivateFn = (route) => {
   const authService = inject(AuthService);
   const firestore = inject(Firestore);
+  const router = inject(Router);
   const cardsCollection = collection(firestore, 'cards');
+
   return docData(doc(cardsCollection, route.params['id']), {
     idField: 'id',
   }).pipe(
     map((card) => {
       if (!card) {
-        throw new Error('Card not found');
+        return null;
       }
       return card as Card;
     }),
     switchMap((card) => {
+      if (!card) {
+        return of(router.createUrlTree(['/']));
+      }
       return authService.user$.pipe(
         map((user) => {
-          if (card?.creatorId === user?.uid) {
+          if (card.creatorId === user?.uid) {
             return true;
           }
-          throw new Error('Unauthorized');
-        })
+          return router.createUrlTree(['/']);
+        }),
       );
-    })
+    }),
+    catchError(() => of(router.createUrlTree(['/']))),
   );
 };

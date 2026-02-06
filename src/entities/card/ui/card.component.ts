@@ -1,11 +1,15 @@
 import {
+  Binding,
+  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   computed,
   input,
   inputBinding,
+  OnDestroy,
   outputBinding,
   signal,
+  Type,
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -39,6 +43,7 @@ type GlobalModal =
 
 @Component({
   selector: 'app-card',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgOptimizedImage,
     CardHeaderComponent,
@@ -63,7 +68,7 @@ type GlobalModal =
     class: 'w-full',
   },
 })
-export class CardComponent {
+export class CardComponent implements OnDestroy {
   showedParts = signal<DisplayedPart[]>([
     'stats',
     'passive',
@@ -77,14 +82,14 @@ export class CardComponent {
     height: 0,
   });
   displayedParts = computed(
-    () => this.showedParts()[this.displayedPartsIndex()]
+    () => this.showedParts()[this.displayedPartsIndex()],
   );
   displayArtworkFullScreen = computed(
-    () => this.imageSize().width >= 1400 && this.imageSize().height >= 1800
+    () => this.imageSize().width >= 1400 && this.imageSize().height >= 1800,
   );
   card = input.required<Card>();
   readonly imgUrl = computed(
-    () => environment.apiUrl + '/' + this.card().artwork
+    () => environment.apiUrl + '/' + this.card().artwork,
   );
 
   globalModal = viewChild.required('globalModal', {
@@ -108,7 +113,7 @@ export class CardComponent {
             }
           }),
         ],
-      }
+      },
     );
     this.globalModalRef = componentRef;
   }
@@ -127,7 +132,7 @@ export class CardComponent {
             }
           }),
         ],
-      }
+      },
     );
     this.globalModalRef = componentRef;
   }
@@ -140,11 +145,11 @@ export class CardComponent {
           inputBinding('passiveDetails', () => this.card().passiveDetails),
           inputBinding(
             'attack',
-            () => this.card().characterInfo?.stats?.attack
+            () => this.card().characterInfo?.stats?.attack,
           ),
           inputBinding(
             'defense',
-            () => this.card().characterInfo?.stats?.defense
+            () => this.card().characterInfo?.stats?.defense,
           ),
           outputBinding('close', () => {
             this.isAmodalOpen.set(false);
@@ -153,7 +158,7 @@ export class CardComponent {
             }
           }),
         ],
-      }
+      },
     );
     this.globalModalRef = componentRef;
   }

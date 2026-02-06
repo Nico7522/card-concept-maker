@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ErrorToastService } from '~/src/shared/api';
 
 @Component({
   selector: 'app-error-toast',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   templateUrl: './error-toast.component.html',
   styleUrl: './error-toast.component.css',

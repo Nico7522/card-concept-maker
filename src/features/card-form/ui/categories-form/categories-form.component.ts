@@ -10,7 +10,12 @@ import {
 import { NgIconComponent } from '@ng-icons/core';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { GameDataService } from '~/src/shared/api';
-import { CategoriesFormGroup } from '../..';
+import {
+  CategoriesFormGroup,
+  categoryAlreadySelected,
+  isValueInArrayDuplicate,
+} from '../..';
+import { ErrorComponent } from '~/src/shared/ui';
 
 @Component({
   selector: 'app-categories-form',
@@ -19,6 +24,7 @@ import { CategoriesFormGroup } from '../..';
     NgSelectComponent,
     NgOptionComponent,
     NgIconComponent,
+    ErrorComponent,
   ],
   templateUrl: './categories-form.component.html',
   styleUrl: './categories-form.component.css',
@@ -35,7 +41,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   categoryList = this.gameDataService.categories;
   controlKey = input.required<string>();
   label = input.required<string>();
-
+  isValueInArrayDuplicate = isValueInArrayDuplicate;
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }
@@ -45,14 +51,19 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.parentFormGroup.addControl(
       this.controlKey(),
-      new FormGroup<CategoriesFormGroup>({
-        categories: new FormArray([
-          new FormControl(1, {
-            nonNullable: true,
-            validators: [Validators.required],
-          }),
-        ]),
-      })
+      new FormGroup<CategoriesFormGroup>(
+        {
+          categories: new FormArray([
+            new FormControl(1, {
+              nonNullable: true,
+              validators: [Validators.required],
+            }),
+          ]),
+        },
+        {
+          validators: [categoryAlreadySelected],
+        },
+      ),
     );
   }
 
@@ -65,13 +76,12 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
     this.categories.removeAt(index);
   }
 
-  // Add a category
   addCategory() {
     this.categories.push(
       new FormControl(1, {
         nonNullable: true,
         validators: [Validators.required],
-      })
+      }),
     );
   }
 }

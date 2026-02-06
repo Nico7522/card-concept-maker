@@ -1,7 +1,7 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '~/src/shared/api';
-import { map, of, switchMap } from 'rxjs';
+import { map } from 'rxjs';
 
 export const canAccessGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -13,6 +13,6 @@ export const canAccessGuard: CanActivateFn = (route, state) => {
         return false;
       }
       return true;
-    })
+    }),
   );
 };

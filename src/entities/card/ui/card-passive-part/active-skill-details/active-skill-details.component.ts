@@ -1,8 +1,9 @@
-import { Component, input } from '@angular/core';
-import { ActiveSkill } from '../../../model/character-type';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ActiveSkill } from '~/src/entities/card/model/character-type';
 
 @Component({
   selector: 'app-active-skill-details',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   templateUrl: './active-skill-details.component.html',
   styleUrl: './active-skill-details.component.css',

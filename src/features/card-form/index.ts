@@ -22,3 +22,4 @@ export * from './ui/artwork-form/artwork-form.component';
 // LIB
 export * from './lib/generate-card';
 export * from './lib/patch-card-form';
+export * from './lib/is-value-in-array-duplicate';

@@ -1,7 +1,8 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 
 @Component({
   selector: 'app-card-links-part',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   templateUrl: './card-links-part.component.html',
   styleUrl: './card-links-part.component.css',

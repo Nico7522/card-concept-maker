@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroArrowLeft,
@@ -11,6 +11,7 @@ import { Character, Passive, SuperAttack } from '../..';
 
 @Component({
   selector: 'app-card-modal',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgIconComponent],
   viewProviders: [
     provideIcons({

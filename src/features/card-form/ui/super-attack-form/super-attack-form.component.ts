@@ -1,4 +1,4 @@
-import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -7,11 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { ErrorComponent } from '../../../../shared/ui';
+import { ErrorComponent } from '~/src/shared/ui';
 import { SuperAttackFormGroup, ultraSuperAttackRequired } from '../..';
 
 @Component({
   selector: 'app-super-attack-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ErrorComponent, ReactiveFormsModule],
   templateUrl: './super-attack-form.component.html',
   styleUrl: './super-attack-form.component.css',

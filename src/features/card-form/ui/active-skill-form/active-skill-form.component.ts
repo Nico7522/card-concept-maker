@@ -1,4 +1,4 @@
-import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -8,11 +8,12 @@ import {
 } from '@angular/forms';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 
-import { ErrorComponent } from '../../../../shared/ui/error/error.component';
+import { ErrorComponent } from '~/src/shared/ui';
 import { activeSkillConditionRequired, activeSkillEffectRequired, ActiveSkillFormGroup, activeSkillNameRequired } from '../..';
 
 @Component({
   selector: 'app-active-skill-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     NgSelectComponent,

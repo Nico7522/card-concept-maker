@@ -9,6 +9,9 @@
                     <ng-option [value]="link.value">{{link.linkName}}</ng-option>
                     }
                 </ng-select>
+                @if (isValueInArrayDuplicate(links, index) && links.at(index).dirty) {
+                <app-error errorMessage="Link already selected" />
+                }
             </div>
 
             <button type="button"

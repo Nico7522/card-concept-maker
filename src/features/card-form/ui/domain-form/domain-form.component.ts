@@ -1,4 +1,4 @@
-import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -9,10 +9,11 @@ import {
 import {
   DomainFormGroup, domainEffectRequired, domainNameRequired } from '../..';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
-import { ErrorComponent } from '../../../../shared/ui';
+import { ErrorComponent } from '~/src/shared/ui';
 
 @Component({
   selector: 'app-domain-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     NgSelectComponent,

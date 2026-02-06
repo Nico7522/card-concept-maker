@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   inject,
@@ -33,6 +34,7 @@ import generateCard from '~/src/features/card-form/lib/generate-card';
 
 @Component({
   selector: 'app-create-card-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, LoaderComponent, CardFormComponent],
   templateUrl: './create-card.component.html',
   styleUrl: './create-card.component.css',

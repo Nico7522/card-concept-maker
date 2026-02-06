@@ -1,8 +1,9 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-ki-meter',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass],
   host: { style: 'display: contents' },
   template: `@for (ki of nbKiArray(); track $index) {

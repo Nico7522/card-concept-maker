@@ -1,7 +1,8 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-domain-modal',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   templateUrl: './domain-modal.component.html',
   styleUrl: './domain-modal.component.css',

@@ -9,6 +9,8 @@
                     <ng-option [value]="category.value">{{category.categoryName}}</ng-option>
                     }
                 </ng-select>
+                @if (isValueInArrayDuplicate(categories, index) && categories.at(index).dirty) {
+                <app-error errorMessage="Category already selected" /> }
             </div>
 
             <button type="button"

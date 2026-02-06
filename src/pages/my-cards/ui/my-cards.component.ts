@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe, NgClass, SlicePipe } from '@angular/common';
 import { map } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -6,6 +6,7 @@ import { Card } from '~/src/entities/card';
 
 @Component({
   selector: 'app-my-cards',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, RouterModule, NgClass, SlicePipe],
   templateUrl: './my-cards.component.html',
   styleUrl: './my-cards.component.css',

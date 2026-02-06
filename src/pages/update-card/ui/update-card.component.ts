@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   inject,
@@ -44,6 +45,7 @@ import patchCardForm from '~/src/features/card-form/lib/patch-card-form';
 
 @Component({
   selector: 'app-update-card-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, LoaderComponent, CardFormComponent, AsyncPipe],
   templateUrl: './update-card.component.html',
   styleUrl: './update-card.component.css',

@@ -1,4 +1,12 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  output,
+} from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -8,9 +16,9 @@ import {
 import { ErrorComponent } from '~/src/shared/ui';
 import { artworkFormat } from '../..';
 
-
 @Component({
   selector: 'app-artwork-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, ErrorComponent],
   templateUrl: './artwork-form.component.html',
   styleUrl: './artwork-form.component.css',
@@ -21,7 +29,7 @@ import { artworkFormat } from '../..';
     },
   ],
 })
-export class ArtworkFormComponent implements OnInit {
+export class ArtworkFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
   controlKey = input.required<string>();
   label = input.required<string>();
@@ -46,7 +54,11 @@ export class ArtworkFormComponent implements OnInit {
       this.controlKey(),
       new FormControl<string | null>(null, {
         validators: [artworkFormat],
-      })
+      }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.parentFormGroup.removeControl(this.controlKey());
   }
 }

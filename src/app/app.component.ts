@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ErrorToastService } from '~/src/shared/api/error-toast-service/error-toast.service';
 import {
@@ -14,6 +14,7 @@ import { Analytics } from '@angular/fire/analytics';
 
 @Component({
   selector: 'app-root',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
     HeaderComponent,

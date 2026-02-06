@@ -1,7 +1,8 @@
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-card-categories-part',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
   templateUrl: './card-categories-part.component.html',
   styleUrl: './card-categories-part.component.css',

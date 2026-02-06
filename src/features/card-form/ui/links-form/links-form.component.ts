@@ -9,12 +9,23 @@ import {
 } from '@angular/forms';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { NgIcon } from '@ng-icons/core';
-import { GameDataService } from '../../../../shared/api';
-import { LinksFormGroup } from '../..';
+import { GameDataService } from '~/src/shared/api';
+import {
+  isValueInArrayDuplicate,
+  linkAlreadySelected,
+  LinksFormGroup,
+} from '../..';
+import { ErrorComponent } from '~/src/shared/ui';
 
 @Component({
   selector: 'app-links-form',
-  imports: [NgSelectComponent, NgOptionComponent, NgIcon, ReactiveFormsModule],
+  imports: [
+    NgSelectComponent,
+    NgOptionComponent,
+    NgIcon,
+    ReactiveFormsModule,
+    ErrorComponent,
+  ],
   templateUrl: './links-form.component.html',
   styleUrl: './links-form.component.css',
   viewProviders: [
@@ -29,6 +40,7 @@ export class LinksFormComponent implements OnInit, OnDestroy {
   readonly gameDataService = inject(GameDataService);
   controlKey = input.required<string>();
   label = input.required<string>();
+  isValueInArrayDuplicate = isValueInArrayDuplicate;
   linkSkill = this.gameDataService.links;
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
@@ -37,14 +49,19 @@ export class LinksFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.parentFormGroup.addControl(
       this.controlKey(),
-      new FormGroup<LinksFormGroup>({
-        links: new FormArray([
-          new FormControl(1, {
-            nonNullable: true,
-            validators: [Validators.required],
-          }),
-        ]),
-      })
+      new FormGroup<LinksFormGroup>(
+        {
+          links: new FormArray([
+            new FormControl(1, {
+              nonNullable: true,
+              validators: [Validators.required],
+            }),
+          ]),
+        },
+        {
+          validators: [linkAlreadySelected],
+        },
+      ),
     );
   }
 
@@ -69,7 +86,7 @@ export class LinksFormComponent implements OnInit, OnDestroy {
       new FormControl(1, {
         nonNullable: true,
         validators: [Validators.required],
-      })
+      }),
     );
   }
 }

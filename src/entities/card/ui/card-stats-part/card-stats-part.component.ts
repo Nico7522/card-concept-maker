@@ -1,10 +1,11 @@
-import { Component, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { SuperAttack } from '../../model/super-attack-type';
 import { LeaderSkillDetailsComponent } from './leader-skill-details/leader-skill-details.component';
 import { Character } from '../../model/character-type';
 
 @Component({
   selector: 'app-card-stats-part',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LeaderSkillDetailsComponent],
   templateUrl: './card-stats-part.component.html',
   styleUrl: './card-stats-part.component.css',

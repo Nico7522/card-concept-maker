@@ -1,4 +1,11 @@
-import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   ControlContainer,
   FormArray,
@@ -9,16 +16,13 @@ import {
 } from '@angular/forms';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { NgIcon } from '@ng-icons/core';
-import {
-  EffectFormGroup,
-  PassiveFormGroup,
-  PassivePartFormGroup,
-} from '../..';
+import { EffectFormGroup, PassiveFormGroup, PassivePartFormGroup } from '../..';
 import { ErrorComponent } from '~/src/shared/ui';
 import { GameDataService } from '~/src/shared/api';
 
 @Component({
   selector: 'app-passive-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
     NgSelectComponent,
@@ -75,7 +79,7 @@ export class PassiveFormComponent implements OnInit, OnDestroy {
             ]),
           }),
         ]),
-      })
+      }),
     );
   }
 
@@ -123,7 +127,7 @@ export class PassiveFormComponent implements OnInit, OnDestroy {
           nonNullable: true,
           validators: [Validators.required],
         }),
-      })
+      }),
     );
   }
 
@@ -151,7 +155,7 @@ export class PassiveFormComponent implements OnInit, OnDestroy {
             }),
           }),
         ]),
-      })
+      }),
     );
   }
 }

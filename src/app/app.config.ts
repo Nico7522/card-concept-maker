@@ -32,6 +32,7 @@ export const appConfig: ApplicationConfig = {
       withNavigationErrorHandler((error) => {
         const router = angularInject(Router);
         const errorToastService = angularInject(ErrorToastService);
+        console.log('ici');
         if (error?.error?.message) {
           errorToastService.showToast(error.error.message);
         } else {

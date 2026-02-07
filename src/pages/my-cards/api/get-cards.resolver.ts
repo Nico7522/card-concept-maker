@@ -7,7 +7,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { ResolveFn } from '@angular/router';
-import { catchError, map, take, throwError } from 'rxjs';
+import { catchError, map, throwError } from 'rxjs';
 import { Card } from '~/src/entities/card';
 
 export const getCardsResolver: ResolveFn<Card[]> = (route, state) => {
@@ -16,18 +16,17 @@ export const getCardsResolver: ResolveFn<Card[]> = (route, state) => {
 
   const q = query(
     cardsCollection,
-    where('creatorId', '==', route.params['id'])
+    where('creatorId', '==', route.params['id']),
   );
 
   return collectionData(q, { idField: 'id' }).pipe(
-    take(1),
     map((data) => {
       return data as Card[];
     }),
     catchError(() => {
       return throwError(
-        () => new Error('An error occurred while fetching cards')
+        () => new Error('An error occurred while fetching cards'),
       );
-    })
+    }),
   );
 };

@@ -1,29 +1,26 @@
 import { inject } from '@angular/core';
 import { collection, doc, docData, Firestore } from '@angular/fire/firestore';
-import { ResolveFn } from '@angular/router';
-import { catchError, map, throwError } from 'rxjs';
+import { ResolveFn, Router } from '@angular/router';
+import { catchError, map, of, take } from 'rxjs';
 import { Card } from '../..';
 
-export const getCardResolver: ResolveFn<Card> = (route, state) => {
+export const getCardResolver: ResolveFn<Card> = (route) => {
   const firestore = inject(Firestore);
+  const router = inject(Router);
   const cardsCollection = collection(firestore, 'cards');
   return docData(doc(cardsCollection, route.params['id']), {
     idField: 'id',
   }).pipe(
+    take(1),
     map((data) => {
       if (!data) {
         throw new Error('Card not found');
       }
-
       return data as Card;
     }),
-    catchError((error: Error) => {
-      if (error.message === 'Card not found') {
-        return throwError(() => new Error('Card not found'));
-      }
-      return throwError(
-        () => new Error('An error occurred while fetching card')
-      );
-    })
+    catchError(() => {
+      router.navigate(['/']);
+      return of(null as unknown as Card);
+    }),
   );
 };

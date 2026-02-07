@@ -12,6 +12,6 @@ export class DokkanStyleButtonComponent {
   text = input.required<string>();
   icon = input.required<string>();
   alt = input.required<string>();
-  routerLink = input<string[]>();
+  navigateTo = input<string[]>();
   isMobileVersion = input<boolean>();
 }

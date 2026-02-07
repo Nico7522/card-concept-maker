@@ -18,6 +18,8 @@ import {
   heroMagnifyingGlassPlus,
   heroPencilSquare,
   heroTrash,
+  heroClipboard,
+  heroCheck,
 } from '@ng-icons/heroicons/outline';
 import {
   catchError,
@@ -59,6 +61,8 @@ import { Card, CardComponent } from '~/src/entities/card';
       heroMagnifyingGlassPlus,
       heroPencilSquare,
       heroTrash,
+      heroClipboard,
+      heroCheck,
     }),
   ],
 })
@@ -71,6 +75,7 @@ export class CardDetailsComponent {
   readonly apiUrl = environment.apiUrl + '/';
   isLoading = signal(true);
   isError = signal(false);
+  isCopied = signal(false);
   cardId = signal<string | null>(null);
   creatorId = signal<string | null>(null);
   confirmationDelete = viewChild.required('confirmationDelete', {
@@ -104,6 +109,14 @@ export class CardDetailsComponent {
     if (this.confirmationDeleteRef) {
       this.confirmationDeleteRef.destroy();
     }
+  }
+
+  copyShareLink() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      this.isCopied.set(true);
+      setTimeout(() => this.isCopied.set(false), 2000);
+    });
   }
 
   openDeleteConfirmationModal() {

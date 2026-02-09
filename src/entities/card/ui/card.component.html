@@ -3,13 +3,13 @@
     class="relative w-full mb-5 lg:mb-5 md:w-[50%] xl:w-[30%] md:m-auto h-[700px] border rounded-lg flex flex-col justify-end overflow-hidden">
     <!-- Background Artwork -->
     <div class="absolute inset-0 z-0 card-root">
-        @if (displayArtworkFullScreen()) {
+        @if (card().artwork) {
         <img [ngSrc]="imgUrl()" alt="Card Artwork" fill class="object-cover" priority>
         } @else {
         <img [ngSrc]="'/com_bg.png'" alt="Card Artwork" fill class="object-cover" priority>
-        <img [src]="imgUrl()" alt="Card Artwork"
+        <!-- <img [src]="imgUrl()" alt="Card Artwork"
             class="z-10 absolute top-15 left-1/2 -translate-x-1/2  max-w-[350px] max-h-[350px] rounded-lg"
-            (load)="onImageLoad($event)">
+            (load)="onImageLoad($event)"> -->
         }
     </div>
 

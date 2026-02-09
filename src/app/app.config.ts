@@ -1,6 +1,9 @@
 import {
   ApplicationConfig,
   inject as angularInject,
+  inject,
+  isDevMode,
+  provideAppInitializer,
   provideZoneChangeDetection,
 } from '@angular/core';
 import {
@@ -21,11 +24,17 @@ import {
   getAnalytics,
   ScreenTrackingService,
   UserTrackingService,
+  Analytics,
 } from '@angular/fire/analytics';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideAppInitializer(() => {
+      if (!isDevMode()) {
+        const analytics = inject(Analytics);
+      }
+    }),
     provideRouter(
       routes,
       withComponentInputBinding(),

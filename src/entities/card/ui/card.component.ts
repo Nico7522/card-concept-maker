@@ -85,7 +85,7 @@ export class CardComponent implements OnDestroy {
     () => this.showedParts()[this.displayedPartsIndex()],
   );
   displayArtworkFullScreen = computed(
-    () => this.imageSize().width >= 1400 && this.imageSize().height >= 1800,
+    () => this.imageSize().width >= 1200 && this.imageSize().height >= 1600,
   );
   card = input.required<Card>();
   readonly imgUrl = computed(

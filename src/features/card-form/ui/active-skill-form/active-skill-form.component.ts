@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -9,7 +16,12 @@ import {
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 
 import { ErrorComponent } from '~/src/shared/ui';
-import { activeSkillConditionRequired, activeSkillEffectRequired, ActiveSkillFormGroup, activeSkillNameRequired } from '../..';
+import {
+  activeSkillConditionRequired,
+  activeSkillEffectRequired,
+  ActiveSkillFormGroup,
+  activeSkillNameRequired,
+} from '../..';
 
 @Component({
   selector: 'app-active-skill-form',
@@ -43,6 +55,12 @@ export class ActiveSkillFormComponent implements OnDestroy, OnInit {
     return this.#parentContainer.control as FormGroup;
   }
 
+  get activeSkillForm(): FormGroup<ActiveSkillFormGroup> {
+    return this.parentFormGroup.get(
+      this.controlKey(),
+    ) as FormGroup<ActiveSkillFormGroup>;
+  }
+
   ngOnDestroy(): void {
     this.parentFormGroup.removeControl(this.controlKey());
   }
@@ -72,8 +90,8 @@ export class ActiveSkillFormComponent implements OnDestroy, OnInit {
             activeSkillConditionRequired,
             activeSkillEffectRequired,
           ],
-        }
-      )
+        },
+      ),
     );
   }
 }

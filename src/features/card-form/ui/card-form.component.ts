@@ -22,7 +22,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { AsyncPipe } from '@angular/common';
 import { AuthService } from '~/src/shared/api';
-import { ActiveSkillFormComponent, ArtworkFormComponent, BaseStatFormComponent, CardForm, CategoriesFormComponent, DomainFormComponent, LinksFormComponent, PassiveFormComponent, SuperAttackFormComponent } from '..';
+import {
+  ActiveSkillFormComponent,
+  ArtworkFormComponent,
+  BaseStatFormComponent,
+  CardForm,
+  CategoriesFormComponent,
+  DomainFormComponent,
+  LinksFormComponent,
+  PassiveFormComponent,
+  SuperAttackFormComponent,
+} from '..';
 
 @Component({
   selector: 'app-card-form',
@@ -59,11 +69,15 @@ export class CardFormComponent implements OnInit, OnDestroy {
   artwork = output<FormData>();
   controlKey = input.required<string>();
   label = input.required<string>();
+  isLegendary = signal(false);
+
+  get cardForm(): FormGroup<CardForm> {
+    return this.parentFormGroup.get(this.controlKey()) as FormGroup<CardForm>;
+  }
 
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }
-  isLegendary = signal(false);
 
   ngOnDestroy(): void {
     this.parentFormGroup.removeControl(this.controlKey());
@@ -93,7 +107,7 @@ export class CardFormComponent implements OnInit, OnDestroy {
           nonNullable: true,
           validators: [Validators.required],
         }),
-      } as CardForm)
+      } as CardForm),
     );
     this.parentFormGroup
       .get('cardForm')

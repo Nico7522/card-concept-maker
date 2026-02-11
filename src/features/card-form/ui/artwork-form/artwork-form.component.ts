@@ -37,6 +37,11 @@ export class ArtworkFormComponent implements OnInit, OnDestroy {
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }
+  get artworkForm(): FormControl<string | null> {
+    return this.parentFormGroup.get(this.controlKey()) as FormControl<
+      string | null
+    >;
+  }
 
   onFileChange(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];

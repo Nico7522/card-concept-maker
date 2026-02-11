@@ -20,8 +20,8 @@
             <input placeholder="e.g. Ultimate Transformation"
                 class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
                 id="domainName" formControlName="domainName" type="text">
-            @if (parentFormGroup.get('domain')?.get('domainName')?.dirty &&
-            parentFormGroup.get('domain')?.hasError('domainNameRequired')) {
+            @if (domainForm.controls.domainName.dirty &&
+            domainForm.errors?.['domainNameRequired']) {
             <app-error errorMessage="Domain name is required" />
             }
         </div>
@@ -33,8 +33,8 @@
             <textarea rows="2" placeholder="e.g. Increases the damage of your next attack by 10%..."
                 class="w-full placeholder:text-gray-400 bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
                 id="domainEffect" formControlName="domainEffect"></textarea>
-            @if (parentFormGroup.get('domain')?.get('domainEffect')?.dirty &&
-            parentFormGroup.get('domain')?.hasError('domainEffectRequired')) {
+            @if (domainForm.controls.domainEffect.dirty &&
+            domainForm.errors?.['domainEffectRequired']) {
             <app-error errorMessage="Domain effect is required" />
             }
         </div>

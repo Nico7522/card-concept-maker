@@ -20,8 +20,8 @@
             <input placeholder="e.g. Ultimate Transformation"
                 class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
                 id="activeSkillName" formControlName="activeSkillName" type="text">
-            @if (parentFormGroup.get('activeSkill')?.get('activeSkillName')?.dirty &&
-            parentFormGroup.get('activeSkill')?.hasError('activeSkillNameRequired')) {
+            @if (activeSkillForm.controls.activeSkillName.dirty &&
+            activeSkillForm.errors?.['activeSkillNameRequired']) {
             <app-error errorMessage="Active skill name is required" />
             }
         </div>
@@ -33,8 +33,8 @@
             <textarea rows="2" placeholder="e.g. Can be activated starting from the 4th turn..."
                 class="w-full placeholder:text-gray-400 bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
                 id="activeSkillCondition" formControlName="activeSkillCondition"></textarea>
-            @if (parentFormGroup.get('activeSkill')?.get('activeSkillCondition')?.dirty &&
-            parentFormGroup.get('activeSkill')?.hasError('activeSkillConditionRequired')) {
+            @if (activeSkillForm.controls.activeSkillCondition.dirty &&
+            activeSkillForm.errors?.['activeSkillConditionRequired']) {
             <app-error errorMessage="Condition is required" />
             }
         </div>
@@ -45,8 +45,8 @@
             <textarea rows="2" placeholder="e.g. Causes ultimate damage to enemy and..."
                 class="w-full placeholder:text-gray-400 bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
                 id="activeSkillEffect" formControlName="activeSkillEffect"></textarea>
-            @if (parentFormGroup.get('activeSkill')?.get('activeSkillEffect')?.dirty &&
-            parentFormGroup.get('activeSkill')?.hasError('activeSkillEffectRequired')) {
+            @if (activeSkillForm.controls.activeSkillEffect.dirty &&
+            activeSkillForm.errors?.['activeSkillEffectRequired']) {
             <app-error errorMessage="Effect is required" />
             }
         </div>

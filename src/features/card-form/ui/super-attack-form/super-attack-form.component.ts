@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -32,6 +39,12 @@ export class SuperAttackFormComponent implements OnInit, OnDestroy {
     return this.#parentContainer.control as FormGroup;
   }
 
+  get superAttackForm(): FormGroup<SuperAttackFormGroup> {
+    return this.parentFormGroup.get(
+      this.controlKey(),
+    ) as FormGroup<SuperAttackFormGroup>;
+  }
+
   ngOnDestroy(): void {
     this.parentFormGroup.removeControl(this.controlKey());
   }
@@ -56,8 +69,8 @@ export class SuperAttackFormComponent implements OnInit, OnDestroy {
         },
         {
           validators: [ultraSuperAttackRequired],
-        }
-      )
+        },
+      ),
     );
   }
 }

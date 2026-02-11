@@ -11,8 +11,8 @@
                 <input placeholder="e.g. Super Saiyan Goku"
                     class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
                     id="cardName" formControlName="cardName" type="text">
-                @if (parentFormGroup.get('cardForm')?.get('cardName')?.dirty &&
-                parentFormGroup.get('cardForm')?.get('cardName')?.getError('required')) {
+                @if (cardForm.controls.cardName.dirty &&
+                cardForm.controls.cardName.errors?.['required']) {
                 <app-error errorMessage="Card name is required" />
                 }
             </div>
@@ -68,8 +68,8 @@
             <input rows="3" placeholder="e.g. 'Realm of Gods' Category Ki +3 and HP, ATK & DEF +170%..."
                 class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
                 id="leaderSkill" formControlName="leaderSkill" />
-            @if (parentFormGroup.get('cardForm')?.get('leaderSkill')?.dirty &&
-            parentFormGroup.get('cardForm')?.get('leaderSkill')?.getError('required')) {
+            @if (cardForm.controls.leaderSkill.dirty &&
+            cardForm.controls.leaderSkill.errors?.['required']) {
             <app-error errorMessage="Leader skill is required" />
             }
         </div>
@@ -82,13 +82,13 @@
         </div>
     </div>
 
-    <!-- Section: Attack -->
+    <!-- Super Attack and Ultra Super Attack -->
     <div class="p-4 bg-black/20 rounded-lg border border-gray-700">
         <h3 class="text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Attacks</h3>
         <app-super-attack-form controlKey="superAttack" label="Super Attack" [isLegendaryCharacter]="isLegendary()" />
     </div>
 
-    <!-- Section: Details -->
+    <!-- Categories and Link Skills -->
     <div class="p-4 bg-black/20 rounded-lg border border-gray-700">
         <h3 class="text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Details</h3>
         <div class="flex flex-col gap-6">

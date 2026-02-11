@@ -45,6 +45,7 @@ export class CategoriesFormComponent implements OnInit, OnDestroy {
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }
+
   ngOnDestroy(): void {
     this.parentFormGroup.removeControl(this.controlKey());
   }

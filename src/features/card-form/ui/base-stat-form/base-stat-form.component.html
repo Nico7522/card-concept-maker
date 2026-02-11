@@ -5,10 +5,10 @@
         <input placeholder="e.g. 15000"
             class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
             id="attack" formControlName="attack" type="number">
-        @if (parentFormGroup.get('stats.attack')?.dirty && parentFormGroup.get('stats.attack')?.getError('required')) {
+        @if (baseStatForm.controls.attack.dirty && baseStatForm.controls.attack.errors?.['required']) {
         <app-error errorMessage="Attack is required" />
         }
-        @if (parentFormGroup.get('stats.attack')?.dirty && parentFormGroup.get('stats.attack')?.getError('max')) {
+        @if (baseStatForm.controls.attack.dirty && baseStatForm.controls.attack.errors?.['max']) {
         <app-error errorMessage="Attack must be less than 9999" />
         }
     </div>
@@ -19,11 +19,11 @@
         <input placeholder="e.g. 10000"
             class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
             id="defense" formControlName="defense" type="number">
-        @if (parentFormGroup.get('stats.defense')?.dirty && parentFormGroup.get('stats.defense')?.getError('required'))
+        @if (baseStatForm.controls.defense.dirty && baseStatForm.controls.defense.errors?.['required'])
         {
         <app-error errorMessage="Defense is required" />
         }
-        @if (parentFormGroup.get('stats.defense')?.dirty && parentFormGroup.get('stats.defense')?.getError('max')) {
+        @if (baseStatForm.controls.defense.dirty && baseStatForm.controls.defense.errors?.['max']) {
         <app-error errorMessage="Defense must be less than 9999" />
         }
     </div>
@@ -34,10 +34,10 @@
         <input placeholder="e.g. 20000"
             class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
             id="hp" formControlName="hp" type="number">
-        @if (parentFormGroup.get('stats.hp')?.dirty && parentFormGroup.get('stats.hp')?.getError('required')) {
+        @if (baseStatForm.controls.hp.dirty && baseStatForm.controls.hp.errors?.['required']) {
         <app-error errorMessage="HP is required" />
         }
-        @if (parentFormGroup.get('stats.hp')?.dirty && parentFormGroup.get('stats.hp')?.getError('max')) {
+        @if (baseStatForm.controls.hp.dirty && baseStatForm.controls.hp.errors?.['max']) {
         <app-error errorMessage="HP must be less than 9999" />
         }
     </div>

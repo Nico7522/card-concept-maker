@@ -13,8 +13,8 @@
             <input rows="2" placeholder="e.g. Raises ATK and causes immense damage..."
                 class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
                 id="superAttack" formControlName="superAttackEffect" />
-            @if (parentFormGroup.get('superAttack.superAttackEffect')?.dirty &&
-            parentFormGroup.get('superAttack.superAttackEffect')?.getError('required')) {
+            @if (superAttackForm.controls.superAttackEffect.dirty &&
+            superAttackForm.controls.superAttackEffect.errors?.['required']) {
             <app-error errorMessage="Effect description is required" />
             }
         </div>
@@ -30,10 +30,6 @@
                 <input placeholder="e.g. Final Kamehameha"
                     class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-purple-500 transition-colors"
                     id="ultraSuperAttackName" formControlName="ultraSuperAttackName" type="text">
-                @if (parentFormGroup.get('superAttack.ultraSuperAttackName')?.dirty &&
-                parentFormGroup.get('superAttack.ultraSuperAttackName')?.getError('required')) {
-                <app-error errorMessage="Name is required" />
-                }
             </div>
 
             <div class="flex flex-col gap-2">
@@ -41,8 +37,8 @@
                 <input rows="2" placeholder="e.g. Greatly raises ATK & DEF..."
                     class="w-full bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-purple-500 transition-colors resize-none"
                     id="ultraSuperAttack" formControlName="ultraSuperAttackEffect" />
-                @if (parentFormGroup.get('superAttack.ultraSuperAttackEffect')?.dirty &&
-                parentFormGroup.get('superAttack')?.hasError('ultraSuperAttackRequired')) {
+                @if (superAttackForm.controls.ultraSuperAttackEffect.dirty &&
+                superAttackForm.errors?.['ultraSuperAttackRequired']) {
                 <app-error errorMessage="Effect is required for LR characters" />
                 }
             </div>

@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -7,7 +14,10 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  DomainFormGroup, domainEffectRequired, domainNameRequired } from '../..';
+  DomainFormGroup,
+  domainEffectRequired,
+  domainNameRequired,
+} from '../..';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { ErrorComponent } from '~/src/shared/ui';
 
@@ -39,6 +49,11 @@ export class DomainFormComponent implements OnDestroy, OnInit {
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }
+  get domainForm(): FormGroup<DomainFormGroup> {
+    return this.parentFormGroup.get(
+      this.controlKey(),
+    ) as FormGroup<DomainFormGroup>;
+  }
 
   ngOnInit(): void {
     this.parentFormGroup.addControl(
@@ -58,8 +73,8 @@ export class DomainFormComponent implements OnDestroy, OnInit {
         },
         {
           validators: [domainNameRequired, domainEffectRequired],
-        }
-      )
+        },
+      ),
     );
   }
 

@@ -13,7 +13,6 @@ import {
   withNavigationErrorHandler,
 } from '@angular/router';
 import { routes } from './app.routes';
-import { environment } from '../environments/environment';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -26,6 +25,7 @@ import {
   UserTrackingService,
   Analytics,
 } from '@angular/fire/analytics';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [

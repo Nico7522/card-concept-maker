@@ -14,7 +14,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
+import {
+  NgOption,
+  NgOptionComponent,
+  NgSelectComponent,
+} from '@ng-select/ng-select';
 import { NgIcon } from '@ng-icons/core';
 import { EffectFormGroup, PassiveFormGroup, PassivePartFormGroup } from '../..';
 import { ErrorComponent } from '~/src/shared/ui';
@@ -98,7 +102,8 @@ export class PassiveFormComponent implements OnInit, OnDestroy {
     return this.passiveParts.controls[index].get('effect') as FormArray;
   }
 
-  onOptionChange(event: any, index: number) {
+  // Enable or disable the custom condition activation input
+  onOptionChange(event: string, index: number) {
     const control = this.passiveParts.controls[index];
     if (event === 'custom') {
       control.get('customPassiveConditionActivation')?.enable();
@@ -107,15 +112,18 @@ export class PassiveFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Check if the custom condition is selected
   isCustomConditionSelected(index: number): boolean {
     const control = this.passiveParts.at(index);
     return control.get('passiveConditionActivation')?.value === 'custom';
   }
 
+  // Remove a passive effect
   removePassiveEffect(index: number, index2: number) {
     this.getPassiveEffects(index).removeAt(index2);
   }
 
+  // Add a passive effect
   addPassiveEffect(index: number) {
     this.getPassiveEffects(index).push(
       new FormGroup({
@@ -131,10 +139,12 @@ export class PassiveFormComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Remove a passive part
   removePassivePart(index: number) {
     this.passiveParts.removeAt(index);
   }
 
+  // Add a passive part
   addPassivePart() {
     this.passiveParts.push(
       new FormGroup({

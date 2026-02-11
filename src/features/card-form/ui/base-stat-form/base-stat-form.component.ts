@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -29,6 +36,13 @@ export class BaseStatFormComponent implements OnDestroy, OnInit {
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }
+
+  get baseStatForm(): FormGroup<BaseStatFormGroup> {
+    return this.parentFormGroup.get(
+      this.controlKey(),
+    ) as FormGroup<BaseStatFormGroup>;
+  }
+
   ngOnDestroy(): void {
     this.parentFormGroup.removeControl(this.controlKey());
   }
@@ -48,7 +62,7 @@ export class BaseStatFormComponent implements OnDestroy, OnInit {
           nonNullable: true,
           validators: [Validators.required, Validators.max(99999)],
         }),
-      })
+      }),
     );
   }
 }

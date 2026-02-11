@@ -1,0 +1,24 @@
+---
+alwaysApply: true
+---
+
+# Project explanation and how it work
+
+This is a project allowing people to create their own Dokkan Battle card and share them.
+
+## How it work
+
+By login and using the form card on the home page and enter every needed informations, user can create a card.
+After creating a card user will be redirected in the newest created card ID page, and will be able to share, modify, or delete it.
+
+## Functionnalities
+
+- Login with Google
+- Create / update / delete a card
+- Logout
+- Share a card
+
+## Architecture
+
+- The project follow the Feature Sliced Design architecture ´see skill for more details´.
+- Angular v20 is used, and use Firebase for storing data and authenticate user. Also, a Node/Express API is used for manage emails and images (artwork).

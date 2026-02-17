@@ -6,7 +6,7 @@
     <app-footer />
 </div>
 @if (isLoading()) {
-<app-loader [isVisible]="isLoading() ?? false" />
+<app-loader [isVisible]="isLoading()" />
 }
 @if (isVisible()) {
 <app-error-toast />

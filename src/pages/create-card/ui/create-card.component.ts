@@ -19,12 +19,12 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { catchError, EMPTY, map, of, switchMap, take } from 'rxjs';
 import { Router } from '@angular/router';
-import { LoaderComponent} from '~/src/shared/ui';
 import {
   AuthService,
   ErrorToastService,
   ArtworkService,
   GameDataService,
+  LoadingService,
 } from '~/src/shared/api';
 import { CreateCardService } from '../api/create-card.service';
 import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
@@ -35,7 +35,7 @@ import generateCard from '~/src/features/card-form/lib/generate-card';
 @Component({
   selector: 'app-create-card-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, LoaderComponent, CardFormComponent],
+  imports: [ReactiveFormsModule, CardFormComponent],
   templateUrl: './create-card.component.html',
   styleUrl: './create-card.component.css',
   viewProviders: [
@@ -54,7 +54,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   readonly #artworkService = inject(ArtworkService);
   readonly #router = inject(Router);
   readonly #gameDataService = inject(GameDataService);
-  isLoading = signal(false);
+  readonly #loadingService = inject(LoadingService);
   artwork = signal<FormData | null>(null);
   isFormSubmitted = signal(false);
   title = signal('Card Details');
@@ -88,7 +88,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
         this.componentRefs.destroy();
       }
       if (this.#authService.user() !== null) {
-        this.isLoading.set(true);
+        this.#loadingService.start();
 
         this.#createCardService
           .createCard({
@@ -116,7 +116,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
               return of(data);
             }),
             catchError(() => {
-              this.isLoading.set(false);
+              this.#loadingService.stop();
               this.#errorToastService.showToast(
                 'An error occurred while creating the card'
               );
@@ -125,7 +125,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
           )
           .subscribe((res) => {
             this.#router.navigate(['/card', res.id]);
-            this.isLoading.set(false);
+            this.#loadingService.stop();
           });
       } else {
         const componentRef = this.card().createComponent(CardComponent, {

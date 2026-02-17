@@ -33,8 +33,8 @@ import {
   ErrorToastService,
   GameDataService,
   ArtworkService,
+  LoadingService,
 } from '~/src/shared/api';
-import { LoaderComponent } from '~/src/shared/ui';
 import { CardFormComponent, CardForm } from '~/src/features/card-form';
 import { Card } from '~/src/entities/card';
 import { AsyncPipe } from '@angular/common';
@@ -46,7 +46,7 @@ import patchCardForm from '~/src/features/card-form/lib/patch-card-form';
 @Component({
   selector: 'app-update-card-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, LoaderComponent, CardFormComponent, AsyncPipe],
+  imports: [ReactiveFormsModule, CardFormComponent, AsyncPipe],
   templateUrl: './update-card.component.html',
   styleUrl: './update-card.component.css',
   viewProviders: [
@@ -67,7 +67,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   readonly #artworkService = inject(ArtworkService);
   readonly #gameDataService = inject(GameDataService);
   readonly #destroyRef = inject(DestroyRef);
-  isLoading = signal(true);
+  readonly #loadingService = inject(LoadingService);
   isError = signal(false);
   card = signal<Card | null>(null);
   artwork = signal<FormData | null>(null);
@@ -77,7 +77,6 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
     map((data) => {
       const card = data['card'] as Card;
       this.card.set(card);
-      this.isLoading.set(false);
       return card;
     }),
   );
@@ -92,6 +91,8 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
     const user = this.#authService.user();
     if (!user) return;
 
+    this.#loadingService.start();
+
     const cardId = this.#activatedRoute.snapshot.params['id'];
     const card = this.card();
     const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
@@ -100,8 +101,6 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       this.#gameDataService.links(),
       this.#gameDataService.passiveConditionActivation(),
     );
-
-    this.isLoading.set(true);
 
     this.#updateCardService
       .patchCard(cardId, {
@@ -121,16 +120,18 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
           this.#errorToastService.showToast(
             'An error occurred while updating the card',
           );
+          this.#loadingService.stop();
           return EMPTY;
         }),
-        finalize(() => this.isLoading.set(false)),
       )
       .subscribe(() => {
         this.#router.navigate(['/card', cardId]);
+        this.#loadingService.stop();
       });
   }
 
   ngAfterViewInit(): void {
+    this.#loadingService.start();
     const nestedCardForm = this.cardForm.get(
       'cardForm',
     ) as FormGroup<CardForm> | null;
@@ -162,6 +163,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
               effectDuration,
             );
           }
+          this.#loadingService.stop();
         },
       );
   }

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   NavigationCancel,
   NavigationEnd,
@@ -7,34 +7,44 @@ import {
   NavigationStart,
   Router,
 } from '@angular/router';
-import { filter } from 'rxjs';
-import { LoadingService } from '../loading-service/loading.service';
+import { filter, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RouterService {
   readonly #router = inject(Router);
-  readonly #loadingService = inject(LoadingService);
 
+  isRouterLoading = toSignal(
+    this.#router.events.pipe(
+      filter(
+        (e) =>
+          e instanceof NavigationStart ||
+          e instanceof NavigationEnd ||
+          e instanceof NavigationCancel ||
+          e instanceof NavigationError,
+      ),
+      map((e) => e instanceof NavigationStart),
+    ),
+  );
   constructor() {
-    this.#router.events
-      .pipe(
-        filter(
-          (e) =>
-            e instanceof NavigationStart ||
-            e instanceof NavigationEnd ||
-            e instanceof NavigationCancel ||
-            e instanceof NavigationError
-        ),
-        takeUntilDestroyed()
-      )
-      .subscribe((e) => {
-        if (e instanceof NavigationStart) {
-          this.#loadingService.start();
-        } else {
-          this.#loadingService.stop();
-        }
-      });
+    // this.#router.events
+    //   .pipe(
+    //     filter(
+    //       (e) =>
+    //         e instanceof NavigationStart ||
+    //         e instanceof NavigationEnd ||
+    //         e instanceof NavigationCancel ||
+    //         e instanceof NavigationError
+    //     ),
+    //     takeUntilDestroyed()
+    //   )
+    //   .subscribe((e) => {
+    //     if (e instanceof NavigationStart) {
+    //       this.#loadingService.start();
+    //     } else {
+    //       this.#loadingService.stop();
+    //     }
+    //   });
   }
 }

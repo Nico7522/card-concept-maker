@@ -1,17 +1,26 @@
-import { computed, Injectable, signal } from '@angular/core';
+import {
+  computed,
+  inject,
+  Injectable,
+  linkedSignal,
+  signal,
+} from '@angular/core';
+import { RouterService } from '../router-service/router.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoadingService {
-  readonly #count = signal(0);
-  readonly loading = computed(() => this.#count() > 0);
+  readonly #routerService = inject(RouterService);
+  readonly loading = linkedSignal(
+    () => this.#routerService.isRouterLoading() ?? false,
+  );
 
   start(): void {
-    this.#count.update((c) => c + 1);
+    this.loading.set(true);
   }
 
   stop(): void {
-    this.#count.update((c) => Math.max(0, c - 1));
+    this.loading.set(false);
   }
 }

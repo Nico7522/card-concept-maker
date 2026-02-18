@@ -1,10 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {
-  ErrorToastService,
-  LoadingService,
-  RouterService,
-} from '~/src/shared/api';
+import { ErrorToastService, LoadingService } from '~/src/shared/api';
 import {
   HeaderComponent,
   FooterComponent,
@@ -31,7 +27,4 @@ export class AppComponent {
 
   isVisible = this.#errorToastService.isVisible;
   isLoading = this.#loadingService.loading;
-
-  // RouterService must be injected to activate its constructor (router event listener)
-  readonly #routerService = inject(RouterService);
 }

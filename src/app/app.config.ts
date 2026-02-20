@@ -17,7 +17,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { ErrorToastService } from '../shared/api/error-toast-service/error-toast.service';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
   provideAnalytics,
   getAnalytics,
@@ -26,6 +26,7 @@ import {
   Analytics,
 } from '@angular/fire/analytics';
 import { environment } from '../environments/environment';
+import { authInterceptor } from '../shared/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -41,7 +42,6 @@ export const appConfig: ApplicationConfig = {
       withNavigationErrorHandler((error) => {
         const router = angularInject(Router);
         const errorToastService = angularInject(ErrorToastService);
-        console.log('ici');
         if (error?.error?.message) {
           errorToastService.showToast(error.error.message);
         } else {
@@ -54,7 +54,7 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     provideAnalytics(() => getAnalytics()),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     ScreenTrackingService,
     UserTrackingService,
   ],

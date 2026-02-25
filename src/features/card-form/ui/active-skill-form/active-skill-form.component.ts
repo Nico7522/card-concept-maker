@@ -1,10 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   inject,
   input,
+  model,
   OnDestroy,
   OnInit,
+  output,
 } from '@angular/core';
 import {
   ControlContainer,
@@ -14,6 +17,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 import { ErrorComponent } from '~/src/shared/ui';
 import {
@@ -22,6 +26,7 @@ import {
   ActiveSkillFormGroup,
   activeSkillNameRequired,
 } from '../..';
+import { from, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-active-skill-form',
@@ -43,12 +48,19 @@ import {
 })
 export class ActiveSkillFormComponent implements OnDestroy, OnInit {
   readonly #parentContainer = inject(ControlContainer);
+  readonly #destroyRef = inject(DestroyRef);
+
   controlKey = input.required<string>();
   label = input.required<string>();
+  transformationChanged = output<boolean>();
 
   get activeSkill() {
     return this.parentFormGroup.get('activeSkill')?.get('hasActiveSkill')
       ?.value;
+  }
+
+  get hasTransformation() {
+    return this.activeSkillForm?.get('hasTransformation')?.value ?? false;
   }
 
   get parentFormGroup(): FormGroup {
@@ -83,6 +95,9 @@ export class ActiveSkillFormComponent implements OnDestroy, OnInit {
           activeSkillEffect: new FormControl('', {
             nonNullable: true,
           }),
+          hasTransformation: new FormControl(false, {
+            nonNullable: true,
+          }),
         },
         {
           validators: [
@@ -93,5 +108,12 @@ export class ActiveSkillFormComponent implements OnDestroy, OnInit {
         },
       ),
     );
+
+    this.activeSkillForm
+      .get('hasTransformation')
+      ?.valueChanges.pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe((value) => {
+        this.transformationChanged.emit(value);
+      });
   }
 }

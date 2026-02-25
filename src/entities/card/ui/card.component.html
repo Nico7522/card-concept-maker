@@ -7,16 +7,15 @@
         <img [ngSrc]="imgUrl()" alt="Card Artwork" fill class="object-cover" priority>
         } @else {
         <img [ngSrc]="'/com_bg.png'" alt="Card Artwork" fill class="object-cover" priority>
-        <!-- <img [src]="imgUrl()" alt="Card Artwork"
-            class="z-10 absolute top-15 left-1/2 -translate-x-1/2  max-w-[350px] max-h-[350px] rounded-lg"
-            (load)="onImageLoad($event)"> -->
+
         }
     </div>
 
     <!-- Card rarity and type icons -->
     <section class="absolute top-0 left-0 right-0 z-10 p-2 h-[380px]">
-        <app-card-header [card]="card()" [isAmodalOpen]="isAmodalOpen()"
-            (openDomainDetailsModal)="onDomainDetailsModalOpen()" />
+        <app-card-header [showEchangeButton]="showEchangeButton()" [card]="card()" [isAmodalOpen]="isAmodalOpen()"
+            (openDomainDetailsModal)="onDomainDetailsModalOpen()"
+            (openTransformationModal)="onTransformationModalOpen()" />
     </section>
 
     <!-- Stats section -->

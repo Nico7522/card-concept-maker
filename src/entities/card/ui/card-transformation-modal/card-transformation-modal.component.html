@@ -1,0 +1,44 @@
+<section
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] h-[70%] border-2 rounded-md overflow-x-hidden overflow-y-auto">
+    <div class="bg-black/90 flex justify-center h-full">
+        <div class="relative w-[90%] p-4 flex flex-col ">
+            <h2
+                class="text-center relative scroll-m-20 font-extrabold tracking-tight text-2xl border-r-12 border-l-12 rounded-lg">
+                Echange Details
+            </h2>
+
+            <div class="border-2 mt-5 w-[90%] rounded-md bg-orange-900/70 p-2 flex self-center cursor-pointer"
+                (click)="onSwitchToBaseCard()">
+                <img [src]="'cha_base_00_05.png'" width="80" height="80" alt="Card Artwork" class="object-cover">
+                <div class="flex flex-col w-full overflow-hidden">
+                    <h3 class="ml-2 text-white w-full font-bold border-b-2 border-white">{{baseCard().cardName}}
+                    </h3>
+                    <h4 class="ml-2 text-xs text-orange-400">Echange : Condition(s)</h4>
+                    <div class="ml-2 mr-2 h-7 bg-black italic flex max-w-full" style="transform: skewX(-10deg);">
+                        <p class="truncate text-sm px-2">-
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-2 mt-5 w-[90%] rounded-md bg-orange-900/70 p-2 flex self-center cursor-pointer"
+                (click)="onSwitchToTransformedCard()">
+                <img [src]="'cha_base_00_05.png'" width="80" height="80" alt="Card Artwork" class="object-cover">
+                <div class="flex flex-col w-full overflow-hidden">
+                    <h3 class="ml-2 text-white w-full font-bold border-b-2 border-white">{{transformedCard().cardName}}
+                    </h3>
+                    <h4 class="ml-2 text-xs text-orange-400">Echange : Condition(s)</h4>
+                    <div class="ml-2 mr-2 h-7 bg-black italic flex max-w-full" style="transform: skewX(-10deg);">
+                        <p class="truncate text-sm px-2">
+                            {{baseCard().characterInfo?.activeSkill?.activeSkillCondition}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="w-full flex justify-center items-center mt-10 cursor-pointer" (click)="onClose()">
+                <img src="./btn_ok.png" alt="OK" class="w-32">
+            </button>
+        </div>
+    </div>
+</section>

@@ -6,6 +6,7 @@ import {
   computed,
   input,
   inputBinding,
+  linkedSignal,
   OnDestroy,
   outputBinding,
   signal,
@@ -35,11 +36,13 @@ import { DisplayedPart } from '../model/displayed-part-type';
 import { CardLinksPartComponent } from './card-links-part/card-links-part.component';
 import { CardCategoriesPartComponent } from './card-categories-part/card-categories-part.component';
 import { PassiveDetailsModalComponent } from './card-passive-part/passive-details-modal/passive-details-modal.component';
+import { CardTransformationModalComponent } from './card-transformation-modal/card-transformation-modal.component';
 
 type GlobalModal =
   | PassiveDetailsModalComponent
   | SuperAttackDetailsModalComponent
-  | DomainModalComponent;
+  | DomainModalComponent
+  | CardTransformationModalComponent;
 
 @Component({
   selector: 'app-card',
@@ -87,7 +90,10 @@ export class CardComponent implements OnDestroy {
   displayArtworkFullScreen = computed(
     () => this.imageSize().width >= 1200 && this.imageSize().height >= 1600,
   );
-  card = input.required<Card>();
+  baseCard = input.required<Card>();
+  transformedCard = input.required<Card | null>();
+  card = linkedSignal(this.baseCard);
+  showEchangeButton = computed(() => this.transformedCard() !== null);
   readonly imgUrl = computed(
     () => environment.apiUrl + '/' + this.card().artwork,
   );
@@ -152,6 +158,39 @@ export class CardComponent implements OnDestroy {
             () => this.card().characterInfo?.stats?.defense,
           ),
           outputBinding('close', () => {
+            this.isAmodalOpen.set(false);
+            if (this.globalModalRef) {
+              this.globalModalRef.destroy();
+            }
+          }),
+        ],
+      },
+    );
+    this.globalModalRef = componentRef;
+  }
+  onTransformationModalOpen() {
+    this.isAmodalOpen.set(true);
+    const componentRef = this.globalModal().createComponent(
+      CardTransformationModalComponent,
+      {
+        bindings: [
+          inputBinding('baseCard', () => this.baseCard()),
+          inputBinding('transformedCard', () => this.transformedCard()),
+          outputBinding('close', () => {
+            this.isAmodalOpen.set(false);
+            if (this.globalModalRef) {
+              this.globalModalRef.destroy();
+            }
+          }),
+          outputBinding('switchToTransformedCard', () => {
+            this.card.set(this.transformedCard() as Card);
+            this.isAmodalOpen.set(false);
+            if (this.globalModalRef) {
+              this.globalModalRef.destroy();
+            }
+          }),
+          outputBinding('switchToBaseCard', () => {
+            this.card.set(this.baseCard() as Card);
             this.isAmodalOpen.set(false);
             if (this.globalModalRef) {
               this.globalModalRef.destroy();

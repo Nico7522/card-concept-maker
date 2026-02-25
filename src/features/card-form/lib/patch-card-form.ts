@@ -169,6 +169,7 @@ export default function patchCardForm(
     activeSkillCondition:
       card.characterInfo?.activeSkill?.activeSkillCondition ?? '',
     activeSkillEffect: card.characterInfo?.activeSkill?.activeSkillEffect ?? '',
+    hasTransformation: card.characterInfo?.activeSkill?.transformedCardId ? true : false,
   });
 
   form.get('domain')?.patchValue({

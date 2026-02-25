@@ -12,6 +12,12 @@
     </div>
     <div class="flex flex-col items-end h-full">
         <div class="flex items-center justify-center mt-5">
+            @if(showEchangeButton()) {
+            <img [ngSrc]="'echange_btn.png'" alt="Transformed card button" width="70" height="70"
+                class="object-contain cursor-pointer" (click)="showTransformationModal()">
+
+            }
+
             <img [ngSrc]="'com_btn_02_orange.png'" alt="Growth button" width="70" height="70" class="object-contain">
             <img [ngSrc]="'com_btn_lock.png'" alt="Lock button" width="30" height="30" class="object-contain">
         </div>

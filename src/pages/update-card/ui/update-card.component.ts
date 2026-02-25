@@ -75,9 +75,8 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   cardForm = new FormGroup({});
   card$ = this.#activatedRoute.data.pipe(
     map((data) => {
-      const card = data['card'] as Card;
-      this.card.set(card);
-      return card;
+      this.card.set(data['card']['baseCard']);
+      return data['card']['baseCard'];
     }),
   );
   onSubmit() {

@@ -69,20 +69,18 @@ export class AuthService {
    */
   login() {
     return from(this.loginWithGoogle()).pipe(
-      switchMap((user) =>
-        from(this.getIdToken(user, false)).pipe(
-          switchMap((idToken) =>
-            this.sendFirebaseToken(idToken).pipe(
-              map((res) => {
-                console.log('data : ', res);
-
-                localStorage.setItem('token', res.data.token);
-                return res.data.token;
-              }),
-            ),
-          ),
-        ),
-      ),
+      // switchMap((user) =>
+      //   from(this.getIdToken(user, false)).pipe(
+      //     switchMap((idToken) =>
+      //       this.sendFirebaseToken(idToken).pipe(
+      //         map((res) => {
+      //           localStorage.setItem('token', res.data.token);
+      //           return res.data.token;
+      //         }),
+      //       ),
+      //     ),
+      //   ),
+      // ),
       catchError((err) => {
         this.logout();
         return throwError(() => err);

@@ -1,0 +1,52 @@
+<div class="p-6 bg-gradient-to-br from-purple-900/30 to-orange-900/30 rounded-lg border-2 border-purple-500/50">
+    <h2 class="text-2xl font-bold text-purple-400 mb-4 flex items-center gap-2">
+        <span>🔄</span> Transformation Card
+    </h2>
+    <p class="text-gray-400 mb-6">
+        This active skill transforms your card into another form. Choose how to define the transformed card:
+    </p>
+
+    <!-- Mode Selection -->
+    <div class="flex flex-col gap-4 mb-6">
+        <div class="flex gap-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="transformationMode" [checked]="mode() === 'new'"
+                    (change)="onModeChange('new')" class="w-4 h-4 text-purple-500 focus:ring-purple-500">
+                <span class="text-white">Create a new card</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="transformationMode" [checked]="mode() === 'existing'"
+                    (change)="onModeChange('existing')" class="w-4 h-4 text-purple-500 focus:ring-purple-500">
+                <span class="text-white">Select an existing card</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Existing Card Selector -->
+    @if (showExistingCardSelector()) {
+    <div class="flex flex-col gap-2">
+        <label class="text-sm font-semibold text-gray-400 uppercase">Select one of your cards</label>
+        @if (userCards().length > 0) {
+        <ng-select [items]="userCards()" bindLabel="cardName" [searchable]="true" [clearable]="true"
+            placeholder="Search your cards..." class="custom-select" (change)="onExistingCardSelected($event)">
+            <ng-template ng-option-tmp let-item="item">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold">{{ item.cardName }}</span>
+                </div>
+            </ng-template>
+        </ng-select>
+        } @else {
+        <p class="text-gray-500 italic">You don't have any cards yet. Create a new one instead.</p>
+        }
+    </div>
+    }
+
+    <!-- New Card Form -->
+    @if (showNewCardForm()) {
+    <div class="mt-6 pt-6 border-t border-purple-500/30" [formGroup]="transformedCardForm()">
+        <h3 class="text-xl font-bold text-orange-400 mb-4">Transformed Card Details</h3>
+        <app-card-form controlKey="transformedCardForm" label="Transformed Card"
+            (artwork)="onTransformedArtwork($event)" />
+    </div>
+    }
+</div>

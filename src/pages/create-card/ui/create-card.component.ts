@@ -2,8 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   ComponentRef,
+  computed,
+  effect,
   inject,
   inputBinding,
+  model,
   OnDestroy,
   signal,
   viewChild,
@@ -17,25 +20,38 @@ import {
   heroArrowLongRight,
   heroPlus,
 } from '@ng-icons/heroicons/outline';
-import { catchError, EMPTY, map, of, switchMap, take } from 'rxjs';
+import { catchError, EMPTY, take } from 'rxjs';
 import { Router } from '@angular/router';
+
 import {
   AuthService,
   ErrorToastService,
-  ArtworkService,
   GameDataService,
   LoadingService,
+  UserCardsService,
 } from '~/src/shared/api';
-import { CreateCardService } from '../api/create-card.service';
 import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
-import { CardForm, CardFormComponent } from '~/src/features/card-form';
-import { CardComponent } from '~/src/entities/card';
+import {
+  CardForm,
+  CardFormComponent,
+  TransformationChangedEvent,
+} from '~/src/features/card-form';
+import { Card, CardComponent } from '~/src/entities/card';
+import {
+  CreateCardWithTransformationService,
+  TransformationMode,
+  TransformationSelectorComponent,
+} from '~/src/features/transformation';
 import generateCard from '~/src/features/card-form/lib/generate-card';
 
 @Component({
   selector: 'app-create-card-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, CardFormComponent],
+  imports: [
+    ReactiveFormsModule,
+    CardFormComponent,
+    TransformationSelectorComponent,
+  ],
   templateUrl: './create-card.component.html',
   styleUrl: './create-card.component.css',
   viewProviders: [
@@ -49,98 +65,128 @@ import generateCard from '~/src/features/card-form/lib/generate-card';
 })
 export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   readonly #authService = inject(AuthService);
-  readonly #createCardService = inject(CreateCardService);
+  readonly #createCardService = inject(CreateCardWithTransformationService);
   readonly #errorToastService = inject(ErrorToastService);
-  readonly #artworkService = inject(ArtworkService);
   readonly #router = inject(Router);
   readonly #gameDataService = inject(GameDataService);
   readonly #loadingService = inject(LoadingService);
+  readonly #userCardsService = inject(UserCardsService);
+
+  // Form state
+  cardForm = new FormGroup({});
+  transformedCardForm = new FormGroup({});
+
+  // Signals
   artwork = signal<FormData | null>(null);
+  transformedArtwork = signal<FormData | null>(null);
   isFormSubmitted = signal(false);
   title = signal('Card Details');
+
+  // Transformation state
+  hasTransformation = signal(false);
+  transformationMode = signal<TransformationMode>('new');
+  selectedExistingCardId = signal<string | null>(null);
+  userCards = signal<Card[]>([]);
+
+  // Computed
+  showTransformationSection = computed(() => this.hasTransformation());
+  isNewCardMode = computed(() => this.transformationMode() === 'new');
+
+  // View refs
   card = viewChild.required('card', { read: ViewContainerRef });
   componentRefs: ComponentRef<CardComponent> | null = null;
-  cardForm = new FormGroup({});
 
   onSubmit() {
     this.isFormSubmitted.set(true);
-    // Retrieve the nested card form
-    const nestedCardForm = this.cardForm.get(
-      'cardForm'
-    ) as FormGroup<CardForm> | null;
 
-    // If the nested card form is not found, return
-    if (!nestedCardForm) {
+    const nestedCardForm = this.cardForm.get(
+      'cardForm',
+    ) as FormGroup<CardForm> | null;
+    if (!nestedCardForm?.valid) {
       return;
     }
 
-    // Get the raw value of the nested card form
-    const data = nestedCardForm.getRawValue();
-    // If the nested card form is valid, generate the card
-    if (nestedCardForm.valid) {
-      const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
-        nestedCardForm,
-        this.#gameDataService.categories(),
-        this.#gameDataService.links(),
-        this.#gameDataService.passiveConditionActivation()
-      );
-      if (this.componentRefs) {
-        this.componentRefs.destroy();
-      }
-      if (this.#authService.user() !== null) {
-        this.#loadingService.start();
-
-        this.#createCardService
-          .createCard({
-            creatorName: this.#authService.user()?.displayName ?? '',
-            creatorId: this.#authService.user()?.uid ?? '',
-            cardName: data.cardName,
-            characterInfo: characterInfo(),
-            passiveDetails: passiveDetails(),
-            superAttackInfo: superAttackInfo(),
-          })
-          .pipe(
-            take(1),
-            switchMap((data) => {
-              if (this.artwork()) {
-                return this.#artworkService
-                  .patchArtworkImage(this.artwork() as FormData)
-                  .pipe(
-                    switchMap((response) => {
-                      return this.#artworkService
-                        .patchArtworkName(data.id, response.filename)
-                        .pipe(map(() => data));
-                    })
-                  );
-              }
-              return of(data);
-            }),
-            catchError(() => {
-              this.#loadingService.stop();
-              this.#errorToastService.showToast(
-                'An error occurred while creating the card'
-              );
-              return EMPTY;
-            })
-          )
-          .subscribe((res) => {
-            this.#router.navigate(['/card', res.id]);
-            this.#loadingService.stop();
-          });
-      } else {
-        const componentRef = this.card().createComponent(CardComponent, {
-          bindings: [
-            inputBinding('card', () => ({
-              characterInfo: characterInfo(),
-              passiveDetails: passiveDetails(),
-              superAttackInfo: superAttackInfo(),
-            })),
-          ],
-        });
-
-        this.componentRefs = componentRef;
+    // Validate transformed form if needed
+    if (this.hasTransformation() && this.isNewCardMode()) {
+      const transformedForm = this.transformedCardForm.get(
+        'transformedCardForm',
+      ) as FormGroup<CardForm> | null;
+      if (!transformedForm?.valid) {
+        return;
       }
     }
+
+    if (this.#authService.user() !== null) {
+      this.#createCardForAuthenticatedUser(nestedCardForm);
+    } else {
+      this.#previewCardForGuest(nestedCardForm);
+    }
+  }
+
+  #createCardForAuthenticatedUser(mainForm: FormGroup<CardForm>) {
+    this.#loadingService.start();
+
+    const transformedForm =
+      this.hasTransformation() && this.isNewCardMode()
+        ? (this.transformedCardForm.get(
+            'transformedCardForm',
+          ) as unknown as FormGroup<CardForm>)
+        : null;
+
+    const request$ = this.hasTransformation()
+      ? this.#createCardService.createCardWithTransformation({
+          mainForm,
+          mainArtwork: this.artwork(),
+          mode: this.transformationMode(),
+          existingCardId: this.selectedExistingCardId(),
+          transformedForm,
+          transformedArtwork: this.transformedArtwork(),
+        })
+      : this.#createCardService.createCard({
+          mainForm,
+          mainArtwork: this.artwork(),
+        });
+
+    request$
+      .pipe(
+        take(1),
+        catchError(() => {
+          this.#loadingService.stop();
+          this.#errorToastService.showToast(
+            'An error occurred while creating the card',
+          );
+          return EMPTY;
+        }),
+      )
+      .subscribe((result) => {
+        this.#router.navigate(['/card', result.id]);
+        this.#loadingService.stop();
+      });
+  }
+
+  #previewCardForGuest(form: FormGroup<CardForm>) {
+    const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
+      form,
+      this.#gameDataService.categories(),
+      this.#gameDataService.links(),
+      this.#gameDataService.passiveConditionActivation(),
+    );
+
+    if (this.componentRefs) {
+      this.componentRefs.destroy();
+    }
+
+    const componentRef = this.card().createComponent(CardComponent, {
+      bindings: [
+        inputBinding('card', () => ({
+          characterInfo: characterInfo(),
+          passiveDetails: passiveDetails(),
+          superAttackInfo: superAttackInfo(),
+        })),
+      ],
+    });
+
+    this.componentRefs = componentRef;
   }
 
   ngOnDestroy() {
@@ -148,10 +194,46 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   }
 
   hasUnsavedChanges() {
-    return this.cardForm.dirty && !this.isFormSubmitted();
+    const mainFormDirty = this.cardForm.dirty;
+    const transformedFormDirty =
+      this.hasTransformation() &&
+      this.isNewCardMode() &&
+      this.transformedCardForm.dirty;
+    return (mainFormDirty || transformedFormDirty) && !this.isFormSubmitted();
   }
 
+  // Event handlers
   handleArtwork(formData: FormData) {
     this.artwork.set(formData);
+  }
+
+  handleTransformationChanged(event: TransformationChangedEvent) {
+    this.hasTransformation.set(event.hasTransformation);
+    if (event.hasTransformation) {
+      this.#loadUserCards();
+    }
+  }
+
+  handleTransformationModeChanged(mode: TransformationMode) {
+    this.transformationMode.set(mode);
+    if (mode === 'existing') {
+      this.selectedExistingCardId.set(null);
+    }
+  }
+
+  handleTransformedArtwork(formData: FormData) {
+    this.transformedArtwork.set(formData);
+  }
+
+  #loadUserCards() {
+    const userId = this.#authService.user()?.uid;
+    if (userId) {
+      this.#userCardsService
+        .getCardsByUserId(userId)
+        .pipe(take(1))
+        .subscribe((cards) => {
+          this.userCards.set(cards);
+        });
+    }
   }
 }

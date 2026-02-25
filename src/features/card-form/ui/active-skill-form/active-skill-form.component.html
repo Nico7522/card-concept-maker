@@ -50,6 +50,21 @@
             <app-error errorMessage="Effect is required" />
             }
         </div>
+
+        <!-- Transformation Toggle -->
+        <div class="flex flex-col gap-2 mt-4 pt-4 border-t border-orange-500/30">
+            <label class="text-sm font-semibold text-gray-400 uppercase" for="hasTransformation">Transformation?</label>
+            <ng-select [searchable]="false" [clearable]="false" class="custom-select"
+                formControlName="hasTransformation" id="hasTransformation">
+                <ng-option [value]="false">No</ng-option>
+                <ng-option [value]="true">Yes - This active skill transforms the card</ng-option>
+            </ng-select>
+            @if (hasTransformation) {
+            <p class="text-sm text-orange-400 mt-1">
+                A new card form will appear below to create the transformed card.
+            </p>
+            }
+        </div>
     </div>
     }
 </div>

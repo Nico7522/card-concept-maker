@@ -1,8 +1,8 @@
-@if (card$ | async; as card) {
+@if (card$ | async; as cards) {
 <div class="flex flex-col items-center py-8 min-h-screen">
     <!-- Top Bar with Back Button and Actions -->
     <div class="w-full max-w-5xl px-4 flex justify-between items-center mb-8">
-        <a [routerLink]="['/user', card.creatorId, 'cards']"
+        <a [routerLink]="['/user', cards.baseCard.creatorId, 'cards']"
             class="flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors group">
             <ng-icon name="heroArrowLeft" class="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
             <span class="font-bold uppercase tracking-wider text-sm">Back to Collection</span>
@@ -28,11 +28,11 @@
     <!-- Card Title Section -->
     <div class="text-center mb-10">
         <h1 class="dokkan-header text-3xl md:text-5xl mb-2 tracking-tight break-all">
-            {{card.cardName}}
+            {{cards.baseCard.cardName}}
         </h1>
         <div class="flex items-center justify-center gap-2 text-gray-400 text-sm">
             <span>Created by</span>
-            <span class="text-orange-500 font-bold uppercase">{{card.creatorName}}</span>
+            <span class="text-orange-500 font-bold uppercase">{{cards.baseCard.creatorName}}</span>
         </div>
     </div>
     <!-- Share link -->
@@ -42,7 +42,7 @@
             <span class="text-orange-500 text-sm font-bold uppercase tracking-wider shrink-0">Share</span>
             <span class="text-gray-600">|</span>
             <span class="text-gray-400 text-sm truncate flex-1 select-all">{{ 'https://dokkan-card-maker.com/card/' +
-                card.id }}</span>
+                cards.baseCard.id }}</span>
             <button (click)="copyShareLink()"
                 class="shrink-0 p-2 rounded hover:bg-gray-700 transition-colors cursor-pointer"
                 [class.text-green-400]="isCopied()" [class.text-gray-400]="!isCopied()">
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <app-card [card]="card" />
+    <app-card [baseCard]="cards.baseCard" [transformedCard]="cards.transformedCard" />
 </div>
 }
 

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  output,
+} from '@angular/core';
 import { Card } from '../..';
 import { NgOptimizedImage } from '@angular/common';
 
@@ -11,12 +17,14 @@ import { NgOptimizedImage } from '@angular/common';
 })
 export class CardHeaderComponent {
   card = input.required<Card>();
+  showEchangeButton = input.required<boolean>();
   isAmodalOpen = input.required<boolean>();
   openDomainDetailsModal = output<void>();
+  openTransformationModal = output<void>();
   cardRarityIcon = computed(() =>
     this.card().characterInfo?.isLegendaryCharacter
       ? 'cha_rare_sm_lr.png'
-      : 'cha_rare_sm_ur.png'
+      : 'cha_rare_sm_ur.png',
   );
   cardTypeIcon = computed(() =>
     this.card().characterInfo?.type && this.card().characterInfo?.class
@@ -24,9 +32,13 @@ export class CardHeaderComponent {
         this.card().characterInfo?.class +
         this.card().characterInfo?.type +
         '.png'
-      : ''
+      : '',
   );
   showDomainDetailsModal() {
     this.openDomainDetailsModal.emit();
+  }
+
+  showTransformationModal() {
+    this.openTransformationModal.emit();
   }
 }

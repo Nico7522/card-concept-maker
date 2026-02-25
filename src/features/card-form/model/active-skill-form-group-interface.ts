@@ -5,4 +5,5 @@ export interface ActiveSkillFormGroup {
   activeSkillName: FormControl<string>;
   activeSkillCondition: FormControl<string>;
   activeSkillEffect: FormControl<string>;
+  hasTransformation: FormControl<boolean>;
 }

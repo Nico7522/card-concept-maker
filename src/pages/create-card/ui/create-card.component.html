@@ -6,12 +6,26 @@
 
     <div class="dokkan-panel p-6 md:p-8 bg-opacity-90 ">
         <form class="flex flex-col gap-8" (ngSubmit)="onSubmit()" [formGroup]="cardForm">
-            <app-card-form controlKey="cardForm" label="Card Details" (artwork)="handleArtwork($event)" />
+            <app-card-form controlKey="cardForm" label="Card Details" (artwork)="handleArtwork($event)"
+                (transformationChanged)="handleTransformationChanged($event)" />
+
+            <!-- Transformation Section -->
+            @if (showTransformationSection()) {
+            <app-transformation-selector [userCards]="userCards()" [transformedCardForm]="transformedCardForm"
+                (modeChanged)="handleTransformationModeChanged($event)"
+                [(existingCardSelected)]="selectedExistingCardId"
+                (transformedArtwork)="handleTransformedArtwork($event)" />
+            }
 
             <div class="flex justify-center mt-8 pt-8 border-t border-gray-700">
-                <button type="submit" [disabled]="cardForm.invalid"
+                <button type="submit"
+                    [disabled]="cardForm.invalid || (showTransformationSection() && isNewCardMode() && transformedCardForm.invalid) || (showTransformationSection() && !isNewCardMode() && !selectedExistingCardId())"
                     class="px-12 py-3 bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 font-bold text-xl uppercase tracking-wider rounded shadow-lg transform transition hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                    @if (hasTransformation()) {
+                    Create Cards
+                    } @else {
                     Create Card
+                    }
                 </button>
             </div>
         </form>

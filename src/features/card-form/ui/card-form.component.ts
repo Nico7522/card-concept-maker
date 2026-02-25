@@ -2,8 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  effect,
   inject,
   input,
+  model,
   OnDestroy,
   OnInit,
   output,
@@ -33,6 +35,10 @@ import {
   PassiveFormComponent,
   SuperAttackFormComponent,
 } from '..';
+
+export interface TransformationChangedEvent {
+  hasTransformation: boolean;
+}
 
 @Component({
   selector: 'app-card-form',
@@ -67,10 +73,12 @@ export class CardFormComponent implements OnInit, OnDestroy {
   readonly #authService = inject(AuthService);
   user$ = this.#authService.user$;
   artwork = output<FormData>();
+
+  // Signal informing the parent component that the active skill has a transformation
+  transformationChanged = output<TransformationChangedEvent>();
   controlKey = input.required<string>();
   label = input.required<string>();
   isLegendary = signal(false);
-
   get cardForm(): FormGroup<CardForm> {
     return this.parentFormGroup.get(this.controlKey()) as FormGroup<CardForm>;
   }
@@ -119,5 +127,9 @@ export class CardFormComponent implements OnInit, OnDestroy {
   }
   handleArtwork(formData: FormData) {
     this.artwork.emit(formData);
+  }
+
+  handleTransformationChanged(hasTransformation: boolean) {
+    this.transformationChanged.emit({ hasTransformation });
   }
 }

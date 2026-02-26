@@ -3,10 +3,8 @@ import {
   Component,
   ComponentRef,
   computed,
-  effect,
   inject,
   inputBinding,
-  model,
   OnDestroy,
   signal,
   viewChild,
@@ -34,15 +32,13 @@ import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
 import {
   CardForm,
   CardFormComponent,
+  CreateCardService,
   TransformationChangedEvent,
-} from '~/src/features/card-form';
-import { Card, CardComponent } from '~/src/entities/card';
-import {
-  CreateCardWithTransformationService,
   TransformationMode,
   TransformationSelectorComponent,
-} from '~/src/features/transformation';
-import generateCard from '~/src/features/card-form/lib/generate-card';
+  generateCard,
+} from '~/src/features/card-form';
+import { Card, CardComponent } from '~/src/entities/card';
 
 @Component({
   selector: 'app-create-card-form',
@@ -65,7 +61,7 @@ import generateCard from '~/src/features/card-form/lib/generate-card';
 })
 export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   readonly #authService = inject(AuthService);
-  readonly #createCardService = inject(CreateCardWithTransformationService);
+  readonly #createCardService = inject(CreateCardService);
   readonly #errorToastService = inject(ErrorToastService);
   readonly #router = inject(Router);
   readonly #gameDataService = inject(GameDataService);

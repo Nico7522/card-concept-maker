@@ -8,6 +8,9 @@ export * from './model/domain-form-group-interface';
 export * from './model/categories-form-group-interface';
 export * from './model/links-form-group-interface';
 export * from './model/passive-form-group-interface';
+export * from './model/transformation-mode.type';
+export * from './model/update-card-params.interface';
+
 // UI
 export * from './ui/card-form.component';
 export type { TransformationChangedEvent } from './ui/card-form.component';
@@ -19,6 +22,11 @@ export * from './ui/categories-form/categories-form.component';
 export * from './ui/links-form/links-form.component';
 export * from './ui/passive-form/passive-form.component';
 export * from './ui/artwork-form/artwork-form.component';
+export * from './ui/transformation-selector/transformation-selector.component';
+
+// API
+export * from './api/create-card.service';
+export * from './api/update-card.service';
 
 // LIB
 export * from './lib/generate-card';

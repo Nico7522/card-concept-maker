@@ -12,7 +12,7 @@ import {
   PassiveConditionActivation,
 } from '~/src/shared/model';
 
-export default function patchCardForm(
+export function patchCardForm(
   form: FormGroup<CardForm>,
   card: Card,
   categories: Category[],

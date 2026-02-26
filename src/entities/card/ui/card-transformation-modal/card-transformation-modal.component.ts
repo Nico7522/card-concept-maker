@@ -1,10 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   output,
 } from '@angular/core';
 import { Card } from '../../model/card-interface';
+import { environment } from '~/src/environments/environment';
 
 @Component({
   selector: 'app-card-transformation-modal',
@@ -16,6 +18,25 @@ import { Card } from '../../model/card-interface';
 export class CardTransformationModalComponent {
   baseCard = input.required<Card>();
   transformedCard = input.required<Card>();
+
+  baseCardThumbnail = computed(
+    () => 'cha' + this.baseCard().characterInfo?.type + '.png',
+  );
+
+  transformedCardThumbnail = computed(
+    () => 'cha' + this.transformedCard().characterInfo?.type + '.png',
+  );
+
+  baseCardArtwork = computed(() => {
+    const artwork = this.baseCard().artwork;
+    return artwork ? `${environment.apiUrl}/${artwork}` : null;
+  });
+
+  transformedCardArtwork = computed(() => {
+    const artwork = this.transformedCard().artwork;
+    return artwork ? `${environment.apiUrl}/${artwork}` : null;
+  });
+
   switchToTransformedCard = output<void>();
   switchToBaseCard = output<void>();
   close = output();

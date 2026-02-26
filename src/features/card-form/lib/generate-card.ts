@@ -82,7 +82,7 @@ function buildSuperAttackInfo(
   };
 }
 
-export default function generateCard(
+export function generateCard(
   form: FormGroup<CardForm>,
   categories: Category[],
   links: Link[],

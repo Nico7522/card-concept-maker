@@ -13,8 +13,10 @@
     <div class="flex flex-col items-end h-full">
         <div class="flex items-center justify-center mt-5">
             @if(showEchangeButton()) {
-            <img [ngSrc]="'echange_btn.png'" alt="Transformed card button" width="70" height="70"
-                class="object-contain cursor-pointer" (click)="showTransformationModal()">
+            <button [disabled]="isAmodalOpen()" (click)="showTransformationModal()">
+                <img [ngSrc]="'echange_btn.png'" alt="Transformed card button" width="70" height="70"
+                    class="object-contain cursor-pointer">
+            </button>
 
             }
 

@@ -28,7 +28,8 @@
         <label class="text-sm font-semibold text-gray-400 uppercase">Select one of your cards</label>
         @if (userCards().length > 0) {
         <ng-select [items]="userCards()" bindLabel="cardName" [searchable]="true" [clearable]="true"
-            placeholder="Search your cards..." class="custom-select" (change)="onExistingCardSelected($event)">
+            placeholder="Search your cards..." class="custom-select" [ngModel]="selectedCard()"
+            (ngModelChange)="onExistingCardSelected($event)">
             <ng-template ng-option-tmp let-item="item">
                 <div class="flex items-center gap-2">
                     <span class="font-semibold">{{ item.cardName }}</span>

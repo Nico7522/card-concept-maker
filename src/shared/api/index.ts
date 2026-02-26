@@ -1,5 +1,6 @@
 export * from './artwork-service/artwork.service';
 export * from './auth-service/auth.service';
+export * from './card-api-service/card-api.service';
 export * from '../../entities/card/api/card-resolver/get-card.resolver';
 export * from './game-data-service/game-data.service';
 export * from './error-toast-service/error-toast.service';

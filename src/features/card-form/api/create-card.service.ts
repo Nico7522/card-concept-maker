@@ -3,15 +3,15 @@ import { FormGroup } from '@angular/forms';
 import { map, Observable, of, switchMap } from 'rxjs';
 
 import { Card } from '~/src/entities/card';
-import { CardForm } from '~/src/features/card-form';
-import generateCard from '~/src/features/card-form/lib/generate-card';
+import { CardForm } from '../model/card-form-interface';
+import { TransformationMode } from '../model/transformation-mode.type';
+import { generateCard } from '../lib/generate-card';
 import {
   ArtworkService,
   AuthService,
+  CardApiService,
   GameDataService,
 } from '~/src/shared/api';
-import { CreateCardService } from '~/src/pages/create-card/api/create-card.service';
-import { TransformationMode } from '../model/transformation-mode.type';
 
 export interface CreateCardParams {
   mainForm: FormGroup<CardForm>;
@@ -28,16 +28,17 @@ export interface CreateCardWithTransformationParams extends CreateCardParams {
 @Injectable({
   providedIn: 'root',
 })
-export class CreateCardWithTransformationService {
+export class CreateCardService {
   readonly #authService = inject(AuthService);
-  readonly #createCardService = inject(CreateCardService);
+  readonly #cardApiService = inject(CardApiService);
   readonly #artworkService = inject(ArtworkService);
   readonly #gameDataService = inject(GameDataService);
 
   createCard(params: CreateCardParams): Observable<{ id: string }> {
     const { mainForm, mainArtwork } = params;
     const data = mainForm.getRawValue();
-    const { characterInfo, passiveDetails, superAttackInfo } = this.#generateCardData(mainForm);
+    const { characterInfo, passiveDetails, superAttackInfo } =
+      this.#generateCardData(mainForm);
 
     const cardData: Card = {
       creatorName: this.#authService.user()?.displayName ?? '',
@@ -48,7 +49,7 @@ export class CreateCardWithTransformationService {
       superAttackInfo: superAttackInfo(),
     };
 
-    return this.#createCardService.createCard(cardData).pipe(
+    return this.#cardApiService.createCard(cardData).pipe(
       switchMap((docRef) => this.#handleArtwork(docRef.id, mainArtwork)),
       map((id) => ({ id }))
     );
@@ -57,7 +58,14 @@ export class CreateCardWithTransformationService {
   createCardWithTransformation(
     params: CreateCardWithTransformationParams
   ): Observable<{ id: string }> {
-    const { mainForm, mainArtwork, mode, existingCardId, transformedForm, transformedArtwork } = params;
+    const {
+      mainForm,
+      mainArtwork,
+      mode,
+      existingCardId,
+      transformedForm,
+      transformedArtwork,
+    } = params;
 
     if (mode === 'existing' && existingCardId) {
       return this.#createMainCardWithExistingTransformation(
@@ -76,7 +84,6 @@ export class CreateCardWithTransformationService {
       );
     }
 
-    // Fallback: create without transformation
     return this.createCard({ mainForm, mainArtwork });
   }
 
@@ -86,7 +93,8 @@ export class CreateCardWithTransformationService {
     existingCardId: string
   ): Observable<{ id: string }> {
     const data = mainForm.getRawValue();
-    const { characterInfo, passiveDetails, superAttackInfo } = this.#generateCardData(mainForm);
+    const { characterInfo, passiveDetails, superAttackInfo } =
+      this.#generateCardData(mainForm);
 
     const charInfo = characterInfo();
     if (charInfo?.activeSkill) {
@@ -102,7 +110,7 @@ export class CreateCardWithTransformationService {
       superAttackInfo: superAttackInfo(),
     };
 
-    return this.#createCardService.createCard(cardData).pipe(
+    return this.#cardApiService.createCard(cardData).pipe(
       switchMap((docRef) => this.#handleArtwork(docRef.id, mainArtwork)),
       map((id) => ({ id }))
     );
@@ -130,16 +138,14 @@ export class CreateCardWithTransformationService {
       superAttackInfo: transformedSuper(),
     };
 
-    // Step 1: Create transformed card
-    return this.#createCardService.createCard(transformedCardData).pipe(
-      // Step 2: Handle transformed card artwork
+    return this.#cardApiService.createCard(transformedCardData).pipe(
       switchMap((transformedDocRef) =>
         this.#handleArtwork(transformedDocRef.id, transformedArtwork)
       ),
-      // Step 3: Create main card with reference to transformed card
       switchMap((transformedCardId) => {
         const mainData = mainForm.getRawValue();
-        const { characterInfo, passiveDetails, superAttackInfo } = this.#generateCardData(mainForm);
+        const { characterInfo, passiveDetails, superAttackInfo } =
+          this.#generateCardData(mainForm);
 
         const charInfo = characterInfo();
         if (charInfo?.activeSkill) {
@@ -155,8 +161,10 @@ export class CreateCardWithTransformationService {
           superAttackInfo: superAttackInfo(),
         };
 
-        return this.#createCardService.createCard(mainCardData).pipe(
-          switchMap((mainDocRef) => this.#handleArtwork(mainDocRef.id, mainArtwork))
+        return this.#cardApiService.createCard(mainCardData).pipe(
+          switchMap((mainDocRef) =>
+            this.#handleArtwork(mainDocRef.id, mainArtwork)
+          )
         );
       }),
       map((id) => ({ id }))

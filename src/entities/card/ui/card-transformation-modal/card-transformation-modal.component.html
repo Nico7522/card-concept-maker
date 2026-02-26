@@ -6,13 +6,12 @@
                 class="text-center relative scroll-m-20 font-extrabold tracking-tight text-2xl border-r-12 border-l-12 rounded-lg">
                 Echange Details
             </h2>
-
             <div class="border-2 mt-5 w-[90%] rounded-md bg-orange-900/70 p-2 flex self-center cursor-pointer"
                 (click)="onSwitchToBaseCard()">
-                <div class="relative w-20 h-20 flex-shrink-0">
-                    <img [src]="baseCardThumbnail()" width="80" height="80" alt="Card Thumbnail" class="object-cover rounded">
+                <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
                     @if (baseCardArtwork()) {
-                    <img [src]="baseCardArtwork()" width="80" height="80" alt="Card Artwork" class="absolute inset-0 object-cover rounded">
+                    <img [src]="baseCardArtwork()" width="50" height="50" alt="Card Artwork"
+                        class="object-cover rounded-lg">
                     } @else {
                     <div class="absolute inset-0 bg-black/50 rounded flex items-center justify-center">
                         <span class="text-gray-300 text-xs text-center">No artwork</span>
@@ -32,10 +31,10 @@
 
             <div class="border-2 mt-5 w-[90%] rounded-md bg-orange-900/70 p-2 flex self-center cursor-pointer"
                 (click)="onSwitchToTransformedCard()">
-                <div class="relative w-20 h-20 flex-shrink-0">
-                    <img [src]="transformedCardThumbnail()" width="80" height="80" alt="Card Thumbnail" class="object-cover rounded">
+                <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
                     @if (transformedCardArtwork()) {
-                    <img [src]="transformedCardArtwork()" width="80" height="80" alt="Card Artwork" class="absolute inset-0 object-cover rounded">
+                    <img [src]="transformedCardArtwork()" width="50" height="50" alt="Card Artwork"
+                        class="object-cover rounded-lg">
                     } @else {
                     <div class="absolute inset-0 bg-black/50 rounded flex items-center justify-center">
                         <span class="text-gray-300 text-xs text-center">No artwork</span>

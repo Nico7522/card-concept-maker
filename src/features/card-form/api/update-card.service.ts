@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 
-import { Card } from '~/src/entities/card';
+import { Card, CardApiService } from '~/src/entities/card';
 import { CardForm } from '../model/card-form-interface';
 import {
   UpdateCardParams,
@@ -12,7 +12,7 @@ import { generateCard } from '../lib/generate-card';
 import {
   ArtworkService,
   AuthService,
-  CardApiService,
+  ErrorToastService,
   GameDataService,
 } from '~/src/shared/api';
 
@@ -24,6 +24,7 @@ export class UpdateCardService {
   readonly #cardApiService = inject(CardApiService);
   readonly #artworkService = inject(ArtworkService);
   readonly #gameDataService = inject(GameDataService);
+  readonly #errorToastService = inject(ErrorToastService);
 
   updateCard(params: UpdateCardParams): Observable<{ id: string }> {
     const { cardId, mainForm, mainArtwork, currentArtwork } = params;
@@ -42,12 +43,12 @@ export class UpdateCardService {
 
     return this.#cardApiService.updateCard(cardId, cardData).pipe(
       switchMap(() => this.#handleArtwork(cardId, mainArtwork, currentArtwork)),
-      map(() => ({ id: cardId }))
+      map(() => ({ id: cardId })),
     );
   }
 
   updateCardWithTransformation(
-    params: UpdateCardWithTransformationParams
+    params: UpdateCardWithTransformationParams,
   ): Observable<{ id: string }> {
     const {
       cardId,
@@ -66,7 +67,7 @@ export class UpdateCardService {
         cardId,
         mainForm,
         mainArtwork,
-        currentArtwork
+        currentArtwork,
       );
     }
 
@@ -76,7 +77,7 @@ export class UpdateCardService {
         mainForm,
         mainArtwork,
         currentArtwork,
-        existingCardId
+        existingCardId,
       );
     }
 
@@ -87,7 +88,7 @@ export class UpdateCardService {
         mainArtwork,
         currentArtwork,
         transformedForm,
-        transformedArtwork
+        transformedArtwork,
       );
     }
 
@@ -98,7 +99,7 @@ export class UpdateCardService {
     cardId: string,
     mainForm: FormGroup<CardForm>,
     mainArtwork: FormData | null,
-    currentArtwork: string | null
+    currentArtwork: string | null,
   ): Observable<{ id: string }> {
     const data = mainForm.getRawValue();
     const { characterInfo, passiveDetails, superAttackInfo } =
@@ -120,7 +121,7 @@ export class UpdateCardService {
 
     return this.#cardApiService.updateCard(cardId, cardData).pipe(
       switchMap(() => this.#handleArtwork(cardId, mainArtwork, currentArtwork)),
-      map(() => ({ id: cardId }))
+      map(() => ({ id: cardId })),
     );
   }
 
@@ -129,7 +130,7 @@ export class UpdateCardService {
     mainForm: FormGroup<CardForm>,
     mainArtwork: FormData | null,
     currentArtwork: string | null,
-    existingCardId: string
+    existingCardId: string,
   ): Observable<{ id: string }> {
     const data = mainForm.getRawValue();
     const { characterInfo, passiveDetails, superAttackInfo } =
@@ -151,7 +152,7 @@ export class UpdateCardService {
 
     return this.#cardApiService.updateCard(cardId, cardData).pipe(
       switchMap(() => this.#handleArtwork(cardId, mainArtwork, currentArtwork)),
-      map(() => ({ id: cardId }))
+      map(() => ({ id: cardId })),
     );
   }
 
@@ -161,7 +162,7 @@ export class UpdateCardService {
     mainArtwork: FormData | null,
     currentArtwork: string | null,
     transformedForm: FormGroup<CardForm>,
-    transformedArtwork: FormData | null
+    transformedArtwork: FormData | null,
   ): Observable<{ id: string }> {
     const transformedData = transformedForm.getRawValue();
     const {
@@ -181,7 +182,7 @@ export class UpdateCardService {
 
     return this.#cardApiService.createCard(transformedCardData).pipe(
       switchMap((transformedDocRef) =>
-        this.#handleArtwork(transformedDocRef.id, transformedArtwork, null)
+        this.#handleArtwork(transformedDocRef.id, transformedArtwork, null),
       ),
       switchMap((transformedCardId) => {
         const mainData = mainForm.getRawValue();
@@ -202,13 +203,15 @@ export class UpdateCardService {
           superAttackInfo: superAttackInfo(),
         };
 
-        return this.#cardApiService.updateCard(cardId, mainCardData).pipe(
-          switchMap(() =>
-            this.#handleArtwork(cardId, mainArtwork, currentArtwork)
-          )
-        );
+        return this.#cardApiService
+          .updateCard(cardId, mainCardData)
+          .pipe(
+            switchMap(() =>
+              this.#handleArtwork(cardId, mainArtwork, currentArtwork),
+            ),
+          );
       }),
-      map(() => ({ id: cardId }))
+      map(() => ({ id: cardId })),
     );
   }
 
@@ -217,14 +220,14 @@ export class UpdateCardService {
       form,
       this.#gameDataService.categories(),
       this.#gameDataService.links(),
-      this.#gameDataService.passiveConditionActivation()
+      this.#gameDataService.passiveConditionActivation(),
     );
   }
 
   #handleArtwork(
     cardId: string,
     artwork: FormData | null,
-    currentArtwork: string | null
+    currentArtwork: string | null,
   ): Observable<string> {
     if (!artwork) {
       return of(cardId);
@@ -232,14 +235,18 @@ export class UpdateCardService {
 
     return this.#artworkService.patchArtworkImage(artwork).pipe(
       switchMap((response) =>
-        this.#artworkService.patchArtworkName(cardId, response.filename)
+        this.#artworkService.patchArtworkName(cardId, response.filename),
       ),
       switchMap(() =>
         currentArtwork
           ? this.#artworkService.deleteArtwork(currentArtwork)
-          : of(null)
+          : of(null),
       ),
-      map(() => cardId)
+      map(() => cardId),
+      catchError(() => {
+        this.#errorToastService.showToast('Artwork could not be updated');
+        return of(cardId);
+      }),
     );
   }
 }

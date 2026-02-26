@@ -1,5 +1,4 @@
 import {
-  Binding,
   ChangeDetectionStrategy,
   Component,
   ComponentRef,
@@ -10,7 +9,6 @@ import {
   OnDestroy,
   outputBinding,
   signal,
-  Type,
   viewChild,
   ViewContainerRef,
 } from '@angular/core';

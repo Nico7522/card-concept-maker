@@ -14,14 +14,6 @@ export * from './model/update-card-params.interface';
 // UI
 export * from './ui/card-form.component';
 export type { TransformationChangedEvent } from './ui/card-form.component';
-export * from './ui/active-skill-form/active-skill-form.component';
-export * from './ui/base-stat-form/base-stat-form.component';
-export * from './ui/super-attack-form/super-attack-form.component';
-export * from './ui/domain-form/domain-form.component';
-export * from './ui/categories-form/categories-form.component';
-export * from './ui/links-form/links-form.component';
-export * from './ui/passive-form/passive-form.component';
-export * from './ui/artwork-form/artwork-form.component';
 export * from './ui/transformation-selector/transformation-selector.component';
 
 // API

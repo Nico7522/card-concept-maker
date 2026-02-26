@@ -1,15 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap } from 'rxjs';
 
-import { Card } from '~/src/entities/card';
+import { Card, CardApiService } from '~/src/entities/card';
 import { CardForm } from '../model/card-form-interface';
 import { TransformationMode } from '../model/transformation-mode.type';
 import { generateCard } from '../lib/generate-card';
 import {
   ArtworkService,
   AuthService,
-  CardApiService,
+  ErrorToastService,
   GameDataService,
 } from '~/src/shared/api';
 
@@ -33,6 +33,7 @@ export class CreateCardService {
   readonly #cardApiService = inject(CardApiService);
   readonly #artworkService = inject(ArtworkService);
   readonly #gameDataService = inject(GameDataService);
+  readonly #errorToastService = inject(ErrorToastService);
 
   createCard(params: CreateCardParams): Observable<{ id: string }> {
     const { mainForm, mainArtwork } = params;
@@ -51,12 +52,12 @@ export class CreateCardService {
 
     return this.#cardApiService.createCard(cardData).pipe(
       switchMap((docRef) => this.#handleArtwork(docRef.id, mainArtwork)),
-      map((id) => ({ id }))
+      map((id) => ({ id })),
     );
   }
 
   createCardWithTransformation(
-    params: CreateCardWithTransformationParams
+    params: CreateCardWithTransformationParams,
   ): Observable<{ id: string }> {
     const {
       mainForm,
@@ -71,7 +72,7 @@ export class CreateCardService {
       return this.#createMainCardWithExistingTransformation(
         mainForm,
         mainArtwork,
-        existingCardId
+        existingCardId,
       );
     }
 
@@ -80,7 +81,7 @@ export class CreateCardService {
         mainForm,
         mainArtwork,
         transformedForm,
-        transformedArtwork
+        transformedArtwork,
       );
     }
 
@@ -90,7 +91,7 @@ export class CreateCardService {
   #createMainCardWithExistingTransformation(
     mainForm: FormGroup<CardForm>,
     mainArtwork: FormData | null,
-    existingCardId: string
+    existingCardId: string,
   ): Observable<{ id: string }> {
     const data = mainForm.getRawValue();
     const { characterInfo, passiveDetails, superAttackInfo } =
@@ -112,7 +113,7 @@ export class CreateCardService {
 
     return this.#cardApiService.createCard(cardData).pipe(
       switchMap((docRef) => this.#handleArtwork(docRef.id, mainArtwork)),
-      map((id) => ({ id }))
+      map((id) => ({ id })),
     );
   }
 
@@ -120,7 +121,7 @@ export class CreateCardService {
     mainForm: FormGroup<CardForm>,
     mainArtwork: FormData | null,
     transformedForm: FormGroup<CardForm>,
-    transformedArtwork: FormData | null
+    transformedArtwork: FormData | null,
   ): Observable<{ id: string }> {
     const transformedData = transformedForm.getRawValue();
     const {
@@ -140,7 +141,7 @@ export class CreateCardService {
 
     return this.#cardApiService.createCard(transformedCardData).pipe(
       switchMap((transformedDocRef) =>
-        this.#handleArtwork(transformedDocRef.id, transformedArtwork)
+        this.#handleArtwork(transformedDocRef.id, transformedArtwork),
       ),
       switchMap((transformedCardId) => {
         const mainData = mainForm.getRawValue();
@@ -161,13 +162,15 @@ export class CreateCardService {
           superAttackInfo: superAttackInfo(),
         };
 
-        return this.#cardApiService.createCard(mainCardData).pipe(
-          switchMap((mainDocRef) =>
-            this.#handleArtwork(mainDocRef.id, mainArtwork)
-          )
-        );
+        return this.#cardApiService
+          .createCard(mainCardData)
+          .pipe(
+            switchMap((mainDocRef) =>
+              this.#handleArtwork(mainDocRef.id, mainArtwork),
+            ),
+          );
       }),
-      map((id) => ({ id }))
+      map((id) => ({ id })),
     );
   }
 
@@ -176,7 +179,7 @@ export class CreateCardService {
       form,
       this.#gameDataService.categories(),
       this.#gameDataService.links(),
-      this.#gameDataService.passiveConditionActivation()
+      this.#gameDataService.passiveConditionActivation(),
     );
   }
 
@@ -187,9 +190,13 @@ export class CreateCardService {
 
     return this.#artworkService.patchArtworkImage(artwork).pipe(
       switchMap((response) =>
-        this.#artworkService.patchArtworkName(cardId, response.filename)
+        this.#artworkService.patchArtworkName(cardId, response.filename),
       ),
-      map(() => cardId)
+      map(() => cardId),
+      catchError(() => {
+        this.#errorToastService.showToast('Artwork could not be created');
+        return of(cardId);
+      }),
     );
   }
 }

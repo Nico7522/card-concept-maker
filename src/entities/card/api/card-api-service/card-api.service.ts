@@ -12,7 +12,7 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
-import { Card } from '~/src/entities/card';
+import { Card } from '../../model/card-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +25,8 @@ export class CardApiService {
   createCard(card: Card): Observable<{ id: string }> {
     return from(
       runInInjectionContext(this.#injector, () =>
-        addDoc(this.#cardsCollection, card)
-      )
+        addDoc(this.#cardsCollection, card),
+      ),
     );
   }
 
@@ -35,7 +35,7 @@ export class CardApiService {
       runInInjectionContext(this.#injector, () => {
         const ref = doc(this.#firestore, `cards/${id}`);
         return updateDoc(ref, data);
-      })
+      }),
     );
   }
 }

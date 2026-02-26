@@ -78,6 +78,7 @@
         <div class="flex flex-col gap-6">
             <app-passive-form controlKey="passive" label="Passive Skill" />
             <app-active-skill-form controlKey="activeSkill" label="Active Skill"
+                [allowTransformation]="allowTransformation()"
                 (transformationChanged)="handleTransformationChanged($event)" />
             <app-domain-form controlKey="domain" label="Domain" />
         </div>

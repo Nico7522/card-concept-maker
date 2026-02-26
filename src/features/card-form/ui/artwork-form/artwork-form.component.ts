@@ -14,7 +14,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ErrorComponent } from '~/src/shared/ui';
-import { artworkFormat } from '../..';
+import { artworkFormat } from '../../model/validators';
 
 @Component({
   selector: 'app-artwork-form',

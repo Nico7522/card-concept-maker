@@ -20,7 +20,11 @@ import {
   NgSelectComponent,
 } from '@ng-select/ng-select';
 import { NgIcon } from '@ng-icons/core';
-import { EffectFormGroup, PassiveFormGroup, PassivePartFormGroup } from '../..';
+import {
+  EffectFormGroup,
+  PassiveFormGroup,
+  PassivePartFormGroup,
+} from '../../model/passive-form-group-interface';
 import { ErrorComponent } from '~/src/shared/ui';
 import { GameDataService } from '~/src/shared/api';
 

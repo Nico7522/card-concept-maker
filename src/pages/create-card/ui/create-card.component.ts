@@ -26,7 +26,6 @@ import {
   ErrorToastService,
   GameDataService,
   LoadingService,
-  UserCardsService,
 } from '~/src/shared/api';
 import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
 import {
@@ -38,7 +37,7 @@ import {
   TransformationSelectorComponent,
   generateCard,
 } from '~/src/features/card-form';
-import { Card, CardComponent } from '~/src/entities/card';
+import { Card, CardComponent, UserCardsService } from '~/src/entities/card';
 
 @Component({
   selector: 'app-create-card-form',
@@ -207,13 +206,6 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
     this.hasTransformation.set(event.hasTransformation);
     if (event.hasTransformation) {
       this.#loadUserCards();
-    }
-  }
-
-  handleTransformationModeChanged(mode: TransformationMode) {
-    this.transformationMode.set(mode);
-    if (mode === 'existing') {
-      this.selectedExistingCardId.set(null);
     }
   }
 

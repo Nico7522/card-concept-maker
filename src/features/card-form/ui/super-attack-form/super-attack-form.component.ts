@@ -15,7 +15,8 @@ import {
 } from '@angular/forms';
 
 import { ErrorComponent } from '~/src/shared/ui';
-import { SuperAttackFormGroup, ultraSuperAttackRequired } from '../..';
+import { SuperAttackFormGroup } from '../../model/super-attack-form-group-interface';
+import { ultraSuperAttackRequired } from '../../model/validators';
 
 @Component({
   selector: 'app-super-attack-form',

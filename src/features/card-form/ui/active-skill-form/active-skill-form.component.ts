@@ -20,13 +20,12 @@ import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 import { ErrorComponent } from '~/src/shared/ui';
+import { ActiveSkillFormGroup } from '../../model/active-skill-form-group-interface';
 import {
   activeSkillConditionRequired,
   activeSkillEffectRequired,
-  ActiveSkillFormGroup,
   activeSkillNameRequired,
-} from '../..';
-import { from, of, switchMap } from 'rxjs';
+} from '../../model/validators';
 
 @Component({
   selector: 'app-active-skill-form',
@@ -52,6 +51,7 @@ export class ActiveSkillFormComponent implements OnDestroy, OnInit {
 
   controlKey = input.required<string>();
   label = input.required<string>();
+  allowTransformation = input<boolean>(true);
   transformationChanged = output<boolean>();
 
   get activeSkill() {

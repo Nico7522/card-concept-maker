@@ -13,9 +13,8 @@
             <!-- Transformation Section -->
             @if (showTransformationSection()) {
             <app-transformation-selector [userCards]="userCards()" [transformedCardForm]="transformedCardForm"
-                [initialMode]="initialTransformationMode()" [initialExistingCardId]="initialExistingCardId()"
-                (modeChanged)="handleTransformationModeChanged($event)"
-                [(existingCardSelected)]="selectedExistingCardId"
+                [(mode)]="transformationMode"
+                [(selectedCardId)]="selectedExistingCardId"
                 (transformedArtwork)="handleTransformedArtwork($event)" />
             }
 

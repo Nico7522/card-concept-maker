@@ -24,17 +24,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { AsyncPipe } from '@angular/common';
 import { AuthService } from '~/src/shared/api';
-import {
-  ActiveSkillFormComponent,
-  ArtworkFormComponent,
-  BaseStatFormComponent,
-  CardForm,
-  CategoriesFormComponent,
-  DomainFormComponent,
-  LinksFormComponent,
-  PassiveFormComponent,
-  SuperAttackFormComponent,
-} from '..';
+import { CardForm } from '../model/card-form-interface';
+import { ActiveSkillFormComponent } from './active-skill-form/active-skill-form.component';
+import { ArtworkFormComponent } from './artwork-form/artwork-form.component';
+import { BaseStatFormComponent } from './base-stat-form/base-stat-form.component';
+import { CategoriesFormComponent } from './categories-form/categories-form.component';
+import { DomainFormComponent } from './domain-form/domain-form.component';
+import { LinksFormComponent } from './links-form/links-form.component';
+import { PassiveFormComponent } from './passive-form/passive-form.component';
+import { SuperAttackFormComponent } from './super-attack-form/super-attack-form.component';
 
 export interface TransformationChangedEvent {
   hasTransformation: boolean;
@@ -78,6 +76,7 @@ export class CardFormComponent implements OnInit, OnDestroy {
   transformationChanged = output<TransformationChangedEvent>();
   controlKey = input.required<string>();
   label = input.required<string>();
+  allowTransformation = input<boolean>(true);
   isLegendary = signal(false);
   get cardForm(): FormGroup<CardForm> {
     return this.parentFormGroup.get(this.controlKey()) as FormGroup<CardForm>;
@@ -118,7 +117,7 @@ export class CardFormComponent implements OnInit, OnDestroy {
       } as CardForm),
     );
     this.parentFormGroup
-      .get('cardForm')
+      .get(this.controlKey())
       ?.get('isLegendary')
       ?.valueChanges?.pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe((value) => {

@@ -14,7 +14,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ErrorComponent } from '~/src/shared/ui';
-import { BaseStatFormGroup } from '../..';
+import { BaseStatFormGroup } from '../../model/base-stat-form-group-interface';
 
 @Component({
   selector: 'app-base-stat-form',

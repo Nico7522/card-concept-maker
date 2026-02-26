@@ -13,11 +13,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  DomainFormGroup,
-  domainEffectRequired,
-  domainNameRequired,
-} from '../..';
+import { DomainFormGroup } from '../../model/domain-form-group-interface';
+import { domainEffectRequired, domainNameRequired } from '../../model/validators';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { ErrorComponent } from '~/src/shared/ui';
 

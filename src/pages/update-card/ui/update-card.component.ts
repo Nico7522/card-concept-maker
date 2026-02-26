@@ -24,18 +24,17 @@ import {
   ErrorToastService,
   GameDataService,
   LoadingService,
-  UserCardsService,
 } from '~/src/shared/api';
 import {
   CardFormComponent,
   CardForm,
   TransformationChangedEvent,
   TransformationMode,
-  TransformationSelectorComponent,
   UpdateCardService,
   patchCardForm,
+  TransformationSelectorComponent,
 } from '~/src/features/card-form';
-import { Card } from '~/src/entities/card';
+import { Card, UserCardsService } from '~/src/entities/card';
 import { AsyncPipe } from '@angular/common';
 import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
 
@@ -92,19 +91,6 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   showTransformationSection = computed(() => this.hasTransformation());
   isNewCardMode = computed(() => this.transformationMode() === 'new');
 
-  // Initial values for edit mode (from existing card data)
-  initialTransformationMode = computed<TransformationMode>(() => {
-    const card = this.card();
-    const transformedCardId =
-      card?.characterInfo?.activeSkill?.transformedCardId;
-    return transformedCardId ? 'existing' : 'new';
-  });
-
-  initialExistingCardId = computed(() => {
-    const card = this.card();
-    return card?.characterInfo?.activeSkill?.transformedCardId ?? null;
-  });
-
   card$ = this.#activatedRoute.data.pipe(
     map((data) => {
       const baseCard = data['card']['baseCard'];
@@ -128,12 +114,13 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   onSubmit() {
     this.isFormSubmitted.set(true);
 
+    // Validate main card form
     const nestedCardForm = this.cardForm.get(
       'cardForm',
     ) as FormGroup<CardForm> | null;
     if (!nestedCardForm?.valid) return;
 
-    // Validate transformed form if needed
+    // Validate transformed card form if needed
     if (this.hasTransformation() && this.isNewCardMode()) {
       const transformedForm = this.transformedCardForm.get(
         'transformedCardForm',
@@ -250,13 +237,6 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
     this.hasTransformation.set(event.hasTransformation);
     if (event.hasTransformation) {
       this.#loadUserCards();
-    }
-  }
-
-  handleTransformationModeChanged(mode: TransformationMode) {
-    this.transformationMode.set(mode);
-    if (mode === 'existing') {
-      this.selectedExistingCardId.set(null);
     }
   }
 

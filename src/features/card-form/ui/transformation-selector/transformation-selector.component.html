@@ -11,12 +11,12 @@
         <div class="flex gap-4">
             <label class="flex items-center gap-2 cursor-pointer">
                 <input type="radio" name="transformationMode" [checked]="mode() === 'new'"
-                    (change)="onModeChange('new')" class="w-4 h-4 text-purple-500 focus:ring-purple-500">
+                    (change)="mode.set('new')" class="w-4 h-4 text-purple-500 focus:ring-purple-500">
                 <span class="text-white">Create a new card</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer">
                 <input type="radio" name="transformationMode" [checked]="mode() === 'existing'"
-                    (change)="onModeChange('existing')" class="w-4 h-4 text-purple-500 focus:ring-purple-500">
+                    (change)="mode.set('existing')" class="w-4 h-4 text-purple-500 focus:ring-purple-500">
                 <span class="text-white">Select an existing card</span>
             </label>
         </div>
@@ -47,6 +47,7 @@
     <div class="mt-6 pt-6 border-t border-purple-500/30" [formGroup]="transformedCardForm()">
         <h3 class="text-xl font-bold text-orange-400 mb-4">Transformed Card Details</h3>
         <app-card-form controlKey="transformedCardForm" label="Transformed Card"
+            [allowTransformation]="false"
             (artwork)="onTransformedArtwork($event)" />
     </div>
     }

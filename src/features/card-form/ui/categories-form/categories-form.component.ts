@@ -10,11 +10,9 @@ import {
 import { NgIconComponent } from '@ng-icons/core';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { GameDataService } from '~/src/shared/api';
-import {
-  CategoriesFormGroup,
-  categoryAlreadySelected,
-  isValueInArrayDuplicate,
-} from '../..';
+import { CategoriesFormGroup } from '../../model/categories-form-group-interface';
+import { categoryAlreadySelected } from '../../model/validators';
+import { isValueInArrayDuplicate } from '../../lib/is-value-in-array-duplicate';
 import { ErrorComponent } from '~/src/shared/ui';
 
 @Component({

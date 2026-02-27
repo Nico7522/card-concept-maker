@@ -10,8 +10,8 @@
     <div class="flex flex-col gap-4 mb-6">
         <div class="flex gap-4">
             <label class="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="transformationMode" [checked]="mode() === 'new'"
-                    (change)="mode.set('new')" class="w-4 h-4 text-purple-500 focus:ring-purple-500">
+                <input type="radio" name="transformationMode" [checked]="mode() === 'new'" (change)="mode.set('new')"
+                    class="w-4 h-4 text-purple-500 focus:ring-purple-500">
                 <span class="text-white">Create a new card</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer">
@@ -25,9 +25,9 @@
     <!-- Existing Card Selector -->
     @if (showExistingCardSelector()) {
     <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-gray-400 uppercase">Select one of your cards</label>
+        <label for="userCards" class="text-sm font-semibold text-gray-400 uppercase">Select one of your cards</label>
         @if (userCards().length > 0) {
-        <ng-select [items]="userCards()" bindLabel="cardName" [searchable]="true" [clearable]="true"
+        <ng-select id="userCards" [items]="userCards()" bindLabel="cardName" [searchable]="true" [clearable]="true"
             placeholder="Search your cards..." class="custom-select" [ngModel]="selectedCard()"
             (ngModelChange)="onExistingCardSelected($event)">
             <ng-template ng-option-tmp let-item="item">
@@ -46,8 +46,7 @@
     @if (showNewCardForm()) {
     <div class="mt-6 pt-6 border-t border-purple-500/30" [formGroup]="transformedCardForm()">
         <h3 class="text-xl font-bold text-orange-400 mb-4">Transformed Card Details</h3>
-        <app-card-form controlKey="transformedCardForm" label="Transformed Card"
-            [allowTransformation]="false"
+        <app-card-form controlKey="transformedCardForm" label="Transformed Card" [allowTransformation]="false"
             (artwork)="onTransformedArtwork($event)" />
     </div>
     }

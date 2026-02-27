@@ -12,10 +12,9 @@
 
             <!-- Transformation Section -->
             @if (showTransformationSection()) {
-            <app-transformation-selector [userCards]="userCards()" [transformedCardForm]="transformedCardForm"
-                [(mode)]="transformationMode"
-                [(selectedCardId)]="selectedExistingCardId"
-                (transformedArtwork)="handleTransformedArtwork($event)" />
+            <app-transformation-selector [userCards]="(userCards$ | async) ?? []"
+                [transformedCardForm]="transformedCardForm" [(mode)]="transformationMode"
+                [(selectedCardId)]="selectedExistingCardId" (transformedArtwork)="handleTransformedArtwork($event)" />
             }
 
             <div class="flex justify-center mt-8 pt-8 border-t border-gray-700">

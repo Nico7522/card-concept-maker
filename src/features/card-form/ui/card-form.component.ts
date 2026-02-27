@@ -2,10 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  effect,
   inject,
   input,
-  model,
   OnDestroy,
   OnInit,
   output,
@@ -22,7 +20,6 @@ import { ErrorComponent } from '~/src/shared/ui';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { AsyncPipe } from '@angular/common';
 import { AuthService } from '~/src/shared/api';
 import { CardForm } from '../model/card-form-interface';
 import { ActiveSkillFormComponent } from './active-skill-form/active-skill-form.component';
@@ -54,7 +51,6 @@ export interface TransformationChangedEvent {
     NgSelectComponent,
     NgOptionComponent,
     ReactiveFormsModule,
-    AsyncPipe,
   ],
   templateUrl: './card-form.component.html',
   styleUrl: './card-form.component.css',
@@ -69,7 +65,7 @@ export class CardFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);
   readonly #destroyRef = inject(DestroyRef);
   readonly #authService = inject(AuthService);
-  user$ = this.#authService.user$;
+  user = this.#authService.user;
   artwork = output<FormData>();
 
   // Signal informing the parent component that the active skill has a transformation
@@ -124,6 +120,7 @@ export class CardFormComponent implements OnInit, OnDestroy {
         this.isLegendary.set(value as boolean);
       });
   }
+
   handleArtwork(formData: FormData) {
     this.artwork.emit(formData);
   }

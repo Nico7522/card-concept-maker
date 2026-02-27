@@ -1,4 +1,11 @@
-import { Component, inject, input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   ControlContainer,
   FormArray,
@@ -32,6 +39,7 @@ import { ErrorComponent } from '~/src/shared/ui';
       useFactory: () => inject(ControlContainer, { skipSelf: true }),
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);

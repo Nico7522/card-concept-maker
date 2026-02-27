@@ -11,8 +11,19 @@ import {
   query,
   where,
 } from '@angular/fire/firestore';
-import { catchError, from, map, Observable, of } from 'rxjs';
+import {
+  catchError,
+  filter,
+  from,
+  map,
+  Observable,
+  of,
+  shareReplay,
+  switchMap,
+  take,
+} from 'rxjs';
 import { Card } from '../../model/card-interface';
+import { AuthService } from '~/src/shared/api';
 
 @Injectable({
   providedIn: 'root',
@@ -20,14 +31,12 @@ import { Card } from '../../model/card-interface';
 export class UserCardsService {
   readonly #injector = inject(Injector);
   readonly #firestore = inject(Firestore);
+  readonly #authService = inject(AuthService);
 
-  getCardsByUserId(userId: string): Observable<Card[]> {
+  #getCardsByUserId(userId: string): Observable<Card[]> {
     const cardsCollection = collection(this.#firestore, 'cards');
     const q = query(cardsCollection, where('creatorId', '==', userId));
-
-    return from(
-      runInInjectionContext(this.#injector, () => getDocs(q)),
-    ).pipe(
+    return from(runInInjectionContext(this.#injector, () => getDocs(q))).pipe(
       map((snapshot) =>
         snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Card),
       ),
@@ -39,4 +48,11 @@ export class UserCardsService {
       catchError(() => of([])),
     );
   }
+
+  userCards$ = this.#authService.user$.pipe(
+    filter((user) => !!user),
+    take(1),
+    switchMap((user) => this.#getCardsByUserId(user!.uid)),
+    shareReplay({ refCount: true, bufferSize: 1 }),
+  );
 }

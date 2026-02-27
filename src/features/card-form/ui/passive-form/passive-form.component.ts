@@ -95,13 +95,11 @@ export class PassiveFormComponent implements OnInit, OnDestroy {
     this.parentFormGroup.removeControl(this.controlKey());
   }
 
-  // Get a full passive part
   get passiveParts(): FormArray {
     const formGroup = this.parentFormGroup.get(this.controlKey()) as FormArray;
     return formGroup.get('passivePart') as FormArray;
   }
 
-  // Get all effects for a passive part
   getPassiveEffects(index: number): FormArray {
     return this.passiveParts.controls[index].get('effect') as FormArray;
   }

@@ -15,8 +15,8 @@ import {
   heroArrowLongRight,
   heroPlus,
 } from '@ng-icons/heroicons/outline';
-import { catchError, combineLatest, EMPTY, filter, map, take } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, combineLatest, EMPTY, filter, map, take, tap } from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -85,19 +85,20 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   hasTransformation = signal(false);
   transformationMode = signal<TransformationMode>('existing');
   selectedExistingCardId = signal<string | null>(null);
-  userCards = signal<Card[]>([]);
+
+  // Load user cards
+  userCards$ = this.#userCardsService.userCards$;
 
   // Computed
   showTransformationSection = computed(() => this.hasTransformation());
   isNewCardMode = computed(() => this.transformationMode() === 'new');
 
   card$ = this.#activatedRoute.data.pipe(
-    map((data) => {
+    tap((data) => {
       const baseCard = data['card']['baseCard'];
       const transformedCard = data['card']['transformedCard'];
       this.card.set(baseCard);
       this.transformedCard.set(transformedCard);
-
       // Initialize transformation state from existing data
       const transformedCardId =
         baseCard?.characterInfo?.activeSkill?.transformedCardId;
@@ -105,11 +106,9 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
         this.hasTransformation.set(true);
         this.transformationMode.set('existing');
         this.selectedExistingCardId.set(transformedCardId);
-        this.#loadUserCards();
       }
-
-      return baseCard;
     }),
+    map((data) => data['card']['baseCard']),
   );
   onSubmit() {
     this.isFormSubmitted.set(true);
@@ -235,24 +234,9 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
 
   handleTransformationChanged(event: TransformationChangedEvent) {
     this.hasTransformation.set(event.hasTransformation);
-    if (event.hasTransformation) {
-      this.#loadUserCards();
-    }
   }
 
   handleTransformedArtwork(formData: FormData) {
     this.transformedArtwork.set(formData);
-  }
-
-  #loadUserCards() {
-    const userId = this.#authService.user()?.uid;
-    if (userId) {
-      this.#userCardsService
-        .getCardsByUserId(userId)
-        .pipe(take(1))
-        .subscribe((cards) => {
-          this.userCards.set(cards);
-        });
-    }
   }
 }

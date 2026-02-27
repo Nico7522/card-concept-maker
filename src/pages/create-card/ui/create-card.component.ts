@@ -18,6 +18,7 @@ import {
   heroArrowLongRight,
   heroPlus,
 } from '@ng-icons/heroicons/outline';
+import { AsyncPipe } from '@angular/common';
 import { catchError, EMPTY, take } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -37,7 +38,7 @@ import {
   TransformationSelectorComponent,
   generateCard,
 } from '~/src/features/card-form';
-import { Card, CardComponent, UserCardsService } from '~/src/entities/card';
+import { CardComponent, UserCardsService } from '~/src/entities/card';
 
 @Component({
   selector: 'app-create-card-form',
@@ -46,6 +47,7 @@ import { Card, CardComponent, UserCardsService } from '~/src/entities/card';
     ReactiveFormsModule,
     CardFormComponent,
     TransformationSelectorComponent,
+    AsyncPipe,
   ],
   templateUrl: './create-card.component.html',
   styleUrl: './create-card.component.css',
@@ -71,17 +73,18 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   cardForm = new FormGroup({});
   transformedCardForm = new FormGroup({});
 
+  // Load user cards
+  userCards$ = this.#userCardsService.userCards$;
+
   // Signals
   artwork = signal<FormData | null>(null);
   transformedArtwork = signal<FormData | null>(null);
   isFormSubmitted = signal(false);
-  title = signal('Card Details');
 
   // Transformation state
   hasTransformation = signal(false);
   transformationMode = signal<TransformationMode>('new');
   selectedExistingCardId = signal<string | null>(null);
-  userCards = signal<Card[]>([]);
 
   // Computed
   showTransformationSection = computed(() => this.hasTransformation());
@@ -97,9 +100,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
     const nestedCardForm = this.cardForm.get(
       'cardForm',
     ) as FormGroup<CardForm> | null;
-    if (!nestedCardForm?.valid) {
-      return;
-    }
+    if (!nestedCardForm?.valid) return;
 
     // Validate transformed form if needed
     if (this.hasTransformation() && this.isNewCardMode()) {
@@ -204,24 +205,9 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
 
   handleTransformationChanged(event: TransformationChangedEvent) {
     this.hasTransformation.set(event.hasTransformation);
-    if (event.hasTransformation) {
-      this.#loadUserCards();
-    }
   }
 
   handleTransformedArtwork(formData: FormData) {
     this.transformedArtwork.set(formData);
-  }
-
-  #loadUserCards() {
-    const userId = this.#authService.user()?.uid;
-    if (userId) {
-      this.#userCardsService
-        .getCardsByUserId(userId)
-        .pipe(take(1))
-        .subscribe((cards) => {
-          this.userCards.set(cards);
-        });
-    }
   }
 }

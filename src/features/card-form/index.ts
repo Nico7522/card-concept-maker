@@ -17,10 +17,11 @@ export type { TransformationChangedEvent } from './ui/card-form.component';
 export * from './ui/transformation-selector/transformation-selector.component';
 
 // API
-export * from './api/create-card.service';
-export * from './api/update-card.service';
+export * from './api/card-persistence.service';
 
 // LIB
 export * from './lib/generate-card';
+export * from './lib/build-card-data';
 export * from './lib/patch-card-form';
+export * from './lib/card-form-page-state';
 export * from './lib/is-value-in-array-duplicate';

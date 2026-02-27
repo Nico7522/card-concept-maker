@@ -2,11 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   ComponentRef,
-  computed,
   inject,
   inputBinding,
   OnDestroy,
-  signal,
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -32,10 +30,9 @@ import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
 import {
   CardForm,
   CardFormComponent,
-  CreateCardService,
-  TransformationChangedEvent,
-  TransformationMode,
+  CardPersistenceService,
   TransformationSelectorComponent,
+  createCardFormPageState,
   generateCard,
 } from '~/src/features/card-form';
 import { CardComponent, UserCardsService } from '~/src/entities/card';
@@ -62,75 +59,50 @@ import { CardComponent, UserCardsService } from '~/src/entities/card';
 })
 export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   readonly #authService = inject(AuthService);
-  readonly #createCardService = inject(CreateCardService);
+  readonly #cardPersistenceService = inject(CardPersistenceService);
   readonly #errorToastService = inject(ErrorToastService);
   readonly #router = inject(Router);
   readonly #gameDataService = inject(GameDataService);
   readonly #loadingService = inject(LoadingService);
-  readonly #userCardsService = inject(UserCardsService);
 
-  // Form state
-  cardForm = new FormGroup({});
-  transformedCardForm = new FormGroup({});
+  readonly formState = createCardFormPageState(inject(UserCardsService));
 
-  // Load user cards
-  userCards$ = this.#userCardsService.userCards$;
+  cardForm = this.formState.cardForm;
+  transformedCardForm = this.formState.transformedCardForm;
+  artwork = this.formState.artwork;
+  transformedArtwork = this.formState.transformedArtwork;
+  isFormSubmitted = this.formState.isFormSubmitted;
+  hasTransformation = this.formState.hasTransformation;
+  transformationMode = this.formState.transformationMode;
+  selectedExistingCardId = this.formState.selectedExistingCardId;
+  showTransformationSection = this.formState.showTransformationSection;
+  isNewCardMode = this.formState.isNewCardMode;
+  userCards$ = this.formState.userCards$;
+  handleArtwork = this.formState.handleArtwork;
+  handleTransformedArtwork = this.formState.handleTransformedArtwork;
+  handleTransformationChanged = this.formState.handleTransformationChanged;
 
-  // Signals
-  artwork = signal<FormData | null>(null);
-  transformedArtwork = signal<FormData | null>(null);
-  isFormSubmitted = signal(false);
-
-  // Transformation state
-  hasTransformation = signal(false);
-  transformationMode = signal<TransformationMode>('new');
-  selectedExistingCardId = signal<string | null>(null);
-
-  // Computed
-  showTransformationSection = computed(() => this.hasTransformation());
-  isNewCardMode = computed(() => this.transformationMode() === 'new');
-
-  // View refs
   card = viewChild.required('card', { read: ViewContainerRef });
   componentRefs: ComponentRef<CardComponent> | null = null;
 
   onSubmit() {
-    this.isFormSubmitted.set(true);
-
-    const nestedCardForm = this.cardForm.get(
-      'cardForm',
-    ) as FormGroup<CardForm> | null;
-    if (!nestedCardForm?.valid) return;
-
-    // Validate transformed form if needed
-    if (this.hasTransformation() && this.isNewCardMode()) {
-      const transformedForm = this.transformedCardForm.get(
-        'transformedCardForm',
-      ) as FormGroup<CardForm> | null;
-      if (!transformedForm?.valid) {
-        return;
-      }
-    }
+    const validated = this.formState.validateForms();
+    if (!validated) return;
 
     if (this.#authService.user() !== null) {
-      this.#createCardForAuthenticatedUser(nestedCardForm);
+      this.#createCardForAuthenticatedUser(validated.mainForm);
     } else {
-      this.#previewCardForGuest(nestedCardForm);
+      this.#previewCardForGuest(validated.mainForm);
     }
   }
 
   #createCardForAuthenticatedUser(mainForm: FormGroup<CardForm>) {
     this.#loadingService.start();
 
-    const transformedForm =
-      this.hasTransformation() && this.isNewCardMode()
-        ? (this.transformedCardForm.get(
-            'transformedCardForm',
-          ) as unknown as FormGroup<CardForm>)
-        : null;
+    const transformedForm = this.formState.getTransformedForm();
 
     const request$ = this.hasTransformation()
-      ? this.#createCardService.createCardWithTransformation({
+      ? this.#cardPersistenceService.createCardWithTransformation({
           mainForm,
           mainArtwork: this.artwork(),
           mode: this.transformationMode(),
@@ -138,7 +110,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
           transformedForm,
           transformedArtwork: this.transformedArtwork(),
         })
-      : this.#createCardService.createCard({
+      : this.#cardPersistenceService.createCard({
           mainForm,
           mainArtwork: this.artwork(),
         });
@@ -190,24 +162,6 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   }
 
   hasUnsavedChanges() {
-    const mainFormDirty = this.cardForm.dirty;
-    const transformedFormDirty =
-      this.hasTransformation() &&
-      this.isNewCardMode() &&
-      this.transformedCardForm.dirty;
-    return (mainFormDirty || transformedFormDirty) && !this.isFormSubmitted();
-  }
-
-  // Event handlers
-  handleArtwork(formData: FormData) {
-    this.artwork.set(formData);
-  }
-
-  handleTransformationChanged(event: TransformationChangedEvent) {
-    this.hasTransformation.set(event.hasTransformation);
-  }
-
-  handleTransformedArtwork(formData: FormData) {
-    this.transformedArtwork.set(formData);
+    return this.formState.hasUnsavedChanges();
   }
 }

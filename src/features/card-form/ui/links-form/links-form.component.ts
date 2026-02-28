@@ -39,7 +39,6 @@ import { ErrorComponent } from '~/src/shared/ui';
       useFactory: () => inject(ControlContainer, { skipSelf: true }),
     },
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LinksFormComponent implements OnInit, OnDestroy {
   readonly #parentContainer = inject(ControlContainer);

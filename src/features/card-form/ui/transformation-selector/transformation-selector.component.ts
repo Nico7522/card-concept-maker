@@ -5,6 +5,7 @@ import {
   input,
   model,
   output,
+  signal,
 } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
@@ -12,6 +13,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { Card } from '~/src/entities/card';
 import { TransformationMode } from '../../model/transformation-mode.type';
 import { CardFormComponent } from '../card-form.component';
+import { CardForm } from '../../model/card-form-interface';
 
 @Component({
   selector: 'app-transformation-selector',
@@ -31,15 +33,15 @@ export class TransformationSelectorComponent {
   transformedCardForm = input.required<FormGroup>();
 
   // Two-way bindings
-  mode = model<TransformationMode>('new');
+  mode = model<TransformationMode>('existing');
   selectedCardId = model<string | null>(null);
 
   // Outputs
   transformedArtwork = output<FormData>();
 
   // Computed
-  showNewCardForm = computed(() => this.mode() === 'new');
-  showExistingCardSelector = computed(() => this.mode() === 'existing');
+  showExistingCardForm = computed(() => this.mode() === 'existing');
+  showCardSelector = computed(() => this.mode() === 'select');
 
   // Find the selected card object for ng-select
   selectedCard = computed(() => {

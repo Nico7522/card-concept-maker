@@ -12,11 +12,13 @@ export function createCardFormPageState(userCardsService: UserCardsService) {
   const transformedArtwork = signal<FormData | null>(null);
   const isFormSubmitted = signal(false);
   const hasTransformation = signal(false);
-  const transformationMode = signal<TransformationMode>('new');
+  const transformationMode = signal<TransformationMode>('existing');
   const selectedExistingCardId = signal<string | null>(null);
 
   const showTransformationSection = computed(() => hasTransformation());
-  const isNewCardMode = computed(() => transformationMode() === 'new');
+  const isExistingCardMode = computed(
+    () => transformationMode() === 'existing',
+  );
   const userCards$ = userCardsService.userCards$;
 
   function getNestedForm(): FormGroup<CardForm> | null {
@@ -24,7 +26,7 @@ export function createCardFormPageState(userCardsService: UserCardsService) {
   }
 
   function getTransformedForm(): FormGroup<CardForm> | null {
-    if (!hasTransformation() || !isNewCardMode()) return null;
+    if (!hasTransformation() || !isExistingCardMode()) return null;
     return transformedCardForm.get(
       'transformedCardForm',
     ) as FormGroup<CardForm> | null;
@@ -39,7 +41,7 @@ export function createCardFormPageState(userCardsService: UserCardsService) {
     const mainForm = getNestedForm();
     if (!mainForm?.valid) return null;
 
-    if (hasTransformation() && isNewCardMode()) {
+    if (hasTransformation() && isExistingCardMode()) {
       const transformed = getTransformedForm();
       if (!transformed?.valid) return null;
     }
@@ -53,7 +55,7 @@ export function createCardFormPageState(userCardsService: UserCardsService) {
   function hasUnsavedChanges(): boolean {
     const mainDirty = cardForm.dirty;
     const transDirty =
-      hasTransformation() && isNewCardMode() && transformedCardForm.dirty;
+      hasTransformation() && isExistingCardMode() && transformedCardForm.dirty;
     return (mainDirty || transDirty) && !isFormSubmitted();
   }
 
@@ -68,7 +70,7 @@ export function createCardFormPageState(userCardsService: UserCardsService) {
     selectedExistingCardId,
 
     showTransformationSection,
-    isNewCardMode,
+    isExistingCardMode,
     userCards$,
 
     handleArtwork: (fd: FormData) => artwork.set(fd),

@@ -19,7 +19,7 @@
 
             <div class="flex justify-center mt-8 pt-8 border-t border-gray-700">
                 <button type="submit"
-                    [disabled]="cardForm.invalid || (showTransformationSection() && isNewCardMode() && transformedCardForm.invalid) || (showTransformationSection() && !isNewCardMode() && !selectedExistingCardId())"
+                    [disabled]="cardForm.invalid || (showTransformationSection() && isExistingCardMode() && transformedCardForm.invalid) || (showTransformationSection() && !isExistingCardMode() && !selectedExistingCardId())"
                     class="px-12 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold text-xl uppercase tracking-wider rounded shadow-lg transform transition hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
                     @if (hasTransformation()) {
                     Update Cards

@@ -77,7 +77,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   transformationMode = this.formState.transformationMode;
   selectedExistingCardId = this.formState.selectedExistingCardId;
   showTransformationSection = this.formState.showTransformationSection;
-  isNewCardMode = this.formState.isNewCardMode;
+  isExistingCardMode = this.formState.isExistingCardMode;
   userCards$ = this.formState.userCards$;
   handleArtwork = this.formState.handleArtwork;
   handleTransformedArtwork = this.formState.handleTransformedArtwork;
@@ -118,6 +118,8 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
     const card = this.card();
     const transformedForm = this.formState.getTransformedForm();
 
+    const transformedCard = this.transformedCard();
+
     const request$ = this.hasTransformation()
       ? this.#cardPersistenceService.updateCardWithTransformation({
           cardId,
@@ -129,6 +131,8 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
           transformedForm,
           transformedArtwork: this.transformedArtwork(),
           hasTransformation: this.hasTransformation(),
+          transformedCardId: transformedCard?.id ?? null,
+          currentTransformedArtwork: transformedCard?.artwork ?? null,
         })
       : this.#cardPersistenceService.updateCard({
           cardId,
@@ -157,7 +161,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   ngAfterViewInit(): void {
     this.#loadingService.start();
     const nestedCardForm = this.formState.getNestedForm();
-
+    const transformedCardForm = this.formState.getTransformedForm();
     combineLatest([
       this.card$.pipe(filter((card) => !!card)),
       this.#gameDataService.categories$,
@@ -166,7 +170,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
       this.#gameDataService.effectDuration$,
       this.#authService.user$.pipe(filter((user) => !!user)),
     ])
-      .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
+      .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe(
         ([
           card,
@@ -179,6 +183,16 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
             patchCardForm(
               nestedCardForm,
               card,
+              categories,
+              links,
+              passiveConditionActivation,
+              effectDuration,
+            );
+          }
+          if (transformedCardForm && this.transformedCard()) {
+            patchCardForm(
+              transformedCardForm,
+              this.transformedCard() as Card,
               categories,
               links,
               passiveConditionActivation,

@@ -76,7 +76,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   transformationMode = this.formState.transformationMode;
   selectedExistingCardId = this.formState.selectedExistingCardId;
   showTransformationSection = this.formState.showTransformationSection;
-  isNewCardMode = this.formState.isNewCardMode;
+  isExistingCardMode = this.formState.isExistingCardMode;
   userCards$ = this.formState.userCards$;
   handleArtwork = this.formState.handleArtwork;
   handleTransformedArtwork = this.formState.handleTransformedArtwork;

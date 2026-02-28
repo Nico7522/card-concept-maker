@@ -15,4 +15,6 @@ export interface UpdateCardWithTransformationParams extends UpdateCardParams {
   transformedForm: FormGroup<CardForm> | null;
   transformedArtwork: FormData | null;
   hasTransformation: boolean;
+  transformedCardId: string | null;
+  currentTransformedArtwork: string | null;
 }

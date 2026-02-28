@@ -1,1 +1,1 @@
-export type TransformationMode = 'new' | 'existing';
+export type TransformationMode = 'existing' | 'select';

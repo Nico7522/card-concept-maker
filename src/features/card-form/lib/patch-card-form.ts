@@ -21,8 +21,11 @@ export function patchCardForm(
   effectDuration: EffectDuration[],
 ) {
   if (card.characterInfo) {
+    console.log(form);
+
     form.patchValue(card);
     form.get('artwork')?.patchValue(card.artwork ?? null);
+
     form.get('type')?.patchValue(card.characterInfo.type);
     form.get('class')?.patchValue(card.characterInfo.class);
     form
@@ -169,7 +172,9 @@ export function patchCardForm(
     activeSkillCondition:
       card.characterInfo?.activeSkill?.activeSkillCondition ?? '',
     activeSkillEffect: card.characterInfo?.activeSkill?.activeSkillEffect ?? '',
-    hasTransformation: card.characterInfo?.activeSkill?.transformedCardId ? true : false,
+    hasTransformation: card.characterInfo?.activeSkill?.transformedCardId
+      ? true
+      : false,
   });
 
   form.get('domain')?.patchValue({

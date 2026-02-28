@@ -6,7 +6,7 @@
                 class="text-center relative scroll-m-20 font-extrabold tracking-tight text-2xl border-r-12 border-l-12 rounded-lg">
                 Echange Details
             </h2>
-            <div class="border-2 mt-5 w-[90%] rounded-md bg-orange-900/70 p-2 flex self-center cursor-pointer"
+            <div class="border-2 mt-5 w-[90%] rounded-md bg-orange-900/70 py-2 flex self-center cursor-pointer"
                 (click)="onSwitchToBaseCard()">
                 <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
                     @if (baseCardArtwork()) {
@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="border-2 mt-5 w-[90%] rounded-md bg-orange-900/70 p-2 flex self-center cursor-pointer"
+            <div class="border-4 border-[#A6A67B] mt-8 w-[90%] rounded-md bg-orange-900/70 py-2 flex self-center cursor-pointer relative"
                 (click)="onSwitchToTransformedCard()">
                 <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
                     @if (transformedCardArtwork()) {
@@ -42,7 +42,14 @@
                     }
                 </div>
                 <div class="flex flex-col w-full overflow-hidden">
-                    <h3 class="ml-2 text-white w-full font-bold border-b-2 border-white">{{transformedCard().cardName}}
+                    <div class="absolute -top-6 left-1 w-50 bg-[#A6A67B] border-2 border-[#A6A67B] flex items-center justify-center"
+                        style="transform: skewX(-10deg);">
+                        <span
+                            class="text-center text-xs font-bold uppercase tracking-wide bg-gradient-to-b from-yellow-300 to-orange-700 bg-clip-text text-transparent">Apt.
+                            Passive</span>
+                    </div>
+                    <h3 class="ml-2 text-white w-full font-bold border-b-2 border-[#A6A67B]">
+                        {{transformedCard().cardName}}
                     </h3>
                     <h4 class="ml-2 text-xs text-orange-400">Echange : Condition(s)</h4>
                     <div class="ml-2 mr-2 h-7 bg-black italic flex max-w-full" style="transform: skewX(-10deg);">

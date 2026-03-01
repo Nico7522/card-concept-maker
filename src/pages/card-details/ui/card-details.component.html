@@ -2,7 +2,7 @@
 <div class="flex flex-col items-center py-8 min-h-screen">
     <!-- Top Bar with Back Button and Actions -->
     <div class="w-full max-w-5xl px-4 flex justify-between items-center mb-8">
-        <a [routerLink]="['/user', cards.baseCard.creatorId, 'cards']"
+        <a [routerLink]="['/user', cards.currentCard.creatorId, 'cards']"
             class="flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors group">
             <ng-icon name="heroArrowLeft" class="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
             <span class="font-bold uppercase tracking-wider text-sm">Back to Collection</span>
@@ -12,7 +12,7 @@
         <div class="flex gap-3">
             <button ubButton size="sm"
                 class="cursor-pointer flex items-center gap-2 bg-blue-900/80 hover:bg-blue-800 border border-blue-600/50 text-blue-100 px-4 py-2 rounded font-bold uppercase tracking-wider transition-all hover:shadow-lg hover:shadow-blue-500/20"
-                [routerLink]="['/card', cardId(), 'update']">
+                [routerLink]="['/card', cards.currentCard.id, 'update']">
                 <ng-icon name="heroPencilSquare" class="h-4 w-4" />
                 <span class="hidden sm:inline">Update</span>
             </button>
@@ -28,11 +28,11 @@
     <!-- Card Title Section -->
     <div class="text-center mb-10">
         <h1 class="dokkan-header text-3xl md:text-5xl mb-2 tracking-tight break-all">
-            {{cards.baseCard.cardName}}
+            {{cards.currentCard.cardName}}
         </h1>
         <div class="flex items-center justify-center gap-2 text-gray-400 text-sm">
             <span>Created by</span>
-            <span class="text-orange-500 font-bold uppercase">{{cards.baseCard.creatorName}}</span>
+            <span class="text-orange-500 font-bold uppercase">{{cards.currentCard.creatorName}}</span>
         </div>
     </div>
     <!-- Share link -->
@@ -42,7 +42,7 @@
             <span class="text-orange-500 text-sm font-bold uppercase tracking-wider shrink-0">Share</span>
             <span class="text-gray-600">|</span>
             <span class="text-gray-400 text-sm truncate flex-1 select-all">{{ 'https://dokkan-card-maker.com/card/' +
-                cards.baseCard.id }}</span>
+                cards.currentCard.id }}</span>
             <button (click)="copyShareLink()"
                 class="shrink-0 p-2 rounded hover:bg-gray-700 transition-colors cursor-pointer"
                 [class.text-green-400]="isCopied()" [class.text-gray-400]="!isCopied()">
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <app-card [baseCard]="cards.baseCard" [transformedCard]="cards.transformedCard" />
+    <app-card [baseCard]="cards.baseCard" [transformedCard]="cards.transformedCard" [selectedCard]="selectedCard()" />
 </div>
 }
 

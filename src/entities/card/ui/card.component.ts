@@ -6,10 +6,10 @@ import {
   input,
   inputBinding,
   linkedSignal,
+  model,
   OnDestroy,
   outputBinding,
   signal,
-  twoWayBinding,
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -91,9 +91,16 @@ export class CardComponent implements OnDestroy {
   );
   baseCard = input.required<Card>();
   transformedCard = input.required<Card | null>();
-  selectedCard = signal<'base' | 'transformed'>('base');
+  // cardToDisplay = input.required<'base' | 'transformed'>();
+  selectedCard = model<'base' | 'transformed'>('base');
 
-  card = linkedSignal(this.baseCard);
+  card = linkedSignal(() => {
+    if (this.selectedCard() === 'base') {
+      return this.baseCard();
+    } else {
+      return this.transformedCard() as Card;
+    }
+  });
   showEchangeButton = computed(() => this.transformedCard() !== null);
   readonly imgUrl = computed(
     () => environment.apiUrl + '/' + this.card().artwork,
@@ -177,7 +184,7 @@ export class CardComponent implements OnDestroy {
         bindings: [
           inputBinding('baseCard', () => this.baseCard()),
           inputBinding('transformedCard', () => this.transformedCard()),
-          twoWayBinding('selectedCard', this.selectedCard),
+          inputBinding('selectedCard', () => this.selectedCard()),
           outputBinding('close', () => {
             this.isAmodalOpen.set(false);
             if (this.globalModalRef) {
@@ -185,7 +192,6 @@ export class CardComponent implements OnDestroy {
             }
           }),
           outputBinding('switchToTransformedCard', () => {
-            this.card.set(this.transformedCard() as Card);
             this.selectedCard.set('transformed');
             this.isAmodalOpen.set(false);
             if (this.globalModalRef) {
@@ -193,7 +199,6 @@ export class CardComponent implements OnDestroy {
             }
           }),
           outputBinding('switchToBaseCard', () => {
-            this.card.set(this.baseCard() as Card);
             this.selectedCard.set('base');
             this.isAmodalOpen.set(false);
             if (this.globalModalRef) {

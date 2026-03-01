@@ -42,7 +42,9 @@ export class UserCardsService {
       ),
       map((cards) =>
         cards.filter(
-          (card) => !card.characterInfo?.activeSkill?.transformedCardId,
+          (card) =>
+            !card.characterInfo?.activeSkill?.transformedCardId &&
+            !card.characterInfo?.activeSkill?.baseCardId,
         ),
       ),
       catchError(() => of([])),

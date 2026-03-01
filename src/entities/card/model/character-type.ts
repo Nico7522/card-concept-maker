@@ -22,6 +22,7 @@ export type ActiveSkill = {
   activeSkillCondition: string;
   activeSkillEffect: string;
   transformedCardId?: string;
+  baseCardId?: string;
 } | null;
 type CharacterType = 'teq' | 'str' | 'agl' | 'int' | 'phy';
 type ClassType = 'super' | 'extreme';

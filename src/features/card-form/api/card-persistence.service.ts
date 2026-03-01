@@ -181,13 +181,40 @@ export class CardPersistenceService {
     transformedForm: FormGroup<CardForm>,
     transformedArtwork: FormData | null,
   ): Observable<{ id: string }> {
-    const transformedCardData = this.#buildCard(transformedForm);
+    // 1. Create the base card first (without transformedCardId)
+    const mainCardData = this.#buildCard(mainForm);
 
-    return this.#cardApiService.createCard(transformedCardData).pipe(
-      switchMap((docRef) => this.#handleArtwork(docRef.id, transformedArtwork)),
-      switchMap((transformedCardId) => {
-        const mainCardData = this.#buildCard(mainForm, transformedCardId);
-        return this.#persistNewCard(mainCardData, mainArtwork);
+    return this.#cardApiService.createCard(mainCardData).pipe(
+      switchMap((mainDocRef) =>
+        this.#handleArtwork(mainDocRef.id, mainArtwork).pipe(
+          map((mainCardId) => mainCardId),
+        ),
+      ),
+      switchMap((mainCardId) => {
+        // 2. Create the transformed card with baseCardId
+        const transformedCardData = this.#buildCard(transformedForm);
+        if (transformedCardData.characterInfo) {
+          transformedCardData.characterInfo.activeSkill = {
+            ...transformedCardData.characterInfo.activeSkill,
+            baseCardId: mainCardId,
+          } as typeof transformedCardData.characterInfo.activeSkill;
+        }
+
+        return this.#cardApiService.createCard(transformedCardData).pipe(
+          switchMap((transformedDocRef) =>
+            this.#handleArtwork(transformedDocRef.id, transformedArtwork),
+          ),
+          switchMap((transformedCardId) => {
+            // 3. Update the base card with transformedCardId
+            const updatedMainCardData = this.#buildCard(
+              mainForm,
+              transformedCardId,
+            );
+            return this.#cardApiService
+              .updateCard(mainCardId, updatedMainCardData)
+              .pipe(map(() => ({ id: mainCardId })));
+          }),
+        );
       }),
     );
   }
@@ -204,7 +231,7 @@ export class CardPersistenceService {
   ): Observable<{ id: string }> {
     const transformedCardData = this.#buildCard(transformedForm);
 
-    // If transformed card already exists, update it; otherwise create new
+    // If transformed card already exists, update it; otherwise create new with baseCardId
     const transformedCard$ = existingTransformedCardId
       ? this.#cardApiService
           .updateCard(existingTransformedCardId, transformedCardData)
@@ -217,13 +244,20 @@ export class CardPersistenceService {
               ),
             ),
           )
-      : this.#cardApiService
-          .createCard(transformedCardData)
-          .pipe(
+      : (() => {
+          // Set baseCardId on new transformed card
+          if (transformedCardData.characterInfo) {
+            transformedCardData.characterInfo.activeSkill = {
+              ...transformedCardData.characterInfo.activeSkill,
+              baseCardId: cardId,
+            } as typeof transformedCardData.characterInfo.activeSkill;
+          }
+          return this.#cardApiService.createCard(transformedCardData).pipe(
             switchMap((docRef) =>
               this.#handleArtwork(docRef.id, transformedArtwork),
             ),
           );
+        })();
 
     return transformedCard$.pipe(
       switchMap((transformedId) => {

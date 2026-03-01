@@ -78,6 +78,7 @@ export class CardDetailsComponent {
   isCopied = signal(false);
   cardId = signal<string | null>(null);
   creatorId = signal<string | null>(null);
+  selectedCard = signal<'base' | 'transformed'>('base');
   confirmationDelete = viewChild.required('confirmationDelete', {
     read: ViewContainerRef,
   });
@@ -86,12 +87,20 @@ export class CardDetailsComponent {
   card$ = this.#activatedRoute.data.pipe(
     map(
       (data) =>
-        data['card'] as { baseCard: Card; transformedCard: Card | null },
+        data['card'] as {
+          baseCard: Card;
+          transformedCard: Card | null;
+          currentCard: Card;
+        },
     ),
-    tap(({ baseCard }) => {
-      this.cardId.set(baseCard.id ?? '');
-      this.creatorId.set(baseCard.creatorId ?? null);
+    tap(({ currentCard }) => {
+      this.cardId.set(currentCard.id ?? '');
+      this.creatorId.set(currentCard.creatorId ?? null);
       this.isLoading.set(false);
+      const cardToDisplay = currentCard.characterInfo?.activeSkill?.baseCardId
+        ? 'transformed'
+        : 'base';
+      this.selectedCard.set(cardToDisplay);
     }),
     catchError(() => {
       this.isError.set(true);

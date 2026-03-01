@@ -6,12 +6,10 @@ import {
   output,
 } from '@angular/core';
 import { Card } from '../..';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-card-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgOptimizedImage],
   templateUrl: './card-header.component.html',
   styleUrl: './card-header.component.css',
 })

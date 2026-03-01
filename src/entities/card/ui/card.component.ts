@@ -9,6 +9,7 @@ import {
   OnDestroy,
   outputBinding,
   signal,
+  twoWayBinding,
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -90,6 +91,8 @@ export class CardComponent implements OnDestroy {
   );
   baseCard = input.required<Card>();
   transformedCard = input.required<Card | null>();
+  selectedCard = signal<'base' | 'transformed'>('base');
+
   card = linkedSignal(this.baseCard);
   showEchangeButton = computed(() => this.transformedCard() !== null);
   readonly imgUrl = computed(
@@ -174,6 +177,7 @@ export class CardComponent implements OnDestroy {
         bindings: [
           inputBinding('baseCard', () => this.baseCard()),
           inputBinding('transformedCard', () => this.transformedCard()),
+          twoWayBinding('selectedCard', this.selectedCard),
           outputBinding('close', () => {
             this.isAmodalOpen.set(false);
             if (this.globalModalRef) {
@@ -182,6 +186,7 @@ export class CardComponent implements OnDestroy {
           }),
           outputBinding('switchToTransformedCard', () => {
             this.card.set(this.transformedCard() as Card);
+            this.selectedCard.set('transformed');
             this.isAmodalOpen.set(false);
             if (this.globalModalRef) {
               this.globalModalRef.destroy();
@@ -189,6 +194,7 @@ export class CardComponent implements OnDestroy {
           }),
           outputBinding('switchToBaseCard', () => {
             this.card.set(this.baseCard() as Card);
+            this.selectedCard.set('base');
             this.isAmodalOpen.set(false);
             if (this.globalModalRef) {
               this.globalModalRef.destroy();

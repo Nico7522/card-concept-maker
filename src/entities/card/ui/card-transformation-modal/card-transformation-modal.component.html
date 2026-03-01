@@ -6,7 +6,10 @@
                 class="text-center relative scroll-m-20 font-extrabold tracking-tight text-2xl border-r-12 border-l-12 rounded-lg">
                 Echange Details
             </h2>
+
+            <!-- Base Card -->
             <div class="border-2 mt-5 w-[90%] rounded-md bg-orange-900/70 py-2 flex self-center cursor-pointer"
+                [class.opacity-50]="selectedCard() === 'base'" [class.opacity-100]="selectedCard() !== 'base'"
                 (click)="onSwitchToBaseCard()">
                 <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
                     @if (baseCardArtwork()) {
@@ -29,8 +32,10 @@
                 </div>
             </div>
 
+            <!-- Transformed Card -->
             <div class="border-4 border-[#A6A67B] mt-8 w-[90%] rounded-md bg-orange-900/70 py-2 flex self-center cursor-pointer relative"
-                (click)="onSwitchToTransformedCard()">
+                [class.opacity-50]="selectedCard() === 'transformed'"
+                [class.opacity-100]="selectedCard() !== 'transformed'" (click)="onSwitchToTransformedCard()">
                 <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
                     @if (transformedCardArtwork()) {
                     <img [src]="transformedCardArtwork()" width="50" height="50" alt="Card Artwork"

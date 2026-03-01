@@ -3,7 +3,9 @@ import {
   Component,
   computed,
   input,
+  model,
   output,
+  signal,
 } from '@angular/core';
 import { Card } from '../../model/card-interface';
 import { environment } from '~/src/environments/environment';
@@ -18,6 +20,8 @@ import { environment } from '~/src/environments/environment';
 export class CardTransformationModalComponent {
   baseCard = input.required<Card>();
   transformedCard = input.required<Card>();
+
+  selectedCard = model<'base' | 'transformed'>('base');
 
   baseCardThumbnail = computed(
     () => 'cha' + this.baseCard().characterInfo?.type + '.png',
@@ -46,10 +50,12 @@ export class CardTransformationModalComponent {
   }
 
   onSwitchToTransformedCard() {
+    this.selectedCard.set('transformed');
     this.switchToTransformedCard.emit();
   }
 
   onSwitchToBaseCard() {
+    this.selectedCard.set('base');
     this.switchToBaseCard.emit();
   }
 }

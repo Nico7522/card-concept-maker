@@ -3,7 +3,7 @@ export * from './model/card-interface';
 export * from './model/character-type';
 export * from './model/passive-type';
 export * from './model/super-attack-type';
-
+export * from './model/resolved-card';
 // API
 export * from './api/card-api-service/card-api.service';
 export * from './api/user-cards-service/user-cards.service';

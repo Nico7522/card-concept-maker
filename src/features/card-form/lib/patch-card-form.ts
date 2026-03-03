@@ -21,8 +21,6 @@ export function patchCardForm(
   effectDuration: EffectDuration[],
 ) {
   if (card.characterInfo) {
-    console.log(form);
-
     form.patchValue(card);
     form.get('artwork')?.patchValue(card.artwork ?? null);
 
@@ -167,7 +165,11 @@ export function patchCardForm(
   }
 
   form.get('activeSkill')?.patchValue({
-    hasActiveSkill: card.characterInfo?.activeSkill ? true : false,
+    hasActiveSkill: Boolean(
+      card.characterInfo?.activeSkill?.activeSkillCondition ||
+      card.characterInfo?.activeSkill?.activeSkillName ||
+      card.characterInfo?.activeSkill?.activeSkillEffect,
+    ),
     activeSkillName: card.characterInfo?.activeSkill?.activeSkillName ?? '',
     activeSkillCondition:
       card.characterInfo?.activeSkill?.activeSkillCondition ?? '',

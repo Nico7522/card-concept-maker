@@ -114,31 +114,38 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
 
     this.#loadingService.start();
 
-    const cardId = this.#activatedRoute.snapshot.params['id'];
-    const card = this.card();
+    const urlCardId: string = this.#activatedRoute.snapshot.params['id'];
+    const baseCard = this.card();
+    const transformedCard = this.transformedCard();
     const transformedForm = this.formState.getTransformedForm();
 
-    const transformedCard = this.transformedCard();
+    // Always use baseCard.id for updates (URL might be transformed card's ID)
+    const baseCardId = baseCard?.id ?? urlCardId;
+
+    // transformedCardId: either selected from dropdown (mode 'select') or existing linked card (mode 'existing')
+    const transformedCardId =
+      this.transformationMode() === 'select'
+        ? this.selectedExistingCardId()
+        : transformedCard?.id ?? null;
 
     const request$ = this.hasTransformation()
       ? this.#cardPersistenceService.updateCardWithTransformation({
-          cardId,
+          baseCardId,
           mainForm: validated.mainForm,
           mainArtwork: this.artwork(),
-          currentArtwork: card?.artwork ?? null,
+          currentArtwork: baseCard?.artwork ?? null,
           mode: this.transformationMode(),
-          existingCardId: this.selectedExistingCardId(),
+          transformedCardId,
           transformedForm,
           transformedArtwork: this.transformedArtwork(),
           hasTransformation: this.hasTransformation(),
-          transformedCardId: transformedCard?.id ?? null,
           currentTransformedArtwork: transformedCard?.artwork ?? null,
         })
       : this.#cardPersistenceService.updateCard({
-          cardId,
+          baseCardId,
           mainForm: validated.mainForm,
           mainArtwork: this.artwork(),
-          currentArtwork: card?.artwork ?? null,
+          currentArtwork: baseCard?.artwork ?? null,
         });
 
     request$
@@ -153,7 +160,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
         }),
       )
       .subscribe(() => {
-        this.#router.navigate(['/card', cardId]);
+        this.#router.navigate(['/card', baseCardId]);
         this.#loadingService.stop();
       });
   }

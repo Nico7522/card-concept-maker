@@ -15,11 +15,16 @@ interface UserInfo {
   uid: string;
 }
 
+interface CardLinkIds {
+  transformedCardId?: string;
+  baseCardId?: string;
+}
+
 export function buildCardData(
   form: FormGroup<CardForm>,
   gameData: GameData,
   user: UserInfo,
-  transformedCardId?: string,
+  linkIds?: CardLinkIds,
 ): Card {
   const data = form.getRawValue();
   const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
@@ -30,8 +35,19 @@ export function buildCardData(
   );
 
   const charInfo = characterInfo();
-  if (charInfo?.activeSkill && transformedCardId !== undefined) {
-    charInfo.activeSkill.transformedCardId = transformedCardId;
+  if (charInfo && linkIds) {
+    if (linkIds.transformedCardId !== undefined || linkIds.baseCardId !== undefined) {
+      charInfo.activeSkill = {
+        ...charInfo.activeSkill,
+        activeSkillName: charInfo.activeSkill?.activeSkillName ?? '',
+        activeSkillCondition: charInfo.activeSkill?.activeSkillCondition ?? '',
+        activeSkillEffect: charInfo.activeSkill?.activeSkillEffect ?? '',
+        ...(linkIds.transformedCardId !== undefined && {
+          transformedCardId: linkIds.transformedCardId,
+        }),
+        ...(linkIds.baseCardId !== undefined && { baseCardId: linkIds.baseCardId }),
+      };
+    }
   }
 
   return {

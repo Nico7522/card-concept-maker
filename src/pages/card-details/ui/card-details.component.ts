@@ -37,7 +37,7 @@ import { UbButtonDirective } from '~/components/ui/button';
 import { DeleteConfirmationModalComponent } from './delete-confirmation-modal/delete-confirmation-modal.component';
 import { DeleteCardService } from '../api/delete-card.service';
 import { environment } from '~/src/environments/environment';
-import { Card, CardComponent } from '~/src/entities/card';
+import { Card, CardComponent, ResolvedCard } from '~/src/entities/card';
 
 @Component({
   selector: 'app-card-details',
@@ -85,14 +85,7 @@ export class CardDetailsComponent {
   confirmationDeleteRef: ComponentRef<DeleteConfirmationModalComponent> | null =
     null;
   card$ = this.#activatedRoute.data.pipe(
-    map(
-      (data) =>
-        data['card'] as {
-          baseCard: Card;
-          transformedCard: Card | null;
-          currentCard: Card;
-        },
-    ),
+    map((data) => data['card'] as ResolvedCard),
     tap(({ currentCard }) => {
       this.cardId.set(currentCard.id ?? '');
       this.creatorId.set(currentCard.creatorId ?? null);

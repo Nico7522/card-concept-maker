@@ -16,12 +16,7 @@
                 <ng-icon name="heroPencilSquare" class="h-4 w-4" />
                 <span class="hidden sm:inline">Update</span>
             </button>
-            <button ubButton size="sm"
-                class="cursor-pointer flex items-center gap-2 bg-red-900/80 hover:bg-red-800 border border-red-600/50 text-red-100 px-4 py-2 rounded font-bold uppercase tracking-wider transition-all hover:shadow-lg hover:shadow-red-500/20"
-                (click)="openDeleteConfirmationModal()">
-                <ng-icon name="heroTrash" class="h-4 w-4" />
-                <span class="hidden sm:inline">Delete</span>
-            </button>
+            <app-delete-card-button [cardId]="cards.currentCard.id ?? ''" (deleted)="onCardDeleted()" />
         </div>
         }
     </div>
@@ -62,4 +57,3 @@
 @if(isLoading()) {
 <app-loader [isVisible]="isLoading()" />
 }
-<ng-container #confirmationDelete />

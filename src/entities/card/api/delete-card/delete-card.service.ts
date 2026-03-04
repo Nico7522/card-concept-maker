@@ -21,7 +21,7 @@ import {
   switchMap,
   throwError,
 } from 'rxjs';
-import { Card } from '~/src/entities/card';
+import { Card } from '../../model/card-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -90,21 +90,18 @@ export class DeleteCardService {
         const transformedCardId =
           card.characterInfo?.activeSkill?.transformedCardId;
 
-        // Current card is the transformed one → unlink base, then delete
         if (baseCardId) {
           return this.#unlinkTransformedCardFromBase(baseCardId).pipe(
             switchMap(() => this.deleteCard(cardId)),
           );
         }
 
-        // Current card is the base one → unlink transformed, then delete
         if (transformedCardId) {
           return this.#unlinkBaseCardFromTransformed(transformedCardId).pipe(
             switchMap(() => this.deleteCard(cardId)),
           );
         }
 
-        // Standalone card → delete directly
         return this.deleteCard(cardId);
       }),
       catchError(() => throwError(() => new Error('Failed to delete card'))),

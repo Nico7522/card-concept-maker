@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ComponentRef,
-  inject,
-  outputBinding,
-  signal,
-  viewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
@@ -17,27 +8,16 @@ import {
   heroChevronDoubleLeft,
   heroMagnifyingGlassPlus,
   heroPencilSquare,
-  heroTrash,
   heroClipboard,
   heroCheck,
 } from '@ng-icons/heroicons/outline';
-import {
-  catchError,
-  EMPTY,
-  map,
-  shareReplay,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs';
+import { catchError, EMPTY, map, shareReplay, switchMap, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LoaderComponent } from '~/src/shared/ui';
-import { AuthService, ErrorToastService } from '~/src/shared/api';
+import { AuthService } from '~/src/shared/api';
 import { UbButtonDirective } from '~/components/ui/button';
-import { DeleteConfirmationModalComponent } from './delete-confirmation-modal/delete-confirmation-modal.component';
-import { DeleteCardService } from '../api/delete-card.service';
-import { environment } from '~/src/environments/environment';
-import { Card, CardComponent, ResolvedCard } from '~/src/entities/card';
+import { DeleteCardButtonComponent } from '~/src/features/delete-card';
+import { CardComponent, ResolvedCard } from '~/src/entities/card';
 
 @Component({
   selector: 'app-card-details',
@@ -49,6 +29,7 @@ import { Card, CardComponent, ResolvedCard } from '~/src/entities/card';
     LoaderComponent,
     RouterModule,
     CardComponent,
+    DeleteCardButtonComponent,
   ],
   templateUrl: './card-details.component.html',
   styleUrl: './card-details.component.css',
@@ -60,7 +41,6 @@ import { Card, CardComponent, ResolvedCard } from '~/src/entities/card';
       heroChevronDoubleLeft,
       heroMagnifyingGlassPlus,
       heroPencilSquare,
-      heroTrash,
       heroClipboard,
       heroCheck,
     }),
@@ -69,32 +49,18 @@ import { Card, CardComponent, ResolvedCard } from '~/src/entities/card';
 export class CardDetailsComponent {
   readonly #activatedRoute = inject(ActivatedRoute);
   readonly #authService = inject(AuthService);
-  readonly #deleteCardService = inject(DeleteCardService);
-  readonly #errorToastService = inject(ErrorToastService);
   readonly #router = inject(Router);
-  readonly apiUrl = environment.apiUrl + '/';
   isLoading = signal(true);
   isError = signal(false);
   isCopied = signal(false);
   cardId = signal<string | null>(null);
-  transformedCardId = signal<string | null>(null);
   creatorId = signal<string | null>(null);
   selectedCard = signal<'base' | 'transformed'>('base');
-  confirmationDelete = viewChild.required('confirmationDelete', {
-    read: ViewContainerRef,
-  });
-  confirmationDeleteRef: ComponentRef<DeleteConfirmationModalComponent> | null =
-    null;
   card$ = this.#activatedRoute.data.pipe(
     map((data) => data['card'] as ResolvedCard),
-    tap(({ currentCard, transformedCard, baseCard }) => {
-      console.log(baseCard);
-      console.log(transformedCard);
-      console.log(currentCard);
-
+    tap(({ currentCard }) => {
       this.cardId.set(currentCard.id ?? '');
       this.creatorId.set(currentCard.creatorId ?? null);
-      this.transformedCardId.set(transformedCard?.id ?? null);
       this.isLoading.set(false);
       const cardToDisplay = currentCard.characterInfo?.activeSkill?.baseCardId
         ? 'transformed'
@@ -116,10 +82,8 @@ export class CardDetailsComponent {
     }),
   );
 
-  ngOnDestroy() {
-    if (this.confirmationDeleteRef) {
-      this.confirmationDeleteRef.destroy();
-    }
+  onCardDeleted() {
+    this.#router.navigate(['user', this.creatorId(), 'cards']);
   }
 
   copyShareLink() {
@@ -128,39 +92,5 @@ export class CardDetailsComponent {
       this.isCopied.set(true);
       setTimeout(() => this.isCopied.set(false), 2000);
     });
-  }
-
-  openDeleteConfirmationModal() {
-    const componentRef = this.confirmationDelete().createComponent(
-      DeleteConfirmationModalComponent,
-      {
-        bindings: [
-          outputBinding('confirm', (result: boolean) => {
-            if (result) {
-              this.isLoading.set(true);
-              this.#deleteCardService
-                .delete(this.cardId() ?? '')
-                .pipe(
-                  take(1),
-                  tap(() => {
-                    this.#router.navigate(['user', this.creatorId(), 'cards']);
-                    this.isLoading.set(false);
-                  }),
-                  catchError(() => {
-                    this.#errorToastService.showToast(
-                      'An error occurred while deleting the card',
-                    );
-                    this.isLoading.set(false);
-                    return EMPTY;
-                  }),
-                )
-                .subscribe();
-            }
-            componentRef.destroy();
-          }),
-        ],
-      },
-    );
-    this.confirmationDeleteRef = componentRef;
   }
 }

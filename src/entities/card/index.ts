@@ -9,6 +9,7 @@ export * from './api/card-api-service/card-api.service';
 export * from './api/user-cards-service/user-cards.service';
 export * from './api/card-resolver/get-card.resolver';
 export * from './api/get-transformed-card/get-transformed-card.service';
+export * from './api/delete-card/delete-card.service';
 
 // UI
 export * from './ui/card.component';

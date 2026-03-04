@@ -77,6 +77,7 @@ export class CardDetailsComponent {
   isError = signal(false);
   isCopied = signal(false);
   cardId = signal<string | null>(null);
+  transformedCardId = signal<string | null>(null);
   creatorId = signal<string | null>(null);
   selectedCard = signal<'base' | 'transformed'>('base');
   confirmationDelete = viewChild.required('confirmationDelete', {
@@ -86,9 +87,14 @@ export class CardDetailsComponent {
     null;
   card$ = this.#activatedRoute.data.pipe(
     map((data) => data['card'] as ResolvedCard),
-    tap(({ currentCard }) => {
+    tap(({ currentCard, transformedCard, baseCard }) => {
+      console.log(baseCard);
+      console.log(transformedCard);
+      console.log(currentCard);
+
       this.cardId.set(currentCard.id ?? '');
       this.creatorId.set(currentCard.creatorId ?? null);
+      this.transformedCardId.set(transformedCard?.id ?? null);
       this.isLoading.set(false);
       const cardToDisplay = currentCard.characterInfo?.activeSkill?.baseCardId
         ? 'transformed'
@@ -133,7 +139,7 @@ export class CardDetailsComponent {
             if (result) {
               this.isLoading.set(true);
               this.#deleteCardService
-                .deleteCard(this.cardId() ?? '')
+                .delete(this.cardId() ?? '')
                 .pipe(
                   take(1),
                   tap(() => {

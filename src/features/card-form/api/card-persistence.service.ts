@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 
 import { Card, CardApiService } from '~/src/entities/card';
 import { CardForm } from '../model/card-form-interface';
@@ -89,7 +89,9 @@ export class CardPersistenceService {
     const cardData = this.#buildCard(mainForm);
 
     return this.#cardApiService.updateCard(baseCardId, cardData).pipe(
-      switchMap(() => this.#handleArtwork(baseCardId, mainArtwork, currentArtwork)),
+      switchMap(() =>
+        this.#handleArtwork(baseCardId, mainArtwork, currentArtwork),
+      ),
       map(() => ({ id: baseCardId })),
     );
   }
@@ -149,7 +151,12 @@ export class CardPersistenceService {
       );
     }
 
-    return this.updateCard({ baseCardId, mainForm, mainArtwork, currentArtwork });
+    return this.updateCard({
+      baseCardId,
+      mainForm,
+      mainArtwork,
+      currentArtwork,
+    });
   }
 
   // --- Private helpers ---
@@ -249,11 +256,13 @@ export class CardPersistenceService {
               ),
             ),
           )
-      : this.#cardApiService.createCard(transformedCardData).pipe(
-          switchMap((docRef) =>
-            this.#handleArtwork(docRef.id, transformedArtwork),
-          ),
-        );
+      : this.#cardApiService
+          .createCard(transformedCardData)
+          .pipe(
+            switchMap((docRef) =>
+              this.#handleArtwork(docRef.id, transformedArtwork),
+            ),
+          );
 
     return transformedCard$.pipe(
       switchMap((transformedId) => {
@@ -291,7 +300,11 @@ export class CardPersistenceService {
           : of(null),
       ),
       map(() => cardId),
-      catchError(() => {
+      catchError((err) => {
+        // If the previous image is not found, new image is still uploaded, so we can return the cardId
+        if (err.error.error === 'File not found') return of(cardId);
+
+        // Otherwise, throw the error
         this.#errorToastService.showToast('Artwork could not be saved');
         return of(cardId);
       }),

@@ -35,7 +35,7 @@ import {
   createCardFormPageState,
   generateCard,
 } from '~/src/features/card-form';
-import { CardComponent, UserCardsService } from '~/src/entities/card';
+import { Card, CardComponent, UserCardsService } from '~/src/entities/card';
 
 @Component({
   selector: 'app-create-card-form',
@@ -92,7 +92,10 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
     if (this.#authService.user() !== null) {
       this.#createCardForAuthenticatedUser(validated.mainForm);
     } else {
-      this.#previewCardForGuest(validated.mainForm);
+      this.#previewCardForGuest(
+        validated.mainForm,
+        validated.transformedForm ?? undefined,
+      );
     }
   }
 
@@ -132,7 +135,8 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
       });
   }
 
-  #previewCardForGuest(form: FormGroup<CardForm>) {
+  #buildGuestPreviewCard(form: FormGroup<CardForm>): Card {
+    const data = form.getRawValue();
     const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
       form,
       this.#gameDataService.categories(),
@@ -140,17 +144,33 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
       this.#gameDataService.passiveConditionActivation(),
     );
 
+    return {
+      creatorName: '',
+      creatorId: '',
+      cardName: data.cardName ?? '',
+      characterInfo: characterInfo()!,
+      passiveDetails: passiveDetails()!,
+      superAttackInfo: superAttackInfo()!,
+    };
+  }
+
+  #previewCardForGuest(
+    form: FormGroup<CardForm>,
+    transformedForm?: FormGroup<CardForm>,
+  ) {
+    const baseCard = this.#buildGuestPreviewCard(form);
+    const transformedCard: Card | null = transformedForm
+      ? this.#buildGuestPreviewCard(transformedForm)
+      : null;
+
     if (this.componentRefs) {
       this.componentRefs.destroy();
     }
 
     const componentRef = this.card().createComponent(CardComponent, {
       bindings: [
-        inputBinding('card', () => ({
-          characterInfo: characterInfo(),
-          passiveDetails: passiveDetails(),
-          superAttackInfo: superAttackInfo(),
-        })),
+        inputBinding('baseCard', () => baseCard),
+        inputBinding('transformedCard', () => transformedCard),
       ],
     });
 

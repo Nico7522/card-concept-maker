@@ -22,8 +22,8 @@ export function buildGuestPreviewCard(
     creatorName: '',
     creatorId: '',
     cardName: data.cardName ?? '',
-    characterInfo: characterInfo()!,
-    passiveDetails: passiveDetails()!,
-    superAttackInfo: superAttackInfo()!,
+    characterInfo: characterInfo(),
+    passiveDetails: passiveDetails(),
+    superAttackInfo: superAttackInfo(),
   };
 }

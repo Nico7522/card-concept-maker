@@ -92,7 +92,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
     if (this.#authService.user() !== null) {
       this.#createCardForAuthenticatedUser(validated.mainForm);
     } else {
-      this.#previewCardForGuest(
+      this.#ShowPreviewCardForGuest(
         validated.mainForm,
         validated.transformedForm ?? undefined,
       );
@@ -135,7 +135,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
       });
   }
 
-  #previewCardForGuest(
+  #ShowPreviewCardForGuest(
     form: FormGroup<CardForm>,
     transformedForm?: FormGroup<CardForm>,
   ) {

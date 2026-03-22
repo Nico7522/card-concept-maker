@@ -33,8 +33,8 @@ import {
   CardPersistenceService,
   TransformationSelectorComponent,
   createCardFormPageState,
-  generateCard,
 } from '~/src/features/card-form';
+import { buildGuestPreviewCard } from '../lib/build-guest-preview-card';
 import { Card, CardComponent, UserCardsService } from '~/src/entities/card';
 
 @Component({
@@ -135,32 +135,28 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
       });
   }
 
-  #buildGuestPreviewCard(form: FormGroup<CardForm>): Card {
-    const data = form.getRawValue();
-    const { characterInfo, passiveDetails, superAttackInfo } = generateCard(
-      form,
-      this.#gameDataService.categories(),
-      this.#gameDataService.links(),
-      this.#gameDataService.passiveConditionActivation(),
-    );
-
-    return {
-      creatorName: '',
-      creatorId: '',
-      cardName: data.cardName ?? '',
-      characterInfo: characterInfo()!,
-      passiveDetails: passiveDetails()!,
-      superAttackInfo: superAttackInfo()!,
-    };
-  }
-
   #previewCardForGuest(
     form: FormGroup<CardForm>,
     transformedForm?: FormGroup<CardForm>,
   ) {
-    const baseCard = this.#buildGuestPreviewCard(form);
+    const categories = this.#gameDataService.categories();
+    const links = this.#gameDataService.links();
+    const passiveConditionActivation =
+      this.#gameDataService.passiveConditionActivation();
+
+    const baseCard = buildGuestPreviewCard(
+      form,
+      categories,
+      links,
+      passiveConditionActivation,
+    );
     const transformedCard: Card | null = transformedForm
-      ? this.#buildGuestPreviewCard(transformedForm)
+      ? buildGuestPreviewCard(
+          transformedForm,
+          categories,
+          links,
+          passiveConditionActivation,
+        )
       : null;
 
     if (this.componentRefs) {

@@ -41,72 +41,72 @@
       "effect": "Starting from the 6th turn from the start of battle"
     },
     {
-      "value": 13,
+      "value": 11,
       "effect": "When attacking"
     },
     {
-      "value": 14,
+      "value": 12,
       "effect": "When attacking with 12 or more Ki"
     },
     {
-      "value": 15,
+      "value": 13,
       "effect": "When attacking with 18 or more Ki"
     },
     {
-      "value": 16,
+      "value": 14,
       "effect": "When attacking with 24 Ki"
     },
     {
-      "value": 17,
+      "value": 15,
       "effect": "After evading an attack"
     },
     {
-      "value": 18,
+      "value": 16,
       "effect": "After receiving an attack"
     },
     {
-      "value": 19,
+      "value": 17,
       "effect": "The more HP remaining"
     },
 
     {
-      "value": 20,
+      "value": 18,
       "effect": "When there is another \"X\" Category ally on the team"
     },
     {
-      "value": 21,
+      "value": 19,
       "effect": "When HP is 50% or more"
     },
     {
-      "value": 22,
+      "value": 20,
       "effect": "When HP is 50% or less at the start of the character's attacking turn after the character receives 3 or more attacks in battle"
     },
     {
-      "value": 23,
+      "value": 21,
       "effect": "When HP is 60% or less"
     },
     {
-      "value": 24,
+      "value": 22,
       "effect": "When receiving an attack with 10 or more Ki"
     },
     {
-      "value": 25,
+      "value": 23,
       "effect": "3 or more Ki Spheres obtained"
     },
     {
-      "value": 26,
+      "value": 24,
       "effect": "After performing 7 or more Super Attacks in battle"
     },
     {
-      "value": 27,
+      "value": 25,
       "effect": "When attacking with 24 Ki"
     },
     {
-      "value": 28,
+      "value": 26,
       "effect": "When activating the Active Skill"
     },
     {
-      "value": 29,
+      "value": 27,
       "effect": "For every attack received"
     }
   ]

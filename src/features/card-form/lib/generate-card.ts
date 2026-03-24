@@ -34,9 +34,7 @@ function buildCharacterInfo(
     categories: data.categories.categories.map(
       (value) => categories[value - 1]?.categoryName ?? '',
     ),
-    links: data.links.links.map(
-      (value) => links[value - 1]?.linkName ?? '',
-    ),
+    links: data.links.links.map((value) => links[value - 1]?.linkName ?? ''),
     activeSkill: data.activeSkill.hasActiveSkill
       ? {
           activeSkillName: data.activeSkill.activeSkillName ?? '',
@@ -57,12 +55,17 @@ function buildPassiveDetails(
   data: ReturnType<FormGroup<CardForm>['getRawValue']>,
   passiveConditionActivation: PassiveConditionActivation[],
 ): Passive {
+  console.log(data);
+
+  console.log(passiveConditionActivation);
+
   return {
     name: data.passive.passiveName ?? '',
     passive: data.passive.passivePart.map((part) => ({
       passiveConditionActivation: part.customPassiveConditionActivation
         ? part.customPassiveConditionActivation
-        : passiveConditionActivation[part.passiveConditionActivation - 1]?.effect ?? '',
+        : (passiveConditionActivation[part.passiveConditionActivation - 1]
+            ?.effect ?? ''),
       effect: part.effect.map((e) => ({
         description: e.effectDescription,
         imageSrc: e.effectDuration > 1 ? getDurationLogo(e.effectDuration) : '',
@@ -91,8 +94,12 @@ export function generateCard(
   const data = form.getRawValue();
 
   return {
-    characterInfo: signal<Character | null>(buildCharacterInfo(data, categories, links)),
-    passiveDetails: signal<Passive | null>(buildPassiveDetails(data, passiveConditionActivation)),
+    characterInfo: signal<Character | null>(
+      buildCharacterInfo(data, categories, links),
+    ),
+    passiveDetails: signal<Passive | null>(
+      buildPassiveDetails(data, passiveConditionActivation),
+    ),
     superAttackInfo: signal<SuperAttack | null>(buildSuperAttackInfo(data)),
   };
 }

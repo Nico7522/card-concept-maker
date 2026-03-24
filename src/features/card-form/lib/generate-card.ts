@@ -55,10 +55,6 @@ function buildPassiveDetails(
   data: ReturnType<FormGroup<CardForm>['getRawValue']>,
   passiveConditionActivation: PassiveConditionActivation[],
 ): Passive {
-  console.log(data);
-
-  console.log(passiveConditionActivation);
-
   return {
     name: data.passive.passiveName ?? '',
     passive: data.passive.passivePart.map((part) => ({

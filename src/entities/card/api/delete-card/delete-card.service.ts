@@ -7,11 +7,9 @@ import {
 import {
   collection,
   deleteDoc,
-  deleteField,
   doc,
   Firestore,
   getDoc,
-  updateDoc,
 } from '@angular/fire/firestore';
 import {
   catchError,
@@ -22,6 +20,7 @@ import {
   throwError,
 } from 'rxjs';
 import { Card } from '../../model/card-interface';
+import { CardApiService } from '../card-api-service/card-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +28,7 @@ import { Card } from '../../model/card-interface';
 export class DeleteCardService {
   readonly #injector = inject(Injector);
   readonly #firestore = inject(Firestore);
+  readonly #cardApiService = inject(CardApiService);
   readonly #cardsCollection = collection(this.#firestore, 'cards');
 
   #getCardById(cardId: string): Observable<Card | null> {
@@ -42,32 +42,6 @@ export class DeleteCardService {
           : null,
       ),
       catchError(() => throwError(() => new Error('Card not found'))),
-    );
-  }
-
-  #unlinkTransformedCardFromBase(baseCardId: string): Observable<void> {
-    const baseCardRef = doc(this.#firestore, 'cards', baseCardId);
-    return from(
-      runInInjectionContext(this.#injector, () =>
-        updateDoc(baseCardRef, {
-          'characterInfo.activeSkill.transformedCardId': deleteField(),
-        }),
-      ),
-    );
-  }
-
-  #unlinkBaseCardFromTransformed(transformedCardId: string): Observable<void> {
-    const transformedCardRef = doc(
-      this.#firestore,
-      'cards',
-      transformedCardId,
-    );
-    return from(
-      runInInjectionContext(this.#injector, () =>
-        updateDoc(transformedCardRef, {
-          'characterInfo.activeSkill.baseCardId': deleteField(),
-        }),
-      ),
     );
   }
 
@@ -91,15 +65,15 @@ export class DeleteCardService {
           card.characterInfo?.activeSkill?.transformedCardId;
 
         if (baseCardId) {
-          return this.#unlinkTransformedCardFromBase(baseCardId).pipe(
-            switchMap(() => this.deleteCard(cardId)),
-          );
+          return this.#cardApiService
+            .unlinkFromTransformedCard(baseCardId)
+            .pipe(switchMap(() => this.deleteCard(cardId)));
         }
 
         if (transformedCardId) {
-          return this.#unlinkBaseCardFromTransformed(transformedCardId).pipe(
-            switchMap(() => this.deleteCard(cardId)),
-          );
+          return this.#cardApiService
+            .unlinkFromBaseCard(transformedCardId)
+            .pipe(switchMap(() => this.deleteCard(cardId)));
         }
 
         return this.deleteCard(cardId);

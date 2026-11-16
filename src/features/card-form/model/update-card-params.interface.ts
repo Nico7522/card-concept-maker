@@ -7,6 +7,8 @@ export interface UpdateCardParams {
   mainForm: FormGroup<CardForm>;
   mainArtwork: FormData | null;
   currentArtwork: string | null;
+  // Card linked as the transformed form before this update, if any
+  previousTransformedCardId: string | null;
 }
 
 export interface UpdateCardWithTransformationParams extends UpdateCardParams {
@@ -14,6 +16,5 @@ export interface UpdateCardWithTransformationParams extends UpdateCardParams {
   transformedCardId: string | null;
   transformedForm: FormGroup<CardForm> | null;
   transformedArtwork: FormData | null;
-  hasTransformation: boolean;
   currentTransformedArtwork: string | null;
 }

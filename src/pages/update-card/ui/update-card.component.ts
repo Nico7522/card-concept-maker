@@ -128,6 +128,8 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
         ? this.selectedExistingCardId()
         : transformedCard?.id ?? null;
 
+    const previousTransformedCardId = transformedCard?.id ?? null;
+
     const request$ = this.hasTransformation()
       ? this.#cardPersistenceService.updateCardWithTransformation({
           baseCardId,
@@ -138,14 +140,15 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
           transformedCardId,
           transformedForm,
           transformedArtwork: this.transformedArtwork(),
-          hasTransformation: this.hasTransformation(),
           currentTransformedArtwork: transformedCard?.artwork ?? null,
+          previousTransformedCardId,
         })
       : this.#cardPersistenceService.updateCard({
           baseCardId,
           mainForm: validated.mainForm,
           mainArtwork: this.artwork(),
           currentArtwork: baseCard?.artwork ?? null,
+          previousTransformedCardId,
         });
 
     request$

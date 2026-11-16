@@ -67,7 +67,13 @@ export class CardPersistenceService {
       const cardData = this.#buildCard(mainForm, {
         transformedCardId: existingCardId,
       });
-      return this.#persistNewCard(cardData, mainArtwork);
+      return this.#persistNewCard(cardData, mainArtwork).pipe(
+        switchMap(({ id }) =>
+          this.#cardApiService
+            .linkToBaseCard(existingCardId, id)
+            .pipe(map(() => ({ id }))),
+        ),
+      );
     }
 
     if (mode === 'existing' && transformedForm) {
@@ -85,12 +91,22 @@ export class CardPersistenceService {
   // --- Update ---
 
   updateCard(params: UpdateCardParams): Observable<{ id: string }> {
-    const { baseCardId, mainForm, mainArtwork, currentArtwork } = params;
+    const {
+      baseCardId,
+      mainForm,
+      mainArtwork,
+      currentArtwork,
+      previousTransformedCardId,
+    } = params;
+    // Built without link ids: the base card no longer has a transformation
     const cardData = this.#buildCard(mainForm);
 
     return this.#cardApiService.updateCard(baseCardId, cardData).pipe(
       switchMap(() =>
         this.#handleArtwork(baseCardId, mainArtwork, currentArtwork),
+      ),
+      switchMap(() =>
+        this.#unlinkPreviousTransformedCard(previousTransformedCardId),
       ),
       map(() => ({ id: baseCardId })),
     );
@@ -108,33 +124,31 @@ export class CardPersistenceService {
       transformedCardId,
       transformedForm,
       transformedArtwork,
-      hasTransformation,
       currentTransformedArtwork,
+      previousTransformedCardId,
     } = params;
-
-    if (!hasTransformation) {
-      const cardData = this.#buildCard(mainForm, undefined);
-      const charInfo = cardData.characterInfo;
-      if (charInfo?.activeSkill) {
-        charInfo.activeSkill.transformedCardId = undefined;
-      }
-      return this.#cardApiService.updateCard(baseCardId, cardData).pipe(
-        switchMap(() =>
-          this.#handleArtwork(baseCardId, mainArtwork, currentArtwork),
-        ),
-        map(() => ({ id: baseCardId })),
-      );
-    }
 
     // Mode 'select': link to an existing card (no form, just the ID)
     if (mode === 'select' && transformedCardId) {
       const cardData = this.#buildCard(mainForm, { transformedCardId });
-      return this.#cardApiService.updateCard(baseCardId, cardData).pipe(
-        switchMap(() =>
-          this.#handleArtwork(baseCardId, mainArtwork, currentArtwork),
-        ),
-        map(() => ({ id: baseCardId })),
-      );
+      // Link the selected card first: if it no longer exists, nothing is changed
+      return this.#cardApiService
+        .linkToBaseCard(transformedCardId, baseCardId)
+        .pipe(
+          switchMap(() =>
+            this.#cardApiService.updateCard(baseCardId, cardData),
+          ),
+          switchMap(() =>
+            this.#handleArtwork(baseCardId, mainArtwork, currentArtwork),
+          ),
+          switchMap(() =>
+            this.#unlinkPreviousTransformedCard(
+              previousTransformedCardId,
+              transformedCardId,
+            ),
+          ),
+          map(() => ({ id: baseCardId })),
+        );
     }
 
     // Mode 'existing': create or update the transformed card with form data
@@ -156,6 +170,7 @@ export class CardPersistenceService {
       mainForm,
       mainArtwork,
       currentArtwork,
+      previousTransformedCardId,
     });
   }
 
@@ -177,6 +192,21 @@ export class CardPersistenceService {
       { displayName: user?.displayName ?? null, uid: user?.uid ?? '' },
       linkIds,
     );
+  }
+
+  // Removes the base card link from the card that was the transformed form,
+  // unless it is still the one linked after the update
+  #unlinkPreviousTransformedCard(
+    previousTransformedCardId: string | null,
+    currentTransformedCardId: string | null = null,
+  ): Observable<void> {
+    if (
+      !previousTransformedCardId ||
+      previousTransformedCardId === currentTransformedCardId
+    ) {
+      return of(undefined);
+    }
+    return this.#cardApiService.unlinkFromBaseCard(previousTransformedCardId);
   }
 
   #persistNewCard(

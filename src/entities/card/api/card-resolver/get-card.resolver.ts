@@ -27,11 +27,15 @@ export const getCardResolver: ResolveFn<ResolvedCard> = (route) => {
       // If the base card id exists and the transformed card id is null, get the base card
       if (baseCardId && !transformedCardId) {
         return getTransformedCardService.getCardById(baseCardId).pipe(
-          map((baseCard) => ({
-            baseCard: baseCard as Card,
-            transformedCard: card,
-            currentCard: card,
-          })),
+          map((baseCard) => {
+            // The base card may have been deleted or linked to another card since
+            const isStillLinked =
+              baseCard?.characterInfo?.activeSkill?.transformedCardId ===
+              card.id;
+            return baseCard && isStillLinked
+              ? { baseCard, transformedCard: card, currentCard: card }
+              : { baseCard: card, transformedCard: null, currentCard: card };
+          }),
         );
       }
       // If the transformed card id exists and the base card id is null, get the transformed card

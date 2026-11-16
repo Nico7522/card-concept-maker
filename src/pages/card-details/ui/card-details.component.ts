@@ -58,13 +58,14 @@ export class CardDetailsComponent {
   selectedCard = signal<'base' | 'transformed'>('base');
   card$ = this.#activatedRoute.data.pipe(
     map((data) => data['card'] as ResolvedCard),
-    tap(({ currentCard }) => {
+    tap(({ currentCard, transformedCard }) => {
       this.cardId.set(currentCard.id ?? '');
       this.creatorId.set(currentCard.creatorId ?? null);
       this.isLoading.set(false);
-      const cardToDisplay = currentCard.characterInfo?.activeSkill?.baseCardId
-        ? 'transformed'
-        : 'base';
+      const cardToDisplay =
+        transformedCard && transformedCard.id === currentCard.id
+          ? 'transformed'
+          : 'base';
       this.selectedCard.set(cardToDisplay);
     }),
     catchError(() => {

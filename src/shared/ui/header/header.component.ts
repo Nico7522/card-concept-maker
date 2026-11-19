@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { catchError, EMPTY, take } from 'rxjs';
 import { version } from '~/package.json';
 import { ErrorToastService, AuthService } from '../../api';
@@ -8,7 +8,7 @@ import { DokkanStyleButtonComponent } from './dokkan-style-button/dokkan-style-b
 @Component({
   selector: 'app-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, AsyncPipe, DokkanStyleButtonComponent],
+  imports: [RouterModule, AsyncPipe, NgOptimizedImage, DokkanStyleButtonComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })

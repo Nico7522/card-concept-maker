@@ -15,6 +15,12 @@
 
             <!-- User Section -->
             <div class="flex items-center gap-3">
+                <!-- Support / donations - Desktop, visible to everyone -->
+                <div class="hidden sm:block ml-2">
+                    <app-dokkan-style-button [text]="'Support'" [icon]="'support_icon.webp'" [alt]="'Support'"
+                        [navigateTo]="['/support']" [isMobileVersion]="false" />
+                </div>
+
                 @if(user$ | async; as user) {
                 <!-- Connected User - Desktop -->
                 <div class="hidden sm:flex items-center gap-2 sm:gap-3">
@@ -70,6 +76,10 @@
                             <app-dokkan-style-button [text]="'My Cards'" [icon]="'menu_icon_list.png'"
                                 [alt]="'My Cards'" [navigateTo]="['/user', user.uid, 'cards']" [isMobileVersion]="true"
                                 (click)="closeMenu()" />
+                            <!-- Support -->
+                            <app-dokkan-style-button [text]="'Support'" [icon]="'support_icon.webp'"
+                                [alt]="'Support'" [navigateTo]="['/support']" [isMobileVersion]="true"
+                                (click)="closeMenu()" />
                             <!-- Bouton Logout -->
                             <app-dokkan-style-button [text]="'Logout'" [icon]="'logout.png'" [alt]="'Logout'"
                                 (click)="logout(); closeMenu()" [isMobileVersion]="true" [navigateTo]="['/']" />
@@ -84,6 +94,12 @@
                     <div class="hidden lg:block text-xs text-gray-400 italic">
                         Log in to save your creations
                     </div>
+
+                    <!-- Support - Mobile -->
+                    <a routerLink="/support" aria-label="Support the project"
+                        class="sm:hidden flex items-center justify-center w-12 h-12 rounded-full focus-visible:outline-2 focus-visible:outline-orange-500">
+                        <img ngSrc="support_icon.webp" width="48" height="48" alt="" />
+                    </a>
 
                     <!-- Login Button -->
                     <button (click)="loginWithGoogle()"

@@ -45,6 +45,13 @@ export const routes: Routes = [
   },
 
   {
+    path: 'support',
+    loadComponent: () =>
+      import('../pages/support/ui/support.component').then(
+        (m) => m.SupportComponent,
+      ),
+  },
+  {
     path: 'report',
     loadComponent: () =>
       import('../pages/report/ui/report.component').then(

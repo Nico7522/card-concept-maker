@@ -13,14 +13,12 @@ import {
 } from '@angular/fire/firestore';
 import {
   catchError,
-  filter,
   from,
   map,
   Observable,
   of,
   shareReplay,
   switchMap,
-  take,
 } from 'rxjs';
 import { Card } from '../../model/card-interface';
 import { AuthService } from '~/src/shared/api';
@@ -51,10 +49,11 @@ export class UserCardsService {
     );
   }
 
-  userCards$ = this.#authService.user$.pipe(
-    filter((user) => !!user),
-    take(1),
-    switchMap((user) => this.#getCardsByUserId(user!.uid)),
+  // Follows the auth state (never completes): the cards are fetched again when
+  // the user changes, and on every new subscription once all previous
+  // subscribers are gone (refCount), so the list is never stale between pages.
+  userCards$: Observable<Card[]> = this.#authService.user$.pipe(
+    switchMap((user) => (user ? this.#getCardsByUserId(user.uid) : of([]))),
     shareReplay({ refCount: true, bufferSize: 1 }),
   );
 }

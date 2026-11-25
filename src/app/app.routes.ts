@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { CreateCardComponent } from '../pages/create-card/ui/create-card.component';
-import { canUpdateGuard } from '../features/can-update';
+import { canUpdateCardResolver } from '../features/can-update';
 import { hasUnsavedChangesGuard } from '../features/unsaved-changes';
 import { getCardsResolver } from '../pages/my-cards/api/get-cards.resolver';
 import { getCardResolver } from '../entities/card/api/card-resolver/get-card.resolver';
@@ -15,6 +15,7 @@ export const routes: Routes = [
   {
     path: 'create',
     component: CreateCardComponent,
+    title: 'Create a card | Dokkan Card Maker',
   },
   {
     path: 'card/:id',
@@ -23,6 +24,7 @@ export const routes: Routes = [
         (m) => m.CardDetailsComponent,
       ),
     resolve: { card: getCardResolver },
+    title: 'Card details | Dokkan Card Maker',
   },
   {
     path: 'card/:id/update',
@@ -31,8 +33,9 @@ export const routes: Routes = [
         (m) => m.UpdateCardComponent,
       ),
     canDeactivate: [hasUnsavedChangesGuard],
-    canActivate: [canUpdateGuard],
-    resolve: { card: getCardResolver },
+    // Ownership check is done in the resolver to read the card only once
+    resolve: { card: canUpdateCardResolver },
+    title: 'Update a card | Dokkan Card Maker',
   },
   {
     path: 'user/:id/cards',
@@ -42,14 +45,15 @@ export const routes: Routes = [
       ),
     canActivate: [canAccessGuard],
     resolve: { cards: getCardsResolver },
+    title: 'My cards | Dokkan Card Maker',
   },
-
   {
     path: 'support',
     loadComponent: () =>
       import('../pages/support/ui/support.component').then(
         (m) => m.SupportComponent,
       ),
+    title: 'Support | Dokkan Card Maker',
   },
   {
     path: 'report',
@@ -57,5 +61,10 @@ export const routes: Routes = [
       import('../pages/report/ui/report.component').then(
         (m) => m.ReportComponent,
       ),
+    title: 'Report | Dokkan Card Maker',
+  },
+  {
+    path: '**',
+    redirectTo: 'create',
   },
 ];

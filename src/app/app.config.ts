@@ -1,6 +1,5 @@
 import {
   ApplicationConfig,
-  inject as angularInject,
   inject,
   isDevMode,
   provideAppInitializer,
@@ -8,6 +7,7 @@ import {
 } from '@angular/core';
 import {
   provideRouter,
+  RedirectCommand,
   Router,
   withComponentInputBinding,
   withNavigationErrorHandler,
@@ -39,14 +39,12 @@ export const appConfig: ApplicationConfig = {
       routes,
       withComponentInputBinding(),
       withNavigationErrorHandler((error) => {
-        const router = angularInject(Router);
-        const errorToastService = angularInject(ErrorToastService);
-        if (error?.error?.message) {
-          errorToastService.showToast(error.error.message);
-        } else {
-          errorToastService.showToast('An error occurred, try later');
-        }
-        router.navigate(['/']);
+        const router = inject(Router);
+        const errorToastService = inject(ErrorToastService);
+        errorToastService.showToast(
+          error?.error?.message ?? 'An error occurred, try later',
+        );
+        return new RedirectCommand(router.parseUrl('/'));
       }),
     ),
     provideFirebaseApp(() => initializeApp(environment)),

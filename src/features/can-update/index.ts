@@ -1,1 +1,1 @@
-export * from './lib/can-update.guard';
+export * from './lib/can-update.resolver';

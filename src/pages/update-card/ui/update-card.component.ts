@@ -39,7 +39,10 @@ import {
 } from '~/src/features/card-form';
 import { Card, UserCardsService } from '~/src/entities/card';
 import { AsyncPipe } from '@angular/common';
-import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
+import {
+  HasUnsavedChanges,
+  warnBeforeUnload,
+} from '~/src/features/unsaved-changes';
 
 @Component({
   selector: 'app-update-card-form',
@@ -79,6 +82,11 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   #hasScrolledToTransformation = false;
 
   readonly formState = createCardFormPageState(inject(UserCardsService));
+
+  constructor() {
+    // Closing the tab or reloading with unsaved changes asks for confirmation
+    warnBeforeUnload(this);
+  }
 
   cardForm = this.formState.cardForm;
   transformedCardForm = this.formState.transformedCardForm;

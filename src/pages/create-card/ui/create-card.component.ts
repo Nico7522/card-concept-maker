@@ -29,7 +29,10 @@ import {
   GameDataService,
   LoadingService,
 } from '~/src/shared/api';
-import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
+import {
+  HasUnsavedChanges,
+  warnBeforeUnload,
+} from '~/src/features/unsaved-changes';
 import {
   CardForm,
   CardFormComponent,
@@ -72,6 +75,11 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   readonly #injector = inject(Injector);
 
   readonly formState = createCardFormPageState(inject(UserCardsService));
+
+  constructor() {
+    // Closing the tab or reloading with unsaved changes asks for confirmation
+    warnBeforeUnload(this);
+  }
 
   cardForm = this.formState.cardForm;
   transformedCardForm = this.formState.transformedCardForm;

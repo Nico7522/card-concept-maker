@@ -1,10 +1,14 @@
 import {
   AfterViewInit,
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   inject,
+  Injector,
   signal,
+  viewChild,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
@@ -65,6 +69,12 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   readonly #gameDataService = inject(GameDataService);
   readonly #destroyRef = inject(DestroyRef);
   readonly #loadingService = inject(LoadingService);
+  readonly #injector = inject(Injector);
+
+  readonly transformationSection = viewChild('transformationSection', {
+    read: ElementRef<HTMLElement>,
+  });
+  #hasScrolledToTransformation = false;
 
   readonly formState = createCardFormPageState(inject(UserCardsService));
 
@@ -231,8 +241,28 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
             );
           }
           this.#loadingService.stop();
+          this.#scrollToTransformationIfOpenedFromIt();
         },
       );
+  }
+
+  // When the update page is opened from the transformed card, scroll to its form
+  #scrollToTransformationIfOpenedFromIt() {
+    const urlCardId: string = this.#activatedRoute.snapshot.params['id'];
+    const isOpenedFromTransformedCard =
+      !!this.transformedCard() && this.transformedCard()?.id === urlCardId;
+    if (!isOpenedFromTransformedCard || this.#hasScrolledToTransformation) {
+      return;
+    }
+    this.#hasScrolledToTransformation = true;
+    afterNextRender(
+      () =>
+        this.transformationSection()?.nativeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        }),
+      { injector: this.#injector },
+    );
   }
 
   hasUnsavedChanges(): boolean {

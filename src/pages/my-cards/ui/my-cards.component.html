@@ -29,8 +29,9 @@
         @else {
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             @for (card of cards; track card.id) {
-            <div [routerLink]="['/card', card.id]"
-                class="group cursor-pointer relative bg-gray-900/90 border border-gray-700 rounded-xl overflow-hidden hover:border-orange-500 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20 flex flex-col">
+            <!-- A real link: reachable with Tab, opens with Enter, supports Ctrl+click / middle click -->
+            <a [routerLink]="['/card', card.id]"
+                class="group cursor-pointer relative bg-gray-900/90 border border-gray-700 rounded-xl overflow-hidden hover:border-orange-500 focus-visible:border-orange-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/20 flex flex-col">
 
                 <!-- Type Stripe -->
                 <div class="h-1 w-full" [ngClass]="{
@@ -111,7 +112,7 @@
                     </div>
                     }
                 </div>
-            </div>
+            </a>
             }
         </div>
         }

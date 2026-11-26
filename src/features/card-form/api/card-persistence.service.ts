@@ -324,18 +324,19 @@ export class CardPersistenceService {
       switchMap((response) =>
         this.#artworkService.patchArtworkName(cardId, response.filename),
       ),
+      // The new artwork is saved at this point: failing to delete the previous
+      // file (already missing, or an old file without owner prefix that the API
+      // refuses to delete) must not be reported as a save failure
       switchMap(() =>
         currentArtwork
-          ? this.#artworkService.deleteArtwork(currentArtwork)
+          ? this.#artworkService
+              .deleteArtwork(currentArtwork)
+              .pipe(catchError(() => of(null)))
           : of(null),
       ),
       map(() => cardId),
-      catchError((err) => {
-        // If the previous image is not found, new image is still uploaded, so we can return the cardId
-        // Optional chaining: Firestore errors (patchArtworkName) have no `error` property
-        if (err?.error?.error === 'File not found') return of(cardId);
-
-        // Otherwise, warn the user: the card is saved but its artwork is not
+      catchError(() => {
+        // Upload or Firestore update failed: the card is saved but its artwork is not
         this.#errorToastService.showToast('Artwork could not be saved');
         return of(cardId);
       }),

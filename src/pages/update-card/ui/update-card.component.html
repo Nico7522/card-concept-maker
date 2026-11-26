@@ -12,7 +12,7 @@
 
             <!-- Transformation Section -->
             @if (showTransformationSection()) {
-            <app-transformation-selector [userCards]="(userCards$ | async) ?? []"
+            <app-transformation-selector #transformationSection class="block scroll-mt-24" [userCards]="(userCards$ | async) ?? []"
                 [transformedCardForm]="transformedCardForm" [(mode)]="transformationMode"
                 [(selectedCardId)]="selectedExistingCardId" (transformedArtwork)="handleTransformedArtwork($event)" />
             }

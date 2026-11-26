@@ -1,10 +1,14 @@
 import {
   AfterViewInit,
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   inject,
+  Injector,
   signal,
+  viewChild,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
@@ -15,7 +19,7 @@ import {
   heroPlus,
 } from '@ng-icons/heroicons/outline';
 import { catchError, combineLatest, EMPTY, filter, map, take, tap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -65,6 +69,12 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   readonly #gameDataService = inject(GameDataService);
   readonly #destroyRef = inject(DestroyRef);
   readonly #loadingService = inject(LoadingService);
+  readonly #injector = inject(Injector);
+
+  readonly transformationSection = viewChild('transformationSection', {
+    read: ElementRef<HTMLElement>,
+  });
+  #hasScrolledToTransformation = false;
 
   readonly formState = createCardFormPageState(inject(UserCardsService));
 
@@ -78,7 +88,6 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   selectedExistingCardId = this.formState.selectedExistingCardId;
   showTransformationSection = this.formState.showTransformationSection;
   isExistingCardMode = this.formState.isExistingCardMode;
-  userCards$ = this.formState.userCards$;
   handleArtwork = this.formState.handleArtwork;
   handleTransformedArtwork = this.formState.handleTransformedArtwork;
   handleTransformationChanged = this.formState.handleTransformationChanged;
@@ -86,6 +95,28 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   isError = signal(false);
   card = signal<Card | null>(null);
   transformedCard = signal<Card | null>(null);
+
+  // Cards selectable as the transformed form of the card being edited:
+  // - the card being edited is excluded (a card can't transform into itself)
+  // - the currently linked card is kept, even though it is filtered out of the
+  //   user's cards for already having a link, so it stays displayed as selected
+  userCards$ = combineLatest([
+    this.formState.userCards$,
+    toObservable(this.card),
+    toObservable(this.transformedCard),
+  ]).pipe(
+    map(([userCards, card, transformedCard]) => {
+      const selectableCards = userCards.filter(
+        (userCard) => userCard.id !== card?.id,
+      );
+      const isLinkedCardMissing =
+        transformedCard &&
+        !selectableCards.some((userCard) => userCard.id === transformedCard.id);
+      return isLinkedCardMissing
+        ? [transformedCard, ...selectableCards]
+        : selectableCards;
+    }),
+  );
 
   card$ = this.#activatedRoute.data.pipe(
     tap((data) => {
@@ -210,8 +241,28 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
             );
           }
           this.#loadingService.stop();
+          this.#scrollToTransformationIfOpenedFromIt();
         },
       );
+  }
+
+  // When the update page is opened from the transformed card, scroll to its form
+  #scrollToTransformationIfOpenedFromIt() {
+    const urlCardId: string = this.#activatedRoute.snapshot.params['id'];
+    const isOpenedFromTransformedCard =
+      !!this.transformedCard() && this.transformedCard()?.id === urlCardId;
+    if (!isOpenedFromTransformedCard || this.#hasScrolledToTransformation) {
+      return;
+    }
+    this.#hasScrolledToTransformation = true;
+    afterNextRender(
+      () =>
+        this.transformationSection()?.nativeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        }),
+      { injector: this.#injector },
+    );
   }
 
   hasUnsavedChanges(): boolean {

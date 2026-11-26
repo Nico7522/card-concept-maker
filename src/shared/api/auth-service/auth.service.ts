@@ -11,7 +11,7 @@ import {
   signOut,
   user,
 } from '@angular/fire/auth';
-import { catchError, from, throwError } from 'rxjs';
+import { catchError, defer, from, Observable, of, throwError } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
@@ -77,6 +77,18 @@ export class AuthService {
    */
   logout() {
     return from(this.signOut());
+  }
+
+  /**
+   * Gets the Firebase ID token of the current user, to authenticate requests to the API.
+   * The Firebase SDK caches the token and refreshes it automatically when it expires.
+   * @returns An observable of the token, or null if no user is logged in
+   */
+  getIdToken(): Observable<string | null> {
+    return defer(() => {
+      const currentUser = this.#auth.currentUser;
+      return currentUser ? from(currentUser.getIdToken()) : of(null);
+    });
   }
 
 }

@@ -16,9 +16,11 @@ import {
   from,
   map,
   Observable,
+  of,
   switchMap,
   throwError,
 } from 'rxjs';
+import { ArtworkService } from '~/src/shared/api';
 import { Card } from '../../model/card-interface';
 import { CardApiService } from '../card-api-service/card-api.service';
 
@@ -29,6 +31,7 @@ export class DeleteCardService {
   readonly #injector = inject(Injector);
   readonly #firestore = inject(Firestore);
   readonly #cardApiService = inject(CardApiService);
+  readonly #artworkService = inject(ArtworkService);
   readonly #cardsCollection = collection(this.#firestore, 'cards');
 
   #getCardById(cardId: string): Observable<Card | null> {
@@ -64,21 +67,34 @@ export class DeleteCardService {
         const transformedCardId =
           card.characterInfo?.activeSkill?.transformedCardId;
 
-        if (baseCardId) {
-          return this.#cardApiService
-            .unlinkFromTransformedCard(baseCardId)
-            .pipe(switchMap(() => this.deleteCard(cardId)));
-        }
+        // Remove the link from the other card first, so no reference to the deleted card remains
+        const unlink$ = baseCardId
+          ? this.#cardApiService.unlinkFromTransformedCard(baseCardId)
+          : transformedCardId
+            ? this.#cardApiService.unlinkFromBaseCard(transformedCardId)
+            : of(undefined);
 
-        if (transformedCardId) {
-          return this.#cardApiService
-            .unlinkFromBaseCard(transformedCardId)
-            .pipe(switchMap(() => this.deleteCard(cardId)));
-        }
-
-        return this.deleteCard(cardId);
+        return unlink$.pipe(
+          switchMap(() => this.deleteCard(cardId)),
+          switchMap(() => this.#deleteArtwork(card.artwork)),
+        );
       }),
       catchError(() => throwError(() => new Error('Failed to delete card'))),
+    );
+  }
+
+  /**
+   * Deletes the artwork file of a deleted card from the server.
+   * The card is already deleted at this point, so a failure here
+   * (file already missing, server unavailable) must not fail the deletion.
+   */
+  #deleteArtwork(artwork: string | null | undefined): Observable<void> {
+    if (!artwork) {
+      return of(undefined);
+    }
+    return this.#artworkService.deleteArtwork(artwork).pipe(
+      map(() => undefined),
+      catchError(() => of(undefined)),
     );
   }
 }

@@ -20,6 +20,10 @@ import { catchError, EMPTY } from 'rxjs';
 import { SuccessfullySubmittedComponent } from './successfully-submitted/successfully-submitted.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Email } from '../models/email-interfaces';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+
+// Same limit as the API (/send-email rejects longer messages)
+const MAX_MESSAGE_LENGTH = 5000;
 
 @Component({
   selector: 'app-report',
@@ -36,6 +40,7 @@ import { Email } from '../models/email-interfaces';
   styleUrl: './report.component.css',
 })
 export class ReportComponent implements OnDestroy {
+  readonly maxMessageLength = MAX_MESSAGE_LENGTH;
   readonly #destroyRef = inject(DestroyRef);
   readonly #reportService = inject(ReportService);
   readonly #errorToastService = inject(ErrorToastService);
@@ -49,7 +54,12 @@ export class ReportComponent implements OnDestroy {
     }),
     message: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required],
+      validators: [
+        Validators.required,
+        // The API rejects messages made only of whitespace
+        Validators.pattern(/\S/),
+        Validators.maxLength(MAX_MESSAGE_LENGTH),
+      ],
     }),
   });
 
@@ -66,8 +76,12 @@ export class ReportComponent implements OnDestroy {
         .report(email)
         .pipe(
           takeUntilDestroyed(this.#destroyRef),
-          catchError(() => {
-            this.#errorToastService.showToast('Error submitting report');
+          catchError((error: HttpErrorResponse) => {
+            this.#errorToastService.showToast(
+              error.status === HttpStatusCode.TooManyRequests
+                ? 'Too many messages sent, please try again later'
+                : 'Error submitting report',
+            );
             this.isLoading.set(false);
             return EMPTY;
           })

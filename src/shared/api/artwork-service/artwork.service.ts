@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   inject,
   Injectable,
@@ -6,8 +6,9 @@ import {
   runInInjectionContext,
 } from '@angular/core';
 import { collection, doc, Firestore, updateDoc } from '@angular/fire/firestore';
-import { from } from 'rxjs';
+import { from, Observable, switchMap } from 'rxjs';
 import { environment } from '~/src/environments/environment';
+import { AuthService } from '../auth-service/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class ArtworkService {
   readonly #firestore = inject(Firestore);
   readonly #cardsCollection = collection(this.#firestore, 'cards');
   readonly #httpClient = inject(HttpClient);
+  readonly #authService = inject(AuthService);
 
   /**
    * Uploads an artwork image to the server.
@@ -24,9 +26,12 @@ export class ArtworkService {
    * @returns An observable of the filename.
    */
   patchArtworkImage(artwork: FormData) {
-    return this.#httpClient.post<{ filename: string }>(
-      `${environment.apiUrl}/upload`,
-      artwork
+    return this.#withAuthHeaders((headers) =>
+      this.#httpClient.post<{ filename: string }>(
+        `${environment.apiUrl}/upload`,
+        artwork,
+        { headers },
+      ),
     );
   }
 
@@ -52,10 +57,32 @@ export class ArtworkService {
    * @returns An observable of void.
    */
   deleteArtwork(artwork: string) {
-    return this.#httpClient.delete(`${environment.apiUrl}/delete`, {
-      body: {
-        filename: artwork,
-      },
-    });
+    return this.#withAuthHeaders((headers) =>
+      this.#httpClient.delete(`${environment.apiUrl}/delete`, {
+        headers,
+        body: {
+          filename: artwork,
+        },
+      }),
+    );
+  }
+
+  /**
+   * Runs an API request with the Firebase ID token of the current user
+   * in the Authorization header, so the API can check who owns the files.
+   * Only the image upload and delete requests need it: images stay public to read.
+   */
+  #withAuthHeaders<T>(
+    request: (headers: HttpHeaders) => Observable<T>,
+  ): Observable<T> {
+    return this.#authService.getIdToken().pipe(
+      switchMap((token) =>
+        request(
+          token
+            ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+            : new HttpHeaders(),
+        ),
+      ),
+    );
   }
 }

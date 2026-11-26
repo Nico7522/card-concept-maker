@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
@@ -18,6 +24,8 @@ import { AuthService } from '~/src/shared/api';
 import { UbButtonDirective } from '~/components/ui/button';
 import { DeleteCardButtonComponent } from '~/src/features/delete-card';
 import { CardComponent, ResolvedCard } from '~/src/entities/card';
+
+const SHARE_BASE_URL = 'https://dokkan-card-maker.com/card/';
 
 @Component({
   selector: 'app-card-details',
@@ -53,13 +61,26 @@ export class CardDetailsComponent {
   isLoading = signal(true);
   isError = signal(false);
   isCopied = signal(false);
-  cardId = signal<string | null>(null);
   creatorId = signal<string | null>(null);
   selectedCard = signal<'base' | 'transformed'>('base');
+  resolvedCard = signal<ResolvedCard | null>(null);
+
+  // The card currently displayed (base or transformed form): the title,
+  // share link, update and delete actions always target this card
+  displayedCard = computed(() => {
+    const resolvedCard = this.resolvedCard();
+    if (!resolvedCard) return null;
+    return this.selectedCard() === 'transformed' && resolvedCard.transformedCard
+      ? resolvedCard.transformedCard
+      : resolvedCard.baseCard;
+  });
+  shareLink = computed(() => SHARE_BASE_URL + (this.displayedCard()?.id ?? ''));
+
   card$ = this.#activatedRoute.data.pipe(
     map((data) => data['card'] as ResolvedCard),
-    tap(({ currentCard, transformedCard }) => {
-      this.cardId.set(currentCard.id ?? '');
+    tap((resolvedCard) => {
+      const { currentCard, transformedCard } = resolvedCard;
+      this.resolvedCard.set(resolvedCard);
       this.creatorId.set(currentCard.creatorId ?? null);
       this.isLoading.set(false);
       const cardToDisplay =
@@ -88,8 +109,7 @@ export class CardDetailsComponent {
   }
 
   copyShareLink() {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
+    navigator.clipboard.writeText(this.shareLink()).then(() => {
       this.isCopied.set(true);
       setTimeout(() => this.isCopied.set(false), 2000);
     });

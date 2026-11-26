@@ -204,6 +204,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
         catchError(() => {
           this.#errorToastService.showToast(
             'An error occurred while updating the card',
+            { persistent: true },
           );
           this.#loadingService.stop();
           return EMPTY;

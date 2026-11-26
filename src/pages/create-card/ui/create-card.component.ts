@@ -153,6 +153,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
           this.#loadingService.stop();
           this.#errorToastService.showToast(
             'An error occurred while creating the card',
+            { persistent: true },
           );
           return EMPTY;
         }),

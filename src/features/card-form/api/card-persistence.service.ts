@@ -337,7 +337,9 @@ export class CardPersistenceService {
       map(() => cardId),
       catchError(() => {
         // Upload or Firestore update failed: the card is saved but its artwork is not
-        this.#errorToastService.showToast('Artwork could not be saved');
+        this.#errorToastService.showToast('Artwork could not be saved', {
+          persistent: true,
+        });
         return of(cardId);
       }),
     );

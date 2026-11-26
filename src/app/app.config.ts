@@ -30,9 +30,13 @@ import { environment } from '../environments/environment';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
+    // Analytics only runs in production. With provideAnalytics, the tracking
+    // services are not started automatically: they must be injected once.
     provideAppInitializer(() => {
       if (!isDevMode()) {
-        const analytics = inject(Analytics);
+        inject(Analytics);
+        inject(ScreenTrackingService);
+        inject(UserTrackingService);
       }
     }),
     provideRouter(

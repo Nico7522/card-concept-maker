@@ -332,9 +332,10 @@ export class CardPersistenceService {
       map(() => cardId),
       catchError((err) => {
         // If the previous image is not found, new image is still uploaded, so we can return the cardId
-        if (err.error.error === 'File not found') return of(cardId);
+        // Optional chaining: Firestore errors (patchArtworkName) have no `error` property
+        if (err?.error?.error === 'File not found') return of(cardId);
 
-        // Otherwise, throw the error
+        // Otherwise, warn the user: the card is saved but its artwork is not
         this.#errorToastService.showToast('Artwork could not be saved');
         return of(cardId);
       }),

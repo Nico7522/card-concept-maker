@@ -14,7 +14,12 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ErrorComponent } from '~/src/shared/ui';
-import { artworkFormat } from '../../model/validators';
+import {
+  artworkFormat,
+  artworkMaxSize,
+  MAX_ARTWORK_SIZE_BYTES,
+  MAX_ARTWORK_SIZE_MB,
+} from '../../model/validators';
 
 @Component({
   selector: 'app-artwork-form',
@@ -34,6 +39,8 @@ export class ArtworkFormComponent implements OnInit, OnDestroy {
   controlKey = input.required<string>();
   label = input.required<string>();
   artwork = output<FormData>();
+  readonly maxArtworkSizeMb = MAX_ARTWORK_SIZE_MB;
+  #isFileTooLarge = false;
   get parentFormGroup(): FormGroup {
     return this.#parentContainer.control as FormGroup;
   }
@@ -46,11 +53,16 @@ export class ArtworkFormComponent implements OnInit, OnDestroy {
   onFileChange(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('artwork', file, file.name);
-      this.artwork.emit(formData);
-      this.parentFormGroup.get('artwork')?.setValue(file.name);
-      this.parentFormGroup.get('artwork')?.markAsDirty();
+      // Checked before saving: the API would reject the file after the card is created
+      this.#isFileTooLarge = file.size > MAX_ARTWORK_SIZE_BYTES;
+      if (!this.#isFileTooLarge) {
+        const formData = new FormData();
+        formData.append('artwork', file, file.name);
+        this.artwork.emit(formData);
+      }
+      // setValue re-runs the validators, including the size check
+      this.artworkForm.setValue(file.name);
+      this.artworkForm.markAsDirty();
     }
   }
 
@@ -58,7 +70,10 @@ export class ArtworkFormComponent implements OnInit, OnDestroy {
     this.parentFormGroup.addControl(
       this.controlKey(),
       new FormControl<string | null>(null, {
-        validators: [artworkFormat],
+        validators: [
+          artworkFormat,
+          artworkMaxSize(() => this.#isFileTooLarge),
+        ],
       }),
     );
   }

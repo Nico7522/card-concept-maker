@@ -106,7 +106,7 @@
         <app-artwork-form controlKey="artwork" label="Artwork" (artwork)="handleArtwork($event)" />
         @if(parentFormGroup.get(controlKey())?.get('artwork')?.value) {
         <pre
-            class="text-sm text-gray-400 whitespace-pre-wrap">{{ 'actual : ' + parentFormGroup.get(controlKey())?.get('artwork')?.value }}</pre>
+            class="mt-2 text-sm text-gray-400 whitespace-pre-wrap break-all">{{ 'Current file: ' + parentFormGroup.get(controlKey())?.get('artwork')?.value }}</pre>
         }
     </div>
 

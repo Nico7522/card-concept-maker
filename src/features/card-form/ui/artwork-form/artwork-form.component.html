@@ -1,7 +1,15 @@
 <div [formGroupName]="controlKey()">
-    <input type="file" (change)="onFileChange($event)" />
+    <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" (change)="onFileChange($event)" />
 
-    @if (artworkForm.dirty && artworkForm.errors?.['invalidArtworkFormat']) {
-    <app-error errorMessage="Invalid format" />
+    <!-- The shared error is absolutely positioned: this block reserves its line
+         so it doesn't overlap the current file name below -->
+    @if (artworkForm.dirty && (artworkForm.errors?.['invalidArtworkFormat'] || artworkForm.errors?.['artworkTooLarge'])) {
+    <div class="relative h-6 mt-1">
+        @if (artworkForm.errors?.['invalidArtworkFormat']) {
+        <app-error errorMessage="Invalid format" />
+        } @else {
+        <app-error [errorMessage]="'Image must be under ' + maxArtworkSizeMb + ' MB'" />
+        }
+    </div>
     }
 </div>

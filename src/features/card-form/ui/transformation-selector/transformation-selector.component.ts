@@ -31,6 +31,8 @@ export class TransformationSelectorComponent {
   // Required inputs
   userCards = input.required<Card[]>();
   transformedCardForm = input.required<FormGroup>();
+  // Shown after a submit attempt in "select" mode without a selected card
+  showSelectionError = input(false);
 
   // Two-way bindings
   mode = model<TransformationMode>('existing');

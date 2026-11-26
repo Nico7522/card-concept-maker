@@ -11,6 +11,8 @@ export function createCardFormPageState(userCardsService: UserCardsService) {
   const artwork = signal<FormData | null>(null);
   const transformedArtwork = signal<FormData | null>(null);
   const isFormSubmitted = signal(false);
+  // Set on every submit click, valid or not: shows errors that don't rely on `dirty`
+  const hasSubmitAttempt = signal(false);
   const hasTransformation = signal(false);
   const transformationMode = signal<TransformationMode>('existing');
   const selectedExistingCardId = signal<string | null>(null);
@@ -20,6 +22,11 @@ export function createCardFormPageState(userCardsService: UserCardsService) {
     () => transformationMode() === 'existing',
   );
   const userCards$ = userCardsService.userCards$;
+  // "Select an existing card" mode without a selected card
+  const isTransformationSelectionMissing = computed(
+    () =>
+      hasTransformation() && !isExistingCardMode() && !selectedExistingCardId(),
+  );
 
   function getNestedForm(): FormGroup<CardForm> | null {
     return cardForm.get('cardForm') as FormGroup<CardForm> | null;
@@ -36,15 +43,24 @@ export function createCardFormPageState(userCardsService: UserCardsService) {
     mainForm: FormGroup<CardForm>;
     transformedForm: FormGroup<CardForm> | null;
   } | null {
-    isFormSubmitted.set(true);
+    hasSubmitAttempt.set(true);
 
     const mainForm = getNestedForm();
-    if (!mainForm?.valid) return null;
+    const hasTransformedForm = hasTransformation() && isExistingCardMode();
+    const isValid =
+      !!mainForm?.valid &&
+      (!hasTransformedForm || !!getTransformedForm()?.valid) &&
+      !isTransformationSelectionMissing();
 
-    if (hasTransformation() && isExistingCardMode()) {
-      const transformed = getTransformedForm();
-      if (!transformed?.valid) return null;
+    if (!mainForm || !isValid) {
+      // Every error message is shown on `dirty`: reveal them all at once
+      cardForm.markAllAsDirty();
+      if (hasTransformedForm) transformedCardForm.markAllAsDirty();
+      return null;
     }
+
+    // Only once valid: an invalid attempt must keep the unsaved changes warning
+    isFormSubmitted.set(true);
 
     return {
       mainForm,
@@ -65,12 +81,14 @@ export function createCardFormPageState(userCardsService: UserCardsService) {
     artwork,
     transformedArtwork,
     isFormSubmitted,
+    hasSubmitAttempt,
     hasTransformation,
     transformationMode,
     selectedExistingCardId,
 
     showTransformationSection,
     isExistingCardMode,
+    isTransformationSelectionMissing,
     userCards$,
 
     handleArtwork: (fd: FormData) => artwork.set(fd),

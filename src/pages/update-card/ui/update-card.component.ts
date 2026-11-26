@@ -35,6 +35,7 @@ import {
   patchCardForm,
   TransformationSelectorComponent,
   createCardFormPageState,
+  scrollToFirstInvalidField,
 } from '~/src/features/card-form';
 import { Card, UserCardsService } from '~/src/entities/card';
 import { AsyncPipe } from '@angular/common';
@@ -70,6 +71,7 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   readonly #destroyRef = inject(DestroyRef);
   readonly #loadingService = inject(LoadingService);
   readonly #injector = inject(Injector);
+  readonly #elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   readonly transformationSection = viewChild('transformationSection', {
     read: ElementRef<HTMLElement>,
@@ -83,6 +85,9 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
   artwork = this.formState.artwork;
   transformedArtwork = this.formState.transformedArtwork;
   isFormSubmitted = this.formState.isFormSubmitted;
+  hasSubmitAttempt = this.formState.hasSubmitAttempt;
+  isTransformationSelectionMissing =
+    this.formState.isTransformationSelectionMissing;
   hasTransformation = this.formState.hasTransformation;
   transformationMode = this.formState.transformationMode;
   selectedExistingCardId = this.formState.selectedExistingCardId;
@@ -138,7 +143,10 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
 
   onSubmit() {
     const validated = this.formState.validateForms();
-    if (!validated) return;
+    if (!validated) {
+      this.#scrollToFirstInvalidField();
+      return;
+    }
 
     const user = this.#authService.user();
     if (!user) return;
@@ -244,6 +252,14 @@ export class UpdateCardComponent implements HasUnsavedChanges, AfterViewInit {
           this.#scrollToTransformationIfOpenedFromIt();
         },
       );
+  }
+
+  // After the error messages are rendered, bring the first invalid field into view
+  #scrollToFirstInvalidField() {
+    afterNextRender(
+      () => scrollToFirstInvalidField(this.#elementRef.nativeElement),
+      { injector: this.#injector },
+    );
   }
 
   // When the update page is opened from the transformed card, scroll to its form

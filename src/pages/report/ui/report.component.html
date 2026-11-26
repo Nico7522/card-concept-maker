@@ -36,9 +36,21 @@
                 <textarea id="message" formControlName="message" rows="6"
                     placeholder="Describe your issue, feedback, or suggestion in detail..."
                     class="w-full placeholder:text-[#9ca3af] bg-gray-800 border border-gray-600 rounded p-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"></textarea>
-                @if (reportForm.get('message')?.touched && reportForm.get('message')?.hasError('required')) {
-                <span class="text-red-400 text-sm">Please enter a message</span>
-                }
+                @let messageControl = reportForm.controls.message;
+                <div class="flex justify-between gap-4">
+                    <div>
+                        @if (messageControl.touched && (messageControl.hasError('required') || messageControl.hasError('pattern'))) {
+                        <span class="text-red-400 text-sm">Please enter a message</span>
+                        }
+                        @if (messageControl.hasError('maxlength')) {
+                        <span class="text-red-400 text-sm">Your message must not exceed {{ maxMessageLength }} characters</span>
+                        }
+                    </div>
+                    <span class="text-sm shrink-0" [class.text-red-400]="messageControl.value.length > maxMessageLength"
+                        [class.text-gray-500]="messageControl.value.length <= maxMessageLength">
+                        {{ messageControl.value.length }} / {{ maxMessageLength }}
+                    </span>
+                </div>
 
             </div>
 

@@ -9,7 +9,6 @@ import {
   output,
   viewChild,
 } from '@angular/core';
-import { UbButtonDirective } from '~/components/ui/button';
 
 const FOCUSABLE_SELECTOR =
   'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -23,7 +22,6 @@ const FOCUSABLE_SELECTOR =
 @Component({
   selector: 'app-delete-confirmation-modal',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UbButtonDirective],
   templateUrl: './delete-confirmation-modal.component.html',
   styleUrl: './delete-confirmation-modal.component.css',
   host: {

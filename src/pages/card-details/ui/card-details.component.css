@@ -1,14 +1,40 @@
-.details {
-    background: #1a1818;
+/* "Created by" line under the card name */
+.card-meta {
+  margin: 0;
+  font-size: 14px;
+  color: #d8c3a0;
 }
 
-.card-details {
-    height: 700px;
-
+.card-meta__name {
+  font-family: var(--font-logo);
+  text-transform: uppercase;
+  color: var(--logo-orange);
 }
 
-.card-details > h2 {
-    background: #85ff7a;
-    background: linear-gradient(180deg, rgba(133, 255, 122, 1) 1%, rgba(10, 18, 12, 1) 53%, rgba(54, 199, 10, 1) 100%);
+/* Share box: label | link | copy button */
+.share-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 6px 6px 16px;
+  background: var(--logo-panel);
+  border: 2px solid var(--logo-line-strong);
 }
 
+.share-box__label {
+  flex-shrink: 0;
+  font-family: var(--font-logo);
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--logo-yellow);
+}
+
+.share-box__link {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #d8c3a0;
+}

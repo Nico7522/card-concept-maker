@@ -201,9 +201,38 @@ body {
     box-shadow: inset 0 0 0 3px var(--logo-yellow);
   }
 
-  /* Destructive action (Logout): red icon, like the logo's last word */
+  /* Destructive action (Logout, Delete): red icon, like the logo's last word */
   .dokkan-btn--danger svg {
     stroke: var(--logo-red);
+  }
+
+  .dokkan-btn--danger:hover,
+  .dokkan-btn--danger:focus-visible {
+    color: var(--logo-red);
+    box-shadow: inset 0 0 0 2px var(--logo-red);
+  }
+
+  /* Confirming a destructive action (e.g. the Delete of the confirmation dialog) */
+  .dokkan-btn--danger-solid {
+    color: #ffffff;
+    background: var(--logo-red);
+    box-shadow: none;
+  }
+
+  .dokkan-btn--danger-solid svg {
+    stroke: #ffffff;
+  }
+
+  .dokkan-btn--danger-solid:hover,
+  .dokkan-btn--danger-solid:focus-visible {
+    color: #ffffff;
+    background: #ff5252;
+    box-shadow: inset 0 0 0 2px #ffffff;
+  }
+
+  .dokkan-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   /* Square, icon-only variant (hamburger, mobile support) */

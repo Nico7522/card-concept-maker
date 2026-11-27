@@ -21,7 +21,6 @@ import { catchError, EMPTY, map, shareReplay, switchMap, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { LoaderComponent } from '~/src/shared/ui';
 import { AuthService } from '~/src/shared/api';
-import { UbButtonDirective } from '~/components/ui/button';
 import { DeleteCardButtonComponent } from '~/src/features/delete-card';
 import { CardComponent, ResolvedCard } from '~/src/entities/card';
 
@@ -32,7 +31,6 @@ const SHARE_BASE_URL = 'https://dokkan-card-maker.com/card/';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgIconComponent,
-    UbButtonDirective,
     AsyncPipe,
     LoaderComponent,
     RouterModule,

@@ -1,8 +1,8 @@
 <div [formGroupName]="controlKey()" class="flex flex-col gap-6">
 
     <!-- Section: General Info -->
-    <div class="p-4 bg-black/20 rounded-lg border border-gray-700">
-        <h3 class="text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">General Info</h3>
+    <div class="form-section p-4 bg-black/20 rounded-lg border border-gray-700">
+        <h3 class="form-section__title text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">General Info</h3>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Card Name -->
@@ -53,14 +53,14 @@
     </div>
 
     <!-- Section: Stats -->
-    <div class="p-4 bg-black/20 rounded-lg border border-gray-700">
-        <h3 class="text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Base Stats</h3>
+    <div class="form-section p-4 bg-black/20 rounded-lg border border-gray-700">
+        <h3 class="form-section__title text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Base Stats</h3>
         <app-base-stat-form controlKey="stats" label="Stats" />
     </div>
 
     <!-- Section: Skills -->
-    <div class="p-4 bg-black/20 rounded-lg border border-gray-700">
-        <h3 class="text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Skills</h3>
+    <div class="form-section p-4 bg-black/20 rounded-lg border border-gray-700">
+        <h3 class="form-section__title text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Skills</h3>
 
         <!-- Leader Skill -->
         <div class="flex flex-col gap-2 mb-6">
@@ -85,14 +85,14 @@
     </div>
 
     <!-- Super Attack and Ultra Super Attack -->
-    <div class="p-4 bg-black/20 rounded-lg border border-gray-700">
-        <h3 class="text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Attacks</h3>
+    <div class="form-section p-4 bg-black/20 rounded-lg border border-gray-700">
+        <h3 class="form-section__title text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Attacks</h3>
         <app-super-attack-form controlKey="superAttack" label="Super Attack" [isLegendaryCharacter]="isLegendary()" />
     </div>
 
     <!-- Categories and Link Skills -->
-    <div class="p-4 bg-black/20 rounded-lg border border-gray-700">
-        <h3 class="text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Details</h3>
+    <div class="form-section p-4 bg-black/20 rounded-lg border border-gray-700">
+        <h3 class="form-section__title text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Details</h3>
         <div class="flex flex-col gap-6">
             <app-categories-form controlKey="categories" label="Categories" />
             <app-links-form controlKey="links" label="Link Skills" />
@@ -101,8 +101,8 @@
 
     <!-- Section: Artwork -->
     @if (user()) {
-    <div class="p-4 bg-black/20 rounded-lg border border-gray-700">
-        <h3 class="text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Artwork</h3>
+    <div class="form-section p-4 bg-black/20 rounded-lg border border-gray-700">
+        <h3 class="form-section__title text-xl font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Artwork</h3>
         <app-artwork-form controlKey="artwork" label="Artwork" (artwork)="handleArtwork($event)" />
         @if(parentFormGroup.get(controlKey())?.get('artwork')?.value) {
         <pre

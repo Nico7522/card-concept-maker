@@ -214,6 +214,14 @@ body {
     clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   }
 
+  /* Large variant (main form submit) */
+  .dokkan-btn--lg {
+    height: 56px;
+    padding: 0 40px;
+    font-size: 18px;
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+  }
+
   /* Full-width variant (mobile menu) */
   .dokkan-btn--block {
     width: 100%;
@@ -314,3 +322,202 @@ body {
     color: #ef4444;
 }
 
+
+/* ---------------------------------------------------------------------------
+   Card form theme, matching the logo. Only active inside `.dokkan-form`
+   (create page), so removing that class restores the previous look.
+   Not in a layer on purpose: it must win over the Tailwind utilities that
+   the form templates already use.
+   --------------------------------------------------------------------------- */
+.dokkan-form {
+  padding: 24px;
+  background: rgba(12, 9, 6, 0.6);
+  border: 2px solid var(--logo-line);
+}
+
+@media (min-width: 768px) {
+  .dokkan-form {
+    padding: 32px;
+  }
+}
+
+/* Sections: brown panels. No clip-path here (unlike the buttons): the dropdowns
+   open inside their section and would be cut off. */
+.dokkan-form .form-section {
+  background: var(--logo-panel);
+  border: 2px solid var(--logo-line-strong);
+  border-radius: 0;
+}
+
+.dokkan-form .form-section--accent {
+  background: linear-gradient(135deg, rgba(255, 148, 77, 0.12) 0%, var(--logo-panel) 60%);
+  border-color: var(--logo-orange);
+}
+
+.dokkan-form .form-section__title {
+  font-family: var(--font-logo);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--logo-yellow);
+  text-shadow: 0 2px 0 #000;
+  border-bottom-color: var(--logo-line-strong);
+}
+
+/* Sub-panels: passive parts, active skill / domain / ultra super attack details */
+.dokkan-form .form-subsection {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--logo-line-strong);
+  border-radius: 0;
+}
+
+.dokkan-form .form-subsection--accent {
+  border-color: rgba(255, 148, 77, 0.45);
+  background: rgba(255, 148, 77, 0.06);
+}
+
+.dokkan-form .form-subsection__title {
+  font-family: var(--font-logo);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--logo-orange);
+}
+
+/* Labels */
+.dokkan-form label {
+  color: #d8c3a0;
+  letter-spacing: 0.06em;
+}
+
+/* Text fields */
+.dokkan-form input:not([type='checkbox']):not([type='radio']):not([type='file']),
+.dokkan-form textarea {
+  background: #120e0a;
+  color: var(--logo-text);
+  border: 1px solid var(--logo-line-strong);
+  border-radius: 0;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.dokkan-form input:not([type='checkbox']):not([type='radio']):not([type='file']):focus,
+.dokkan-form textarea:focus {
+  outline: none;
+  border-color: var(--logo-yellow);
+  box-shadow: 0 0 0 2px rgba(255, 216, 77, 0.25);
+}
+
+.dokkan-form input::placeholder,
+.dokkan-form textarea::placeholder {
+  color: #8c7f68;
+}
+
+.dokkan-form input[type='checkbox'],
+.dokkan-form input[type='radio'] {
+  accent-color: var(--logo-orange);
+}
+
+.dokkan-form input[type='file'] {
+  color: #d8c3a0;
+}
+
+.dokkan-form input[type='file']::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 14px;
+  border: 0;
+  cursor: pointer;
+  color: var(--logo-text);
+  background: var(--logo-panel);
+  box-shadow: inset 0 0 0 2px var(--logo-line-strong);
+  font-family: var(--font-logo);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.dokkan-form input[type='file']::file-selector-button:hover {
+  box-shadow: inset 0 0 0 2px var(--logo-yellow);
+  color: var(--logo-yellow);
+}
+
+/* Dropdowns (ng-select). The doubled class beats the form's own ::ng-deep styles. */
+.dokkan-form .ng-select.ng-select.custom-select .ng-select-container {
+  background: #120e0a;
+  border: 1px solid var(--logo-line-strong);
+  border-radius: 0;
+  color: var(--logo-text);
+}
+
+.dokkan-form .ng-select.ng-select.custom-select:hover .ng-select-container,
+.dokkan-form .ng-select.ng-select.custom-select.ng-select-focused .ng-select-container,
+.dokkan-form .ng-select.ng-select.custom-select.ng-select-opened .ng-select-container {
+  border-color: var(--logo-yellow);
+  box-shadow: 0 0 0 2px rgba(255, 216, 77, 0.25);
+}
+
+.dokkan-form .ng-select.ng-select.custom-select .ng-dropdown-panel {
+  background: #120e0a;
+  border-color: var(--logo-line-strong);
+  border-radius: 0;
+}
+
+.dokkan-form .ng-select.ng-select.custom-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  background: #120e0a;
+  color: var(--logo-text);
+}
+
+.dokkan-form .ng-select.ng-select.custom-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background: var(--logo-panel);
+  color: var(--logo-yellow);
+}
+
+.dokkan-form .ng-select.ng-select.custom-select .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+  background: #2a2118;
+  color: var(--logo-yellow);
+}
+
+/* Add / remove buttons */
+.dokkan-form .form-add-btn {
+  border: 0;
+  border-radius: 0;
+  color: var(--logo-text);
+  background: var(--logo-panel);
+  box-shadow: inset 0 0 0 1px var(--logo-line-strong);
+  font-family: var(--font-logo);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition: color 0.15s, box-shadow 0.15s;
+}
+
+.dokkan-form .form-add-btn:hover,
+.dokkan-form .form-add-btn:focus-visible {
+  outline: none;
+  color: var(--logo-yellow);
+  background: var(--logo-panel);
+  box-shadow: inset 0 0 0 2px var(--logo-yellow);
+}
+
+.dokkan-form .form-add-btn--primary {
+  color: var(--logo-yellow);
+  box-shadow: inset 0 0 0 2px var(--logo-yellow);
+  background: rgba(255, 216, 77, 0.06);
+}
+
+.dokkan-form .form-remove-btn:not(.form-remove-btn--text) {
+  border: 0;
+  border-radius: 0;
+  color: var(--logo-red);
+  background: rgba(255, 48, 48, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 48, 48, 0.45);
+}
+
+.dokkan-form .form-remove-btn:not(.form-remove-btn--text):hover:not(:disabled) {
+  background: rgba(255, 48, 48, 0.2);
+}
+
+.dokkan-form .form-remove-btn--text {
+  color: var(--logo-red);
+  font-family: var(--font-logo);
+  font-weight: 400;
+}

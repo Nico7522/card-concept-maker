@@ -24,7 +24,7 @@
 
     <!-- Card Selector -->
     @if (showCardSelector()) {
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2" [attr.data-invalid]="showSelectionError() || null">
         <label for="userCards" class="text-sm font-semibold text-gray-400 uppercase">Select one of your cards</label>
         @if (userCards().length > 0) {
         <ng-select id="userCards" [items]="userCards()" bindLabel="cardName" [searchable]="true" [clearable]="true"
@@ -38,6 +38,9 @@
         </ng-select>
         } @else {
         <p class="text-gray-500 italic">You don't have any cards yet. Create a new one instead.</p>
+        }
+        @if (showSelectionError()) {
+        <p class="text-red-400 text-sm">Please select a card</p>
         }
     </div>
     }

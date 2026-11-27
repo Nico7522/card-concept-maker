@@ -1,8 +1,11 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   ComponentRef,
+  ElementRef,
   inject,
+  Injector,
   inputBinding,
   OnDestroy,
   viewChild,
@@ -26,13 +29,17 @@ import {
   GameDataService,
   LoadingService,
 } from '~/src/shared/api';
-import { HasUnsavedChanges } from '~/src/features/unsaved-changes';
+import {
+  HasUnsavedChanges,
+  warnBeforeUnload,
+} from '~/src/features/unsaved-changes';
 import {
   CardForm,
   CardFormComponent,
   CardPersistenceService,
   TransformationSelectorComponent,
   createCardFormPageState,
+  scrollToFirstInvalidField,
 } from '~/src/features/card-form';
 import { buildGuestPreviewCard } from '../lib/build-guest-preview-card';
 import { Card, CardComponent, UserCardsService } from '~/src/entities/card';
@@ -64,14 +71,24 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
   readonly #router = inject(Router);
   readonly #gameDataService = inject(GameDataService);
   readonly #loadingService = inject(LoadingService);
+  readonly #elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  readonly #injector = inject(Injector);
 
   readonly formState = createCardFormPageState(inject(UserCardsService));
+
+  constructor() {
+    // Closing the tab or reloading with unsaved changes asks for confirmation
+    warnBeforeUnload(this);
+  }
 
   cardForm = this.formState.cardForm;
   transformedCardForm = this.formState.transformedCardForm;
   artwork = this.formState.artwork;
   transformedArtwork = this.formState.transformedArtwork;
   isFormSubmitted = this.formState.isFormSubmitted;
+  hasSubmitAttempt = this.formState.hasSubmitAttempt;
+  isTransformationSelectionMissing =
+    this.formState.isTransformationSelectionMissing;
   hasTransformation = this.formState.hasTransformation;
   transformationMode = this.formState.transformationMode;
   selectedExistingCardId = this.formState.selectedExistingCardId;
@@ -87,7 +104,10 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
 
   onSubmit() {
     const validated = this.formState.validateForms();
-    if (!validated) return;
+    if (!validated) {
+      this.#scrollToFirstInvalidField();
+      return;
+    }
 
     if (this.#authService.user() !== null) {
       this.#createCardForAuthenticatedUser(validated.mainForm);
@@ -97,6 +117,14 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
         validated.transformedForm ?? undefined,
       );
     }
+  }
+
+  // After the error messages are rendered, bring the first invalid field into view
+  #scrollToFirstInvalidField() {
+    afterNextRender(
+      () => scrollToFirstInvalidField(this.#elementRef.nativeElement),
+      { injector: this.#injector },
+    );
   }
 
   #createCardForAuthenticatedUser(mainForm: FormGroup<CardForm>) {
@@ -125,6 +153,7 @@ export class CreateCardComponent implements OnDestroy, HasUnsavedChanges {
           this.#loadingService.stop();
           this.#errorToastService.showToast(
             'An error occurred while creating the card',
+            { persistent: true },
           );
           return EMPTY;
         }),

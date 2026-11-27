@@ -71,6 +71,19 @@ export const artworkFormat: ValidatorFn = (
     : { invalidArtworkFormat: true };
 };
 
+// Same limit as the API (/upload rejects larger files)
+export const MAX_ARTWORK_SIZE_MB = 10;
+export const MAX_ARTWORK_SIZE_BYTES = MAX_ARTWORK_SIZE_MB * 1024 * 1024;
+
+/**
+ * The control only holds the file name, so the size is checked when the file
+ * is picked and read here through `isTooLarge`.
+ */
+export const artworkMaxSize =
+  (isTooLarge: () => boolean): ValidatorFn =>
+  (): ValidationErrors | null =>
+    isTooLarge() ? { artworkTooLarge: true } : null;
+
 export const domainNameRequired: ValidatorFn = (
   control: AbstractControl,
 ): ValidationErrors | null => {

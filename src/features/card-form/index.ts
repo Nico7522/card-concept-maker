@@ -25,3 +25,4 @@ export * from './lib/build-card-data';
 export * from './lib/patch-card-form';
 export * from './lib/card-form-page-state';
 export * from './lib/is-value-in-array-duplicate';
+export * from './lib/scroll-to-first-invalid-field';

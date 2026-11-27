@@ -74,6 +74,7 @@ export class DeleteCardButtonComponent {
                   catchError(() => {
                     this.#errorToastService.showToast(
                       'An error occurred while deleting the card',
+                      { persistent: true },
                     );
                     this.isDeleting.set(false);
                     return EMPTY;

@@ -1,7 +1,21 @@
 <div [formGroupName]="controlKey()">
-    <input type="file" (change)="onFileChange($event)" />
+    <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" (change)="onFileChange($event)" />
 
-    @if (artworkForm.dirty && artworkForm.errors?.['invalidArtworkFormat']) {
-    <app-error errorMessage="Invalid format" />
+    <!-- The shared error is absolutely positioned: this block reserves its line
+         so it doesn't overlap the current file name below -->
+    @if (artworkForm.dirty && (artworkForm.errors?.['invalidArtworkFormat'] || artworkForm.errors?.['artworkTooLarge'])) {
+    <div class="relative h-6 mt-1">
+        @if (artworkForm.errors?.['invalidArtworkFormat']) {
+        <app-error errorMessage="Invalid format" />
+        } @else {
+        <app-error [errorMessage]="'Image must be under ' + maxArtworkSizeMb + ' MB'" />
+        }
+    </div>
+    }
+
+    @if (previewUrl(); as previewUrl) {
+    <!-- 3:4 ratio: the API crops artworks to 1200x1600 -->
+    <img [src]="previewUrl" (error)="onPreviewError(previewUrl)" alt="Artwork preview" width="160" height="213"
+        class="mt-3 w-40 aspect-[3/4] object-cover rounded border border-gray-700 bg-gray-800" />
     }
 </div>

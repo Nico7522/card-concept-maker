@@ -1,27 +1,75 @@
-/* Animation subtle pour le coeur */
-@keyframes heartbeat {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
+.site-footer {
+  border-top: 1px solid var(--logo-line);
+  background: var(--logo-bg);
+  backdrop-filter: blur(4px);
+}
+
+.footer-copyright {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-logo);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8c7f68;
+}
+
+.footer-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+}
+
+/* Links: Bungee, beige, yellow on hover (red for "Report Issue") */
+.footer-link {
+  --footer-accent: var(--logo-yellow);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  text-decoration: none;
+  font-family: var(--font-logo);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #d8c3a0;
+  transition: color 0.15s;
+}
+
+.footer-link--danger {
+  --footer-accent: var(--logo-red);
+}
+
+.footer-link__icon {
+  display: none;
+  padding: 6px;
+  color: var(--logo-orange);
+  background: var(--logo-panel);
+  box-shadow: inset 0 0 0 1px var(--logo-line-strong);
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  transition: color 0.15s, box-shadow 0.15s;
+}
+
+@media (min-width: 768px) {
+  .footer-link__icon {
+    display: inline-flex;
   }
 }
 
-/* Override pour l'animation pulse si besoin */
-.animate-pulse {
-  animation: heartbeat 2s ease-in-out infinite;
+.footer-link:hover,
+.footer-link:focus-visible {
+  outline: none;
+  color: var(--footer-accent);
 }
 
-/* Responsive très petit écran */
-@media (max-width: 480px) {
-  nav {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  nav .h-4 {
-    display: none;
-  }
+.footer-link:hover .footer-link__icon,
+.footer-link:focus-visible .footer-link__icon {
+  color: var(--footer-accent);
+  box-shadow: inset 0 0 0 2px var(--footer-accent);
 }
 
+.footer-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}

@@ -1,24 +1,17 @@
-/* Styles personnalisés pour le header */
-/* Tous les styles sont maintenant gérés par Tailwind CSS */
-
-/* Animation pour le bouton de connexion */
-@keyframes pulse-google {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+.header-version {
+  font-family: var(--font-logo);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--logo-orange);
 }
 
-/* Effet hover personnalisé pour le bouton Google */
-.google-login-btn:hover {
-  animation: pulse-google 0.3s ease-in-out;
+.header-logo:focus-visible {
+  outline: 2px solid var(--logo-yellow);
+  outline-offset: 4px;
 }
 
-/* Responsive design pour les très petits écrans */
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1rem;
-  }
+/* The Google logo is filled, not stroked like the other icons */
+.google-icon {
+  stroke: none;
 }

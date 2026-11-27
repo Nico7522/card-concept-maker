@@ -1,42 +1,155 @@
-/* Custom styles pour compléter Tailwind */
-.card {
-  /* Effet de survol personnalisé */
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* One card per row: thumbnail | name + stat bars | leader skill + categories.
+   On mobile, the leader skill and categories move under the stats. */
+.card-row {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 12px 20px;
+  padding: 12px;
+  text-decoration: none;
+  color: var(--logo-text);
+  background: var(--logo-panel);
+  box-shadow: inset 0 0 0 2px var(--logo-line-strong);
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  transition: box-shadow 0.15s;
 }
 
-.card:hover {
-  transform: translateY(-8px) scale(1.02);
+.card-row:hover {
+  box-shadow: inset 0 0 0 2px var(--logo-yellow);
 }
 
-/* Animation personnalisée pour le spinner */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+.card-row:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 3px var(--logo-yellow);
+}
+
+@media (min-width: 768px) {
+  .card-row {
+    grid-template-columns: 78px minmax(0, 420px) minmax(0, 1fr);
+    min-height: 128px;
   }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
-/* Effet de brillance sur les cartes légendaires */
-.card:has(.bg-gradient-to-r.from-yellow-400.to-yellow-600) {
+/* Thumbnail: 3:4 artwork with a frame of the card's type color */
+.card-row__thumb {
   position: relative;
+  width: 78px;
+  height: 104px;
+  align-self: start;
 }
 
+.card-row__thumb img.artwork {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #000;
+}
 
+.card-row__thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 3px var(--type-color);
+  pointer-events: none;
+}
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
+.card-row__class-icon {
+  position: absolute;
+  right: -8px;
+  bottom: -6px;
+  height: 34px;
+  width: auto;
+}
+
+.card-row__name {
+  font-family: var(--font-logo);
+  font-size: 18px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+/* Stat bars: label | bar | value */
+.stat {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 64px;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--logo-orange);
+}
+
+.stat__track {
+  height: 8px;
+  background: var(--logo-line);
+}
+
+.stat__bar {
+  display: block;
+  height: 100%;
+}
+
+.stat__bar--atk {
+  background: var(--logo-red);
+}
+
+.stat__bar--def {
+  background: var(--logo-orange);
+}
+
+.stat__bar--hp {
+  background: var(--logo-yellow);
+}
+
+.stat__value {
+  font-family: var(--font-logo);
+  font-size: 12px;
+  text-align: right;
+}
+
+/* Leader skill + categories: full width under the stats on mobile,
+   right column with a separator from md up */
+.card-row__details {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--logo-line);
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .card-row__details {
+    grid-column: auto;
+    padding-top: 0;
+    padding-left: 20px;
+    border-top: 0;
+    border-left: 1px solid var(--logo-line);
   }
-  100% {
-    background-position: 200% 0;
-  }
 }
 
-/* Amélioration des effets de glassmorphism */
-.backdrop-blur-sm {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+.card-row__leader {
+  font-size: 13px;
+  line-height: 1.45;
+  font-style: italic;
+  color: #c9bfa8;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
+.category {
+  padding: 3px 8px;
+  font-size: 11px;
+  color: #e8dcc0;
+  background: #2a2118;
+  box-shadow: inset 0 0 0 1px var(--logo-line-strong);
+}

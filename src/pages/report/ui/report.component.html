@@ -1,15 +1,16 @@
 <div class="container mx-auto px-4 py-8 max-w-2xl">
     <!-- Header -->
     <div class="text-center mb-8">
-        <h1 class="dokkan-header text-3xl md:text-4xl mb-2">Contact Us</h1>
-        <p class="text-gray-400">Share your thoughts, report issues, or suggest improvements</p>
+        <h1 class="dokkan-header text-3xl md:text-4xl mb-2">Contact <span class="dokkan-header__word-2">Us</span></h1>
+        <p class="text-[#d8c3a0]">Share your thoughts, report issues, or suggest improvements</p>
     </div>
 
     @if (isSubmittedSuccessfully()) {
     <app-successfully-submitted />
     } @else {
     <!-- Form Panel -->
-    <div class="dokkan-panel p-6 md:p-8 bg-opacity-90">
+    <!-- dokkan-form: logo theme for the form (labels, fields, dropdown) -->
+    <div class="dokkan-form">
         <form class="flex flex-col gap-6" [formGroup]="reportForm" (ngSubmit)="onSubmit()">
 
             <!-- Type Select -->
@@ -55,11 +56,9 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="flex justify-center mt-4 pt-6 border-t border-gray-700">
-                <button type="submit" [disabled]="reportForm.invalid"
-                    class="group flex items-center gap-3 px-10 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-400 hover:to-yellow-400 font-bold text-lg uppercase tracking-wider rounded shadow-lg transform transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:scale-100">
-                    <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex justify-center mt-4 pt-6 border-t border-[var(--logo-line)]">
+                <button type="submit" [disabled]="reportForm.invalid" class="dokkan-btn dokkan-btn--lg is-active">
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>

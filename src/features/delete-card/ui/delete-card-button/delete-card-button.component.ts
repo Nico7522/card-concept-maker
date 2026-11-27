@@ -14,23 +14,22 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroTrash } from '@ng-icons/heroicons/outline';
 import { catchError, EMPTY, take, tap } from 'rxjs';
 import { ErrorToastService } from '~/src/shared/api';
-import { UbButtonDirective } from '~/components/ui/button';
 import { DeleteCardService } from '~/src/entities/card';
 import { DeleteConfirmationModalComponent } from './delete-confirmation-modal/delete-confirmation-modal.component';
 
 @Component({
   selector: 'app-delete-card-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIconComponent, UbButtonDirective],
+  imports: [NgIconComponent],
   template: `
     <button
-      ubButton
-      size="sm"
-      class="cursor-pointer flex items-center gap-2 bg-red-900/80 hover:bg-red-800 border border-red-600/50 text-red-100 px-4 py-2 rounded font-bold uppercase tracking-wider transition-all hover:shadow-lg hover:shadow-red-500/20"
+      type="button"
+      class="dokkan-btn dokkan-btn--danger"
+      aria-label="Delete card"
       [disabled]="isDeleting()"
       (click)="openModal()"
     >
-      <ng-icon name="heroTrash" class="h-4 w-4" />
+      <ng-icon name="heroTrash" class="h-5 w-5" />
       <span class="hidden sm:inline">Delete</span>
     </button>
     <ng-container #modalContainer />

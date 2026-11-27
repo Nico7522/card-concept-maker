@@ -1,11 +1,12 @@
 @if (card$ | async; as card) {
 <div class="container mx-auto px-4 py-8 max-w-5xl">
     <div class="text-center mb-8">
-        <h1 class="dokkan-header text-4xl md:text-5xl mb-2">Update Card</h1>
+        <h1 class="dokkan-header text-4xl md:text-5xl mb-2">Update <span class="dokkan-header__word-2">Card</span></h1>
         <p class="text-gray-400">Modify your Dokkan Battle Card</p>
     </div>
 
-    <div class="dokkan-panel p-6 md:p-8 bg-opacity-90">
+    <!-- dokkan-form: logo theme for the card form (remove the class to restore the previous look) -->
+    <div class="dokkan-form">
         <form class="flex flex-col gap-8" (ngSubmit)="onSubmit()" [formGroup]="cardForm">
             <app-card-form controlKey="cardForm" label="Card Details" (artwork)="handleArtwork($event)"
                 (transformationChanged)="handleTransformationChanged($event)" />
@@ -17,9 +18,8 @@
                 [(selectedCardId)]="selectedExistingCardId" [showSelectionError]="hasSubmitAttempt() && isTransformationSelectionMissing()" (transformedArtwork)="handleTransformedArtwork($event)" />
             }
 
-            <div class="flex justify-center mt-8 pt-8 border-t border-gray-700">
-                <button type="submit"
-                    class="px-12 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold text-xl uppercase tracking-wider rounded shadow-lg transform transition hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+            <div class="flex justify-center mt-8 pt-8 border-t border-[var(--logo-line)]">
+                <button type="submit" class="dokkan-btn dokkan-btn--lg is-active">
                     @if (hasTransformation()) {
                     Update Cards
                     } @else {
